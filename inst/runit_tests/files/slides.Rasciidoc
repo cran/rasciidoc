@@ -1,0 +1,38 @@
+= Here Goes the Title
+Dominik Cullmann 
+:toc2:
+:numbered:
+:data-uri:
+:duration: 120
+
+//begin_only_slide
+== This is an intro shown in slides only
+This is a link: https://fvafrcu.github.io/[https://fvafrcu.github.io/]
+//end_only_slide
+
+== Here is a Caption / New Slide
+
+This is going to show up on the slides and in standard html output.
+
+//begin_only_slide
+This is not going to show up in standard html output.
+//end_only_slide
+
+//begin_no_slide
+This is not going to show up on the slides.
+//end_no_slide
+
+=== Here is a Subcaption
+
+This is going to show up on the slides and in standard html output.
+
+== This is a new slide not starting a new chapter in standard output //slide_only
+
+This is how to include and source a code snippet:
+//begin.rcode, eval = FALSE
+include::src/opts.R[]
+//end.rcode
+//begin.rcode, include = FALSE
+source("src/opts.R", local = knitr::knit_global())
+//end.rcode
+

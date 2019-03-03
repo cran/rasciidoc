@@ -1,0 +1,43 @@
+= Some Title
+Your Name
+:toc2:
+:numbered:
+:data-uri:
+:duration: 120
+
+== What is this About?
+
+//begin_no_slide
+This will not show up on slides.
+//end_no_slide
+
+=== Some simple asciidoc
+
+* A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
+* Yet another entry in the list.
+
+== Including Code
+Do not use the _include_ macro provided by asciidoc! 
+//begin.rcode, code = readLines("src/sum.R")
+//end.rcode
+
+
+== A new section
+
+//begin.rcode, code = readLines("src/my_sum.R")
+//end.rcode
+== Only sections give new slides 
+=== A subsection
+//begin.rcode
+print(value)
+//end.rcode
+
+//begin.rcode
+print(my_sum(1:3))
+//end.rcode
+
+Some inline code: Object +value+ has value +r value+.
+
+== Next slide 
+
+=== Second subsection

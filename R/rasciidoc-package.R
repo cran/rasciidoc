@@ -1,0 +1,23 @@
+#' Create Reports Using R and \command{asciidoc}
+#'
+#' Inspired by Karl Broman`s reader on using \pkg{knitr} with \command{asciidoc}
+#' (\url{http://kbroman.org/knitr_knutshell/pages/asciidoc.html}), this is
+#' merely a wrapper to \pkg{knitr} and \command{asciidoc}.
+#'
+#' You will find the details in\cr
+#' \code{vignette("An_Introduction_to_rasciidoc", package = "rasciidoc")}.
+#'
+#' @section Warning:
+#' Due to the CRAN policy of not writing "anywhere else on the
+#' file system apart from the R session's temporary directory",
+#' we work on a temporary copy of \code{file_name}.
+#' Thus all internal sourcing and internal links will be
+#' broken and any output is written to \code{tempdir()}.
+#' Set the option "write_to_disk" to TRUE (using \cr
+#' \code{options(write_to_disk = TRUE)}\cr
+#' to bypass this. You may want to include the above line into your ~/.Rprofile.
+#' @name rasciidoc-package
+#' @aliases rasciidoc-package
+#' @docType package
+#' @keywords package
+NULL

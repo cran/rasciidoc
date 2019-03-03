@@ -1,0 +1,105 @@
+---
+title: "An Introduction to *rasciidoc*"
+author:
+date: 2019-02-09, 23:09:57
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An Introduction to rasciidoc }
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# What is *rasciidoc*?
+Inspired by Karl Broman`s reader on using knitr
+with asciidoc
+(<http://kbroman.org/knitr_knutshell/pages/asciidoc.html>), this is a
+wrapper to and a slight modification of knitr.
+
+# Knitting
+## A Minimal Example
+Suppose, you have a file that reads
+``` {r minimal_knitting_file, comment = ""}
+file_name <- system.file("files", "minimal", "knit.Rasciidoc",
+                         package = "rasciidoc")
+cat(readLines(file_name), sep = "\n")
+```
+If you run `render` on this file (we use a temporary directory here)
+``` {r minimal_knitting_run}
+withr::with_dir(tempdir(), {
+                    file.copy(file_name, ".")
+                    rasciidoc::render(basename(file_name))
+})
+```
+you will create an HTML file that is identical to [this file](https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/minimal/knit.html) and that you could browse using 
+`browseURL(file.path(tempdir(), paste0(sub("\\..*$", "", basename(file_name)), ".html")))`
+from your current R session (vignettes like this are not allowed to start external programs
+                             like browsers, so you'll have to do it yourself).
+
+## A Simple Example
+Suppose you changed your file to be less minimalistic:
+``` {r simple_knitting_file, comment = ""}
+file_name <- system.file("files", "simple", "knit.Rasciidoc",
+                         package = "rasciidoc")
+cat(readLines(file_name), sep = "\n")
+```
+
+
+This file obviously reads code from files in a subdirectory called "src/", 
+so if you had that subdirectory and its files, too:
+
+``` {r get_codes}
+my_directory <- file.path(tempdir(), "simple")
+dir.create(my_directory)
+withr::with_dir(my_directory, {
+                    file.copy(file_name, ".")
+                    file.copy(file.path(dirname(file_name), "src"), ".",
+                              recursive = TRUE)
+})
+dir(my_directory, recursive = TRUE, full.names = TRUE)
+```
+you could `render` the file 
+``` {r simple_knitting_run}
+rasciidoc::render(file.path(my_directory, basename(file_name)))
+```
+and create an HTML file that is identical to [this file](https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/simple/knit.html) and that you could browse using 
+`browseURL(file.path(tempdir(), paste0(sub("\\..*$", "", basename(file_name)), ".html")))`
+from your current R session .
+
+# Spinnig
+You can also use a spinnig file for input:
+``` {r simple_spinnig_file, comment = ""}
+file_name <- system.file("files", "simple", "spin.R_nolint",
+                         package = "rasciidoc")
+cat(readLines(file_name), sep = "\n")
+```
+You run `render` on it:
+``` {r simple_spinnig_run}
+withr::with_dir(tempdir(), {
+                    file.copy(file_name, ".", overwrite = TRUE)
+                    file.copy(file.path(dirname(file_name), "src"), ".",
+                              recursive = TRUE)
+                    rasciidoc::render(basename(file_name))
+})
+```
+
+# The Option "write_to_disk"
+
+You may have noticed that output is written to `tempdir()`, instead to the 
+subdirectories below it.
+This is 
+due to the CRAN policy of not writing "anywhere else on the
+file system apart from the R session's temporary directory".
+Set the option "write_to_disk" to TRUE (using 
+`options(write_to_disk = TRUE)`
+to bypass this. You may want to include the above line into your ~/.Rprofile.
+
+# Knitr Hooks
+
+I change the way knitr translates (see [here](https://yihui.name/knitr/objects/)), as it
+renders messages, warnings and errors to
+[NOTE|WARNING|ERROR]-blocks in `asciidoc`, which is ... not my choice.
+To restore knitr`s behaviour, set hooks or replacement to
+NULL.
+``` {r hooks}
+rasciidoc::render(file.path(tempdir(), basename(file_name)), hooks = NULL)
+```

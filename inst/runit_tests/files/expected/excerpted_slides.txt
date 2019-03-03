@@ -1,0 +1,17 @@
+= Here Goes the Title
+
+//begin_only_slide
+SLIDE only
+//end_only_slide
+
+SLIDE and standard
+
+
+SLIDE and standard
+
+SLIDE only 
+
+SLIDE and standard
+
+
+SLIDE and standard

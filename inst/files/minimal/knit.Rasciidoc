@@ -1,0 +1,36 @@
+= Some Title
+Your Name
+:toc2:
+:numbered:
+:data-uri:
+:duration: 120
+
+== A Section
+
+=== A Subsection
+
+* A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
+* Yet another entry in the list.
+
+== Code
+//begin.rcode
+a  <- c(2, 3, 4, 10) # <1>
+value <- 0 # <2>
+for (a_i in a) { # <3>
+    value <- value + a_i  # <4>
+}
+print(value) # <5>
+//end.rcode
+
+
+== A new section
+
+//begin.rcode
+my_sum <- function(x) {
+    value <- 0
+    for (x_i in x) {
+        value <- value + x_i 
+    }
+    return(value)
+}
+//end.rcode
