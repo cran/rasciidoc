@@ -4,10 +4,16 @@
 \alias{render}
 \title{Spin or Knit and Render a `Rasciidoc` File}
 \usage{
-render(file_name, knit = NA, envir = parent.frame(),
-  hooks = c("message", "error", "warning"), replacement = "source",
-  asciidoc_args = NULL, what = c("auto", "all", "no_slides", "slides"),
-  clean = FALSE)
+render(
+  file_name,
+  knit = NA,
+  envir = parent.frame(),
+  hooks = c("message", "error", "warning"),
+  replacement = "source",
+  asciidoc_args = NULL,
+  what = c("auto", "all", "no_slides", "slides"),
+  clean = FALSE
+)
 }
 \arguments{
 \item{file_name}{The file to render.}
@@ -32,10 +38,10 @@ the \code{replacement}'s hooks.}
 
 \item{what}{What is to be rendered? \code{"all"} renders everything,
 \code{"no_slides"} renders parts that are not meant for slides,
-\code{"slides"} renders parts that are meant for slides, the defaults looks
+\code{"slides"} renders parts that are meant for slides. 
+The defaults looks
 for any in- or exclusion tagging and renders parts that are not meant for
-slides if found any, and everything else.
-renders}
+slides if found any, else it renders everything.}
 
 \item{clean}{Remove temporary file(s)?}
 }
@@ -70,4 +76,7 @@ if (isTRUE(getOption("write_to_disk"))) {
     dir(tempdir(), full.names = TRUE)
 }
 unlink(wd, recursive = TRUE)
+}
+\seealso{
+\code{\link{rasciidoc}}
 }

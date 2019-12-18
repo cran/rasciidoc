@@ -30,20 +30,13 @@ hint_writing <- function(path = "the input file") {
 #' You should usually not call it directly, see
 #' \code{\link{render}} for a wrapper.
 #'
-#' @section Warning:
-#' Due to the CRAN policy of not writing "anywhere else on the
-#' file system apart from the R session's temporary directory",
-#' we work on a temporary copy of \code{file_name}.
-#' Thus all internal sourcing and internal links will be
-#' broken and any output is written to \code{tempdir()}.
-#' Set the option "write_to_disk" to TRUE (using \cr
-#' \code{options(write_to_disk = TRUE)}\cr
-#' to bypass this. You may want to include the above line into your ~/.Rprofile.
+#' @template cran
 #' @param file_name The file to run \command{asciidoc} on.
 #' @param ... arguments passed to \command{asciidoc} via \code{\link{system2}}.
-#' @return \code{\link[base:invisible]{Invisibly}} \command{asciidoc} return
+#' @return \code{\link[base:invisible]{Invisibly}} \command{asciidoc}'a return
 #' value.
 #' @export
+#' @seealso \code{\link{render}}
 #' @examples
 #' wd <- file.path(tempdir(), "rasciidoc")
 #' dir.create(wd)
@@ -167,15 +160,7 @@ is_spin_file <- function(file_name) {
 #' Spin or Knit and Render a `Rasciidoc` File
 #'
 #' Spin or Knit (if required) and render an `Rasciidoc` file.
-#' @section Warning:
-#' Due to the CRAN policy of not writing "anywhere else on the
-#' file system apart from the R session's temporary directory",
-#' we work on a temporary copy of \code{file_name}.
-#' Thus all internal sourcing and internal links will be
-#' broken and any output is written to \code{tempdir()}.
-#' Set the option "write_to_disk" to TRUE (using \cr
-#' \code{options(write_to_disk = TRUE)}\cr
-#' to bypass this. You may want to include the above line into your ~/.Rprofile.
+#' @template cran
 #' @inheritParams adjust_asciidoc_hooks
 #' @param file_name The file to render.
 #' @param knit Knit the file first using \code{\link[knitr:knit]{knitr::knit}}?
@@ -190,12 +175,13 @@ is_spin_file <- function(file_name) {
 #' @param clean Remove temporary file(s)?
 #' @param what What is to be rendered? \code{"all"} renders everything,
 #' \code{"no_slides"} renders parts that are not meant for slides,
-#' \code{"slides"} renders parts that are meant for slides, the defaults looks
+#' \code{"slides"} renders parts that are meant for slides. 
+#' The defaults looks
 #' for any in- or exclusion tagging and renders parts that are not meant for
-#' slides if found any, and everything else.
-#' renders
+#' slides if found any, else it renders everything.
 #' @return The return value of \code{\link{rasciidoc}}.
 #' @export
+#' @seealso \code{\link{rasciidoc}}
 #' @examples
 #' wd <- file.path(tempdir(), "rasciidoc")
 #' dir.create(wd)

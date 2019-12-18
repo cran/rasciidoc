@@ -1,6 +1,3 @@
----
-output: github_document
----
 [![pipeline status](https://gitlab.com/fvafrCU/rasciidoc/badges/master/pipeline.svg)](https://gitlab.com/fvafrCU/rasciidoc/commits/master)    
 [![coverage report](https://gitlab.com/fvafrCU/rasciidoc/badges/master/coverage.svg)](https://gitlab.com/fvafrCU/rasciidoc/commits/master)
 <!-- 
@@ -18,7 +15,11 @@ output: github_document
 # rasciidoc
 ## Introduction
 Please read the
-[vignette](https://gitlab.com/fvafrCU/rasciidoc/raw/master/doc/An_Introduction_to_rasciidoc.html).
+[vignette](https://fvafrCU.gitlab.io/rasciidoc/doc/An_Introduction_to_rasciidoc.html).
+<!-- 
+[vignette](https://CRAN.R-project.org/package=rasciidoc/vignettes/An_Introduction_to_rasciidoc.html).
+
+-->
 
 Or, after installation, the help page:
 
@@ -54,7 +55,7 @@ help("rasciidoc-package", package = "rasciidoc")
 
 ## Installation
 
-You can install rasciidoc from github with:
+You can install rasciidoc from gitlab via:
 
 
 ```r

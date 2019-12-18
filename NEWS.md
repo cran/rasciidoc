@@ -1,3 +1,8 @@
+# rasciidoc 2.0.1
+
+* Fixed link to online vignette.
+* Fixed tests for new version of package coverage.
+
 # rasciidoc 2.0.0
 
 * Fixed quotation in DESCRIPTION.

@@ -12,7 +12,7 @@ rasciidoc(file_name, ...)
 \item{...}{arguments passed to \command{asciidoc} via \code{\link{system2}}.}
 }
 \value{
-\code{\link[base:invisible]{Invisibly}} \command{asciidoc} return
+\code{\link[base:invisible]{Invisibly}} \command{asciidoc}'a return
 value.
 }
 \description{
@@ -47,4 +47,7 @@ if (isTRUE(getOption("write_to_disk"))) {
     dir(tempdir(), full.names = TRUE)
 }
 unlink(wd, recursive = TRUE)
+}
+\seealso{
+\code{\link{render}}
 }

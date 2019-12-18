@@ -1,7 +1,7 @@
 ---
 title: "An Introduction to *rasciidoc*"
 author:
-date: 2019-02-09, 23:09:57
+date: 2019-12-04, 14:17:08
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{An Introduction to rasciidoc }
@@ -84,14 +84,14 @@ withr::with_dir(tempdir(), {
 
 # The Option "write_to_disk"
 
-You may have noticed that output is written to `tempdir()`, instead to the 
-subdirectories below it.
+
+You may have noticed that output is written to `tempdir()` instead of to the directory of your Rasciidoc input.
 This is 
 due to the CRAN policy of not writing "anywhere else on the
 file system apart from the R session's temporary directory".
-Set the option "write_to_disk" to TRUE (using 
-`options(write_to_disk = TRUE)`
-to bypass this. You may want to include the above line into your ~/.Rprofile.
+Set the option "write_to_disk" to TRUE (using  
+`options(write_to_disk = TRUE)`  
+) to bypass this. You may want to include the above line into your ~/.Rprofile.
 
 # Knitr Hooks
 

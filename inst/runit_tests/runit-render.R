@@ -94,18 +94,26 @@ test_knit_spin <- function() {
 }
 
 test_adjusting_hooks <- function() {
+    if (grepl(paste0("^", dirname(tempdir()), ".*$"), getwd()) && FALSE) {
+        warning("skipping test for covr")
+    } else {
     # if this fails, insert prints or messages,
-    # run covr::package_coverage(path = ".", quiet = FALSE), read
+    # run covr::package_coverage(path = ".", clean = FALSE), read
     # the output, it will point you to something like
     # /tmp/RtmpXXX/R_LIBSXXX/rasciidoc/rasciidoc-tests/runit.Rout.fail
     on.exit( knitr::knit_hooks$restore())
     # covr infects functions, so we deparse an grep them first
-    clean <- function(x) gsub(" ", "",
-                              paste0(grep("covr:::count|   \\{$|   \\}$",
-                                          invert = TRUE, value = TRUE,
-                                          deparse(x)),
-                                     collapse = "")
-                              )
+    remove_if_TRUE <- function(x) {
+        ## covr::package_coverage inserts `if(TRUE){` ...
+        return(gsub("if\\(TRUE\\)\\{", "", x))
+    }
+
+    clean <- function(x) {
+        r <- gsub(" ", "", paste0(grep("covr:::count|   \\{$|   \\}$",
+                                       invert = TRUE, value = TRUE, deparse(x)),
+                               collapse = ""))
+        return(remove_if_TRUE(r))
+    }
     # get a verbartim copy from adjust_knitr_hooks:
     hook.source <- function(x, options) {
         x <- paste(c(hilight_source(x, "asciidoc", options), ""),
@@ -153,4 +161,5 @@ test_adjusting_hooks <- function() {
     rasciidoc::adjust_asciidoc_hooks(hooks = c("source"), replacement = "error")
     cs <- knitr::knit_hooks$get("source")
     RUnit::checkEquals(clean(cs), clean(hook.error))
+}
 }
