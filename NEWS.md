@@ -1,3 +1,11 @@
+# rasciidoc 2.1.0
+
+* Converted vignette to Rasciidoc.
+* If asciidoc is not installed (like on CRAN), rasciidoc tries to run the
+  asciidoc code using python.
+  This is needed for vigenttes on CRAN written in (r)asciidoc.
+* Added a vignette engine.
+
 # rasciidoc 2.0.1
 
 * Fixed link to online vignette.

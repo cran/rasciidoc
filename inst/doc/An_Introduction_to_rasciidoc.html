@@ -1,336 +1,1226 @@
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<title>What is <strong>rasciidoc</strong>?</title>
+<style type="text/css">
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
 
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
-<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
 
-<meta name="author" content />
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+.monospaced, code, pre {
+  font-family: "Courier New", Courier, monospace;
+  font-size: inherit;
+  color: navy;
+  padding: 0;
+  margin: 0;
+}
+pre {
+  white-space: pre-wrap;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #888;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; vertical-align: text-bottom; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel0, div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+div.unbreakable { page-break-inside: avoid; }
 
 
-<title>An Introduction to rasciidoc</title>
+/*
+ * xhtml11 specific
+ *
+ * */
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
 
 
+/*
+ * html5 specific
+ *
+ * */
 
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
 
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * manpage specific
+ *
+ * */
+
+body.manpage h1 {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  border-top: 2px solid silver;
+  border-bottom: 2px solid silver;
+}
+body.manpage h2 {
+  border-style: none;
+}
+body.manpage div.sectionbody {
+  margin-left: 3em;
+}
+
+@media print {
+  body.manpage div#toc { display: none; }
+}
+
+
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.5em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+    color: #aaaaaa;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
 </style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
     }
   }
-})();
-</script>
-
-
-
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
-
-
-
-
-</head>
-
-<body>
-
-
-
-
-<h1 class="title toc-ignore">An Introduction to <em>rasciidoc</em></h1>
-<h4 class="date">2019-12-04, 14:17:08</h4>
-
-
-
-<div id="what-is-rasciidoc" class="section level1">
-<h1>What is <em>rasciidoc</em>?</h1>
-<p>Inspired by Karl Broman`s reader on using knitr with asciidoc (<a href="http://kbroman.org/knitr_knutshell/pages/asciidoc.html" class="uri">http://kbroman.org/knitr_knutshell/pages/asciidoc.html</a>), this is a wrapper to and a slight modification of knitr.</p>
-</div>
-<div id="knitting" class="section level1">
-<h1>Knitting</h1>
-<div id="a-minimal-example" class="section level2">
-<h2>A Minimal Example</h2>
-<p>Suppose, you have a file that reads</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file_name &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;minimal&quot;</span>, <span class="st">&quot;knit.Rasciidoc&quot;</span>,
-                         <span class="dt">package =</span> <span class="st">&quot;rasciidoc&quot;</span>)
-<span class="kw">cat</span>(<span class="kw">readLines</span>(file_name), <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
-<pre><code>= Some Title
-Your Name
-:toc2:
-:numbered:
-:data-uri:
-:duration: 120
-
-== A Section
-
-=== A Subsection
-
-* A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
-* Yet another entry in the list.
-
-== Code
-//begin.rcode
-a  &lt;- c(2, 3, 4, 10) # &lt;1&gt;
-value &lt;- 0 # &lt;2&gt;
-for (a_i in a) { # &lt;3&gt;
-    value &lt;- value + a_i  # &lt;4&gt;
-}
-print(value) # &lt;5&gt;
-//end.rcode
-
-
-== A new section
-
-//begin.rcode
-my_sum &lt;- function(x) {
-    value &lt;- 0
-    for (x_i in x) {
-        value &lt;- value + x_i 
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
     }
-    return(value)
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
 }
-//end.rcode</code></pre>
-<p>If you run <code>render</code> on this file (we use a temporary directory here)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">withr::<span class="kw">with_dir</span>(<span class="kw">tempdir</span>(), {
-                    <span class="kw">file.copy</span>(file_name, <span class="st">&quot;.&quot;</span>)
-                    rasciidoc::<span class="kw">render</span>(<span class="kw">basename</span>(file_name))
-})</code></pre></div>
-<pre><code>## Warning in run_knit(file_name, knit = knit, envir = envir): Setting option knit
-## to TRUE based on the file contents!</code></pre>
-<pre><code>## Due to the CRAN policy of not writing &quot;anywhere else on the file system apart from the R session's temporary directory&quot; we work on a temporary copy of /tmp/RtmpcZokEj/knit.Rasciidoc.
-## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpcZokEj. Set the option &quot;write_to_disk&quot; to TRUE (using
-##  options(&quot;write_to_disk&quot; = TRUE)
-## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</code></pre>
-<pre><code>## processing file: /tmp/RtmpcZokEj/knit.Rasciidoc</code></pre>
-<pre><code>## output file: /tmp/RtmpcZokEj/knit.asciidoc</code></pre>
-<pre><code>## [1] 0</code></pre>
-<p>you will create an HTML file that is identical to <a href="https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/minimal/knit.html">this file</a> and that you could browse using <code>browseURL(file.path(tempdir(), paste0(sub(&quot;\\..*$&quot;, &quot;&quot;, basename(file_name)), &quot;.html&quot;)))</code> from your current R session (vignettes like this are not allowed to start external programs like browsers, so you’ll have to do it yourself).</p>
-</div>
-<div id="a-simple-example" class="section level2">
-<h2>A Simple Example</h2>
-<p>Suppose you changed your file to be less minimalistic:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file_name &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;simple&quot;</span>, <span class="st">&quot;knit.Rasciidoc&quot;</span>,
-                         <span class="dt">package =</span> <span class="st">&quot;rasciidoc&quot;</span>)
-<span class="kw">cat</span>(<span class="kw">readLines</span>(file_name), <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
-<pre><code>= Some Title
-Your Name
-:toc2:
-:numbered:
-:data-uri:
-:duration: 120
 
-== What is this About?
-
-
-=== Some simple asciidoc
-
-* A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
-* Yet another entry in the list.
-
-== Including Code
-Do not use the _include_ macro provided by asciidoc! 
-//begin.rcode, code = readLines(&quot;src/sum.R&quot;)
-//end.rcode
-
-
-== A new section
-
-//begin.rcode, code = readLines(&quot;src/my_sum.R&quot;)
-//end.rcode
-=== A subsection
-//begin.rcode
-print(value)
-//end.rcode
-
-//begin.rcode
-print(my_sum(1:3))
-//end.rcode
-
-Some inline code: Object +value+ has value +r value+.
-
-
-=== Second subsection</code></pre>
-<p>This file obviously reads code from files in a subdirectory called “src/”, so if you had that subdirectory and its files, too:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_directory &lt;-<span class="st"> </span><span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="st">&quot;simple&quot;</span>)
-<span class="kw">dir.create</span>(my_directory)
-withr::<span class="kw">with_dir</span>(my_directory, {
-                    <span class="kw">file.copy</span>(file_name, <span class="st">&quot;.&quot;</span>)
-                    <span class="kw">file.copy</span>(<span class="kw">file.path</span>(<span class="kw">dirname</span>(file_name), <span class="st">&quot;src&quot;</span>), <span class="st">&quot;.&quot;</span>,
-                              <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
-})</code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dir</span>(my_directory, <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## [1] &quot;/tmp/RtmpcZokEj/simple/knit.Rasciidoc&quot;
-## [2] &quot;/tmp/RtmpcZokEj/simple/src/my_sum.R&quot;  
-## [3] &quot;/tmp/RtmpcZokEj/simple/src/sum.R&quot;</code></pre>
-<p>you could <code>render</code> the file</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rasciidoc::<span class="kw">render</span>(<span class="kw">file.path</span>(my_directory, <span class="kw">basename</span>(file_name)))</code></pre></div>
-<pre><code>## Warning in run_knit(file_name, knit = knit, envir = envir): Setting option knit
-## to TRUE based on the file contents!</code></pre>
-<pre><code>## Due to the CRAN policy of not writing &quot;anywhere else on the file system apart from the R session's temporary directory&quot; we work on a temporary copy of /tmp/RtmpcZokEj/simple/knit.Rasciidoc.
-## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpcZokEj. Set the option &quot;write_to_disk&quot; to TRUE (using
-##  options(&quot;write_to_disk&quot; = TRUE)
-## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</code></pre>
-<pre><code>## processing file: /tmp/RtmpcZokEj/simple/knit.Rasciidoc</code></pre>
-<pre><code>## output file: /tmp/RtmpcZokEj/knit.asciidoc</code></pre>
-<pre><code>## [1] 0</code></pre>
-<p>and create an HTML file that is identical to <a href="https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/simple/knit.html">this file</a> and that you could browse using <code>browseURL(file.path(tempdir(), paste0(sub(&quot;\\..*$&quot;, &quot;&quot;, basename(file_name)), &quot;.html&quot;)))</code> from your current R session .</p>
-</div>
-</div>
-<div id="spinnig" class="section level1">
-<h1>Spinnig</h1>
-<p>You can also use a spinnig file for input:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file_name &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;simple&quot;</span>, <span class="st">&quot;spin.R_nolint&quot;</span>,
-                         <span class="dt">package =</span> <span class="st">&quot;rasciidoc&quot;</span>)
-<span class="kw">cat</span>(<span class="kw">readLines</span>(file_name), <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</code></pre></div>
-<pre><code>#' = Some Title
-#' Your Name
-#' :toc2:
-#' :numbered:
-#' :data-uri:
-#' :duration: 120
-#' 
-#' == What is this About?
-#' 
-#' //begin_no_slide
-#' This will not show up on slides.
-#' //end_no_slide
-#' 
-#' === Some simple asciidoc
-#' 
-#' * A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
-#' * Yet another entry in the list.
-#' 
-#' == Including Code
-#' Do not use the _include_ macro provided by asciidoc!
-#' Instead prefix all source statements with 
-#' ----
-#' #+ code = readLines(&quot;file_to_be_sourced&quot;)
-#' #+ include = FALSE
-#' ----
-#' It est use
-#' ----
-#' #+ code = readLines(&quot;src/sum.R&quot;)
-#' #+ include = FALSE
-#' source(&quot;src/sum.R&quot;)
-#' ----
-#' to produce
-#+ code = readLines(&quot;src/sum.R&quot;)
-#+ include = FALSE
-source(&quot;src/sum.R&quot;)
-#' 
-#' 
-message(&quot;A message, probably different output hooks.&quot;)
-#' == A new section
-#' 
-#+ code = readLines(&quot;src/my_sum.R&quot;)
-#' === A subsection
-print(value)
-#' 
-print(my_sum(1:3))
-#' 
-#' Inline code does not work: Object +value+ has value +r value+.
-#' </code></pre>
-<p>You run <code>render</code> on it:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">withr::<span class="kw">with_dir</span>(<span class="kw">tempdir</span>(), {
-                    <span class="kw">file.copy</span>(file_name, <span class="st">&quot;.&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
-                    <span class="kw">file.copy</span>(<span class="kw">file.path</span>(<span class="kw">dirname</span>(file_name), <span class="st">&quot;src&quot;</span>), <span class="st">&quot;.&quot;</span>,
-                              <span class="dt">recursive =</span> <span class="ot">TRUE</span>)
-                    rasciidoc::<span class="kw">render</span>(<span class="kw">basename</span>(file_name))
-})</code></pre></div>
-<pre><code>## Due to the CRAN policy of not writing &quot;anywhere else on the file system apart from the R session's temporary directory&quot; we work on a temporary copy of /tmp/RtmpcZokEj/spin.R_nolint.
-## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpcZokEj. Set the option &quot;write_to_disk&quot; to TRUE (using
-##  options(&quot;write_to_disk&quot; = TRUE)
-## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</code></pre>
-<pre><code>## [1] 0</code></pre>
-</div>
-<div id="the-option-write_to_disk" class="section level1">
-<h1>The Option “write_to_disk”</h1>
-<p>You may have noticed that output is written to <code>tempdir()</code> instead of to the directory of your Rasciidoc input. This is due to the CRAN policy of not writing “anywhere else on the file system apart from the R session’s temporary directory”. Set the option “write_to_disk” to TRUE (using<br />
-<code>options(write_to_disk = TRUE)</code><br />
-) to bypass this. You may want to include the above line into your ~/.Rprofile.</p>
-</div>
-<div id="knitr-hooks" class="section level1">
-<h1>Knitr Hooks</h1>
-<p>I change the way knitr translates (see <a href="https://yihui.name/knitr/objects/">here</a>), as it renders messages, warnings and errors to [NOTE|WARNING|ERROR]-blocks in <code>asciidoc</code>, which is … not my choice. To restore knitr`s behaviour, set hooks or replacement to NULL.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rasciidoc::<span class="kw">render</span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(), <span class="kw">basename</span>(file_name)), <span class="dt">hooks =</span> <span class="ot">NULL</span>)</code></pre></div>
-<pre><code>## Due to the CRAN policy of not writing &quot;anywhere else on the file system apart from the R session's temporary directory&quot; we work on a temporary copy of /tmp/RtmpcZokEj/spin.R_nolint.
-## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpcZokEj. Set the option &quot;write_to_disk&quot; to TRUE (using
-##  options(&quot;write_to_disk&quot; = TRUE)
-## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</code></pre>
-<pre><code>## [1] 0</code></pre>
-</div>
-
-
-
-<!-- code folding -->
-
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
+}
+asciidoc.install(2);
+/*]]>*/
 </script>
-
+</head>
+<body class="article">
+<div id="header">
+<h1>What is <strong>rasciidoc</strong>?</h1>
+<span id="author">Andreas Dominik Cullmann</span><br />
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph"><p>Inspired by Karl Broman`s reader on using knitr
+with asciidoc
+(<a href="http://kbroman.org/knitr_knutshell/pages/asciidoc.html">http://kbroman.org/knitr_knutshell/pages/asciidoc.html</a>), this is a
+wrapper to and a slight modification of knitr.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_knitting">Knitting</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_a_minimal_example">A Minimal Example</h3>
+<div class="paragraph"><p>Suppose, you have a file that reads</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>file_name &lt;- system.file(<span style="color: #FF0000">"files"</span>, <span style="color: #FF0000">"minimal"</span>, <span style="color: #FF0000">"knit.Rasciidoc"</span>,
+                         package = <span style="color: #FF0000">"rasciidoc"</span>)
+cat(readLines(file_name), sep = <span style="color: #FF0000">"</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">"</span>)</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## = Some Title
+## Your Name
+## :toc2:
+## :numbered:
+## :data-uri:
+## :duration: 120
+##
+## == A Section
+##
+## === A Subsection
+##
+## * A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
+## * Yet another entry in the list.
+##
+## == Code
+## //begin.rcode
+## a  &lt;- c(2, 3, 4, 10) # <b>&lt;1&gt;</b>
+## value &lt;- 0 # <b>&lt;2&gt;</b>
+## for (a_i in a) { # <b>&lt;3&gt;</b>
+##     value &lt;- value + a_i  # <b>&lt;4&gt;</b>
+## }
+## print(value) # <b>&lt;5&gt;</b>
+## //end.rcode
+##
+##
+## == A new section
+##
+## //begin.rcode
+## my_sum &lt;- function(x) {
+##     value &lt;- 0
+##     for (x_i in x) {
+##         value &lt;- value + x_i
+##     }
+##     return(value)
+## }
+## //end.rcode</code></pre>
+</div></div>
+<div class="paragraph"><p>If you run <code>render</code> on this file (we use a temporary directory here)</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>withr::with_dir(tempdir(), {
+                    file.copy(file_name, <span style="color: #FF0000">"."</span>)
+                    rasciidoc::render(basename(file_name))
+})</tt></pre></div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Warning in run_knit(file_name, knit = knit, envir = envir, write_to_disk =</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## write_to_disk): Setting option knit to TRUE based on the file contents!</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmpKtuiAX/knit.Rasciidoc.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpKtuiAX. Set the option "write_to_disk" to TRUE (using</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/RtmpKtuiAX/knit.Rasciidoc</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |..................                                                    |  25%
+##   ordinary text without R code
+##
+## 
+  |                                                                            
+  |...................................                                   |  50%
+## label: unnamed-chunk-8
+## 
+  |                                                                            
+  |....................................................                  |  75%
+##   ordinary text without R code
+##
+## 
+  |                                                                            
+  |......................................................................| 100%
+## label: unnamed-chunk-9</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/RtmpKtuiAX/knit.asciidoc</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## [1] 0</code></pre>
+</div></div>
+<div class="paragraph"><p>you will create an HTML file that is identical to [this file](<a href="https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/minimal/knit.html">https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/minimal/knit.html</a>) and that you could browse using
+<code>browseURL(file.path(tempdir(), paste0(sub("\\..*$", "", basename(file_name)), ".html")))</code>
+from your current R session (vignettes like this are not allowed to start external programs
+                             like browsers, so you&#8217;ll have to do it yourself).</p></div>
+</div>
+<div class="sect2">
+<h3 id="_a_simple_example">A Simple Example</h3>
+<div class="paragraph"><p>Suppose you changed your file to be less minimalistic:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>file_name &lt;- system.file(<span style="color: #FF0000">"files"</span>, <span style="color: #FF0000">"simple"</span>, <span style="color: #FF0000">"knit.Rasciidoc"</span>,
+                         package = <span style="color: #FF0000">"rasciidoc"</span>)
+cat(readLines(file_name), sep = <span style="color: #FF0000">"</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">"</span>)</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## = Some Title
+## Your Name
+## :toc2:
+## :numbered:
+## :data-uri:
+## :duration: 120
+##
+## == What is this About?
+##
+##
+## === Some simple asciidoc
+##
+## * A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
+## * Yet another entry in the list.
+##
+## == Including Code
+## Do not use the _include_ macro provided by asciidoc!
+## //begin.rcode, label = "sum", code = readLines("src/sum.R")
+## //end.rcode
+##
+##
+## == A new section
+##
+## //begin.rcode, label = "my_sum", code = readLines("src/my_sum.R")
+## //end.rcode
+## === A subsection
+## //begin.rcode, label = "value"
+## print(value)
+## //end.rcode
+##
+## //begin.rcode, label = "run my_sum"
+## print(my_sum(1:3))
+## //end.rcode
+##
+## Some inline code: Object +value+ has value +r value+.
+##
+##
+## === Second subsection</code></pre>
+</div></div>
+<div class="paragraph"><p>This file obviously reads code from files in a subdirectory called "src/",
+so if you had that subdirectory and its files, too:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>my_directory &lt;- file.path(tempdir(), <span style="color: #FF0000">"simple"</span>)
+dir.create(my_directory)
+withr::with_dir(my_directory, {
+                    file.copy(file_name, <span style="color: #FF0000">"."</span>)
+                    file.copy(file.path(dirname(file_name), <span style="color: #FF0000">"src"</span>), <span style="color: #FF0000">"."</span>,
+                              recursive = TRUE)
+})</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## [1] TRUE</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>dir(my_directory, recursive = TRUE, full.names = TRUE)</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## [1] "/tmp/RtmpKtuiAX/simple/knit.Rasciidoc"
+## [2] "/tmp/RtmpKtuiAX/simple/src/my_sum.R"
+## [3] "/tmp/RtmpKtuiAX/simple/src/sum.R"</code></pre>
+</div></div>
+<div class="paragraph"><p>you could <code>render</code> the file</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>rasciidoc::render(file.path(my_directory, basename(file_name)))</tt></pre></div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Warning in run_knit(file_name, knit = knit, envir = envir, write_to_disk =</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## write_to_disk): Setting option knit to TRUE based on the file contents!</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmpKtuiAX/simple/knit.Rasciidoc.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpKtuiAX. Set the option "write_to_disk" to TRUE (using</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/RtmpKtuiAX/simple/knit.Rasciidoc</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |........                                                              |  11%
+##   ordinary text without R code
+##
+## 
+  |                                                                            
+  |................                                                      |  22%
+## label: sum (with options)
+## List of 1
+##  $ code: language readLines("src/sum.R")
+##
+## 
+  |                                                                            
+  |.......................                                               |  33%
+##   ordinary text without R code
+##
+## 
+  |                                                                            
+  |...............................                                       |  44%
+## label: my_sum (with options)
+## List of 1
+##  $ code: language readLines("src/my_sum.R")
+##
+## 
+  |                                                                            
+  |.......................................                               |  56%
+##   ordinary text without R code
+##
+## 
+  |                                                                            
+  |...............................................                       |  67%
+## label: value
+## 
+  |                                                                            
+  |......................................................                |  78%
+##   ordinary text without R code
+##
+## 
+  |                                                                            
+  |..............................................................        |  89%
+## label: run my_sum
+## 
+  |                                                                            
+  |......................................................................| 100%
+##    inline R code fragments</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/RtmpKtuiAX/knit.asciidoc</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## [1] 0</code></pre>
+</div></div>
+<div class="paragraph"><p>and create an HTML file that is identical to [this file](<a href="https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/simple/knit.html">https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/simple/knit.html</a>) and that you could browse using
+<code>browseURL(file.path(my_directory, paste0(sub("\\..*$", "", basename(file_name)), ".html")))</code>
+from your current R session .</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spinnig">Spinnig</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>You can also use a spinnig file for input:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>file_name &lt;- system.file(<span style="color: #FF0000">"files"</span>, <span style="color: #FF0000">"simple"</span>, <span style="color: #FF0000">"spin.R_nolint"</span>,
+                         package = <span style="color: #FF0000">"rasciidoc"</span>)
+cat(readLines(file_name), sep = <span style="color: #FF0000">"</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">"</span>)</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## #' = Some Title
+## #' Your Name
+## #' :toc2:
+## #' :numbered:
+## #' :data-uri:
+## #' :duration: 120
+## #'
+## #' == What is this About?
+## #'
+## #' //begin_no_slide
+## #' This will not show up on slides.
+## #' //end_no_slide
+## #'
+## #' === Some simple asciidoc
+## #'
+## #' * A list with a https://en.wikipedia.org/wiki/Hyperlink[link].
+## #' * Yet another entry in the list.
+## #'
+## #' == Including Code
+## #' Do not use the _include_ macro provided by asciidoc!
+## #' Instead prefix all source statements with
+## #' ----
+## #' #+ code = readLines("file_to_be_sourced")
+## #' #+ include = FALSE
+## #' ----
+## #' It est use
+## #' ----
+## #' #+ code = readLines("src/sum.R")
+## #' #+ include = FALSE
+## #' source("src/sum.R")
+## #' ----
+## #' to produce
+## #+ code = readLines("src/sum.R")
+## #+ include = FALSE
+## source("src/sum.R")
+## #'
+## #'
+## message("A message, probably different output hooks.")
+## #' == A new section
+## #'
+## #+ code = readLines("src/my_sum.R")
+## #' === A subsection
+## print(value)
+## #'
+## print(my_sum(1:3))
+## #'
+## #' Inline code does not work: Object +value+ has value +r value+.
+## #'</code></pre>
+</div></div>
+<div class="paragraph"><p>You run <code>render</code> on it:</p></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>withr::with_dir(tempdir(), {
+                    file.copy(file_name, <span style="color: #FF0000">"."</span>, overwrite = TRUE)
+                    file.copy(file.path(dirname(file_name), <span style="color: #FF0000">"src"</span>), <span style="color: #FF0000">"."</span>,
+                              recursive = TRUE)
+                    rasciidoc::render(basename(file_name))
+})</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |......................................................................| 100%
+##    inline R code fragments</code></pre>
+</div></div>
+<div class="listingblock">
+<div class="content"><!-- Generator: GNU source-highlight 3.1.8
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmpKtuiAX/spin.R_nolint.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpKtuiAX. Set the option "write_to_disk" to TRUE (using</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
+</tt></pre></div></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>## [1] 0</code></pre>
+</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_vignettes_using_code_rasciidoc_code">Vignettes Using <code>rasciidoc</code></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>This vignette is built by <code>rasciidoc</code>'s vignette engine
+(see <a href="https://gitlab.com/fvafrcu/rasciidoc/-/blob/master/vignettes/rasciidoc.Rasciidoc">https://gitlab.com/fvafrcu/rasciidoc/-/blob/master/vignettes/rasciidoc.Rasciidoc</a> for its input file).</p></div>
+<div class="paragraph"><p>Just add a</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>////
+    %\VignetteIndexEntry{Your Vignette Entry}
+    %\VignetteEngine{rasciidoc::rasciidoc}
+////</code></pre>
+</div></div>
+<div class="paragraph"><p>block to your <code>rasciidoc</code> input file and add <code>rasciidoc</code> to
+the <em>VignetteBuilder</em> and <em>Suggests</em> fields of
+your package&#8217;s <em>DESCRIPTION</em> file.</p></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated
+ 2020-04-07 23:59:56 CEST
+</div>
+</div>
 </body>
 </html>

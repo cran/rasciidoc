@@ -4,6 +4,9 @@
 \name{rasciidoc-package}
 \alias{rasciidoc-package}
 \title{Create Reports Using R and \command{asciidoc}}
+\arguments{
+\item{write_to_disk}{Write to disk? See \bold{Warning}.}
+}
 \description{
 Inspired by Karl Broman`s reader on using \pkg{knitr} with \command{asciidoc}
 (\url{http://kbroman.org/knitr_knutshell/pages/asciidoc.html}), this is

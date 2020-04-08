@@ -7,12 +7,14 @@
 render(
   file_name,
   knit = NA,
+  write_to_disk = getOption("write_to_disk"),
   envir = parent.frame(),
   hooks = c("message", "error", "warning"),
   replacement = "source",
   asciidoc_args = NULL,
   what = c("auto", "all", "no_slides", "slides"),
-  clean = FALSE
+  clean = FALSE,
+  ...
 )
 }
 \arguments{
@@ -24,6 +26,8 @@ Set to \code{\link{TRUE}}
 to force knitting or to \code{\link{FALSE}} (anything apart from
 \code{\link{TRUE}} or \code{\link{NA}}, really), to
 disable knitting.}
+
+\item{write_to_disk}{Write to disk? See \bold{Warning}.}
 
 \item{envir}{The frame in which to render.}
 
@@ -44,6 +48,8 @@ for any in- or exclusion tagging and renders parts that are not meant for
 slides if found any, else it renders everything.}
 
 \item{clean}{Remove temporary file(s)?}
+
+\item{...}{Only there to register as vignette engine. Do not use!}
 }
 \value{
 The return value of \code{\link{rasciidoc}}.

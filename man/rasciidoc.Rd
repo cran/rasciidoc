@@ -4,10 +4,12 @@
 \alias{rasciidoc}
 \title{Render an \command{asciidoc} File}
 \usage{
-rasciidoc(file_name, ...)
+rasciidoc(file_name, write_to_disk = getOption("write_to_disk"), ...)
 }
 \arguments{
 \item{file_name}{The file to run \command{asciidoc} on.}
+
+\item{write_to_disk}{Write to disk? See \bold{Warning}.}
 
 \item{...}{arguments passed to \command{asciidoc} via \code{\link{system2}}.}
 }

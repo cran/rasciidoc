@@ -5,7 +5,7 @@
 
 is_installed <- function(program) {
     is_installed <- nchar(Sys.which(program)) > 0
-    attr(is_installed, "names") <- NULL
+    is_installed <- unname(is_installed)
     return(is_installed)
 }
 
@@ -50,10 +50,12 @@ hint_writing <- function(path = "the input file") {
 #'     dir(tempdir(), full.names = TRUE)
 #' }
 #' unlink(wd, recursive = TRUE)
-rasciidoc <- function(file_name, ...) {
+rasciidoc <- function(file_name, 
+                      write_to_disk = getOption("write_to_disk"),
+                      ...) {
     status <- 1
     options <- list(...)
-    if (isTRUE(getOption("write_to_disk"))) {
+    if (isTRUE(write_to_disk)) {
        adoc_file <- file_name
     } else {
         # Do  _not_ mess with setting --out-file for asciidoc, as you would have
@@ -68,23 +70,92 @@ rasciidoc <- function(file_name, ...) {
             file.copy(from = file_name, to = tempdir(), overwrite = TRUE)
             adoc_file <- file.path(tempdir(), basename(file_name))
         }
-
     }
-    if (! is_installed("asciidoc"))
+    if (!is_installed("source-highlight"))
+        warning("Can't find program `source-highlight`. ",
+                "Please install first",
+                " (http://www.gnu.org/software/src-highlite/).")
+    if (is_installed("asciidoc")) {
+        status <- system2("asciidoc",
+                          args = unlist(c(options, adoc_file)))
+    } else {
         warning("Can't find program `asciidoc`. ",
                 "Please install first (www.asciidoc.org).")
-    if (! is_installed("source-highlight"))
-        warning("Can't find program `source-highlight`.")
-    tryCatch(
-             status <- system2("asciidoc",
-                               args = unlist(c(options, adoc_file))),
-             error = function(e) stop(hint_writing(file_name))
-
-    )
+        if (is_installed("python")) {
+            ad <- get_asciidoc()
+            system2(ad[["python_cmd"]],
+                    args = unlist(c(ad[["asciidoc_source"]], 
+                                    options, adoc_file)))
+        } else {
+            throw(paste("Can't find `ptyhon`. ",
+                        "Please install first (https://www.python.org/)."))
+        }
+    }
     return(invisible(status))
 }
 
+
+get_asciidoc <- function() {
+    local_asciidoc_path <- file.path(tempdir(), "asciidoc")
+    local_asciidoc_path <- normalizePath(local_asciidoc_path, mustWork = FALSE)
+    config_file <- file.path(local_asciidoc_path, "rasciidoc_config.R")
+
+    if (file.exists(config_file)) {
+        source(config_file, local = TRUE)
+    } else {
+    unlink(local_asciidoc_path, recursive = TRUE)
+    dir.create(local_asciidoc_path)
+    if (is_installed("python")) {
+        python <- Sys.which("python")
+        python_version <- sub("Python ", "",
+                              system2(python, "--version",
+                                      stderr = TRUE, stdout = TRUE))
+        python_version <- as.character(package_version(python_version)[[c(1, 
+                                                                          1)]])
+        if (python_version == "3" && is_installed("python2")) {
+            # asciidoc was origninally written in python2, so python2 wins.
+            # TODO: if python2 is available, but the version is not sufficient,
+            # should I fall back to python3?
+            python <- Sys.which("python2")
+            python_version <- "2"
+        }
+        switch(python_version,
+               "2" = repo <- git2r::clone(url = "https://github.com/asciidoc/asciidoc", 
+                                          local_path = local_asciidoc_path),
+               "3" = repo <- git2r::clone(url = "https://github.com/asciidoc/asciidoc-py3", 
+                                          local_path = local_asciidoc_path),
+               throw(paste("Could not find python version 2",
+                           "nor python version 3."))
+               )
+
+    } else {
+            throw("Python is a system requirement.")
+    }
+    dir(local_asciidoc_path)
+
+    asciidoc_source <- file.path(local_asciidoc_path, "asciidoc.py") 
+    py_version <- sub("Python ", "",
+                      system2(python, "--version",
+                              stderr = TRUE, stdout = TRUE))
+    required <- grep("^MIN_PYTHON_VERSION", readLines(asciidoc_source), 
+                     value = TRUE)
+    min_py_version <- sub("'.*", "", sub("^MIN_PYTHON_VERSION = '", "",
+                                         required))
+    is_sufficient <- utils::compareVersion(py_version, min_py_version) >= 0
+    if (!isTRUE(is_sufficient)) 
+        throw(paste0("Could find not find python >= ", min_py_version, "."))
+    res <- list("python_cmd" = python, 
+                "asciidoc_source" = asciidoc_source
+                )
+    dump("res", config_file)
+    }
+    return(res)
+}
+
+
+
 run_knit <- function(file_name, knit = NA,
+                     write_to_disk = getOption("write_to_disk"),
                      envir = parent.frame()) {
     if (is.na(knit)) {
         r_code_pattern <- "//begin.rcode"
@@ -101,7 +172,7 @@ run_knit <- function(file_name, knit = NA,
     }
     if (isTRUE(knit)) {
         output_basename <- sub("\\.[Rr](.*)", ".\\1", basename(file_name))
-        if (isTRUE(getOption("write_to_disk"))) {
+        if (isTRUE(write_to_disk)) {
             knit_out_file <- file.path(dirname(file_name), output_basename)
         } else {
             message(hint_writing(file_name))
@@ -118,6 +189,7 @@ run_knit <- function(file_name, knit = NA,
 run_knitr <- function(file_name, working_directory = dirname(file_name),
                       knit = NA,
                       hooks = NULL,
+                      write_to_disk = getOption("write_to_disk"),
                       replacement = NULL,
                       envir = parent.frame()) {
     current_hooks <- knitr::knit_hooks$get()
@@ -131,7 +203,7 @@ run_knitr <- function(file_name, working_directory = dirname(file_name),
                                             report = FALSE, envir = envir)
                         output_basename <- sub("\\.[Rr]", ".asciidoc",
                                                basename(file_name))
-                        if (isTRUE(getOption("write_to_disk"))) {
+                        if (isTRUE(write_to_disk)) {
                             out_file <- file.path(dirname(file_name),
                                                   output_basename)
                         } else {
@@ -141,7 +213,8 @@ run_knitr <- function(file_name, working_directory = dirname(file_name),
                         writeLines(content, out_file)
                     } else {
                         out_file <- run_knit(file_name, knit = knit,
-                                          envir = envir)
+                                             envir = envir, 
+                                             write_to_disk = write_to_disk)
                     }
                     out_file <- normalizePath(out_file)
                     })
@@ -179,6 +252,7 @@ is_spin_file <- function(file_name) {
 #' The defaults looks
 #' for any in- or exclusion tagging and renders parts that are not meant for
 #' slides if found any, else it renders everything.
+#' @param ... Only there to register as vignette engine. Do not use!
 #' @return The return value of \code{\link{rasciidoc}}.
 #' @export
 #' @seealso \code{\link{rasciidoc}}
@@ -196,11 +270,12 @@ is_spin_file <- function(file_name) {
 #' }
 #' unlink(wd, recursive = TRUE)
 render <- function(file_name, knit = NA,
+                   write_to_disk = getOption("write_to_disk"),
                    envir = parent.frame(),
                    hooks = c("message", "error", "warning"),
                    replacement = "source", asciidoc_args = NULL,
                    what = c("auto", "all", "no_slides", "slides"),
-                   clean = FALSE) {
+                   clean = FALSE, ...) {
     status <- 1
     on.exit(if (isTRUE(clean)) file.remove(excerpted_file, adoc))
     what <- match.arg(what)
@@ -213,28 +288,34 @@ render <- function(file_name, knit = NA,
     }
 
     excerpted_file <- switch(what,
-                             "slides" = excerpt_slides(file_name),
-                             "no_slides" = excerpt_no_slides(file_name),
+                             "slides" = excerpt_slides(file_name, 
+                                                       write_to_disk = write_to_disk),
+                             "no_slides" = excerpt_no_slides(file_name, 
+                                                             write_to_disk = write_to_disk),
                              file_name)
+
 
     tryCatch(
              adoc <- run_knitr(file_name = excerpted_file,
                                knit = knit, envir = envir,
-                               hooks = hooks, replacement = replacement),
-             error = function(e) stop(hint_writing(file_name))
+                               hooks = hooks, replacement = replacement,
+                               write_to_disk = write_to_disk),
+             error = function(e) throw(e)
 
     )
-    status <- rasciidoc(adoc, asciidoc_args)
+    status <- rasciidoc(file_name = adoc, 
+                        write_to_disk = write_to_disk, asciidoc_args)
     return(status)
 }
 
 excerpt_to_file <- function(file_name,
                             begin_pattern, end_pattern,
                             exclusion_pattern, inclusion_pattern,
+                            write_to_disk = getOption("write_to_disk"),
                             output_name = NA) {
     if (is.na(output_name))
         output_name <- basename(tempfile(fileext = ".Rasciidoc"))
-    if (isTRUE(getOption("write_to_disk"))) {
+    if (isTRUE(write_to_disk)) {
        output_directory <- dirname(file_name)
     } else {
         message(hint_writing(file_name))
@@ -253,22 +334,28 @@ excerpt_to_file <- function(file_name,
     return(excerpt_file)
 }
 
-excerpt_no_slides <- function(file_name) {
+excerpt_no_slides <- function(file_name, 
+                              write_to_disk = getOption("write_to_disk")
+                              ) {
     return(excerpt_to_file(file_name = file_name,
                       begin_pattern = "^// *end_only_slide",
                       end_pattern = "^// *begin_only_slide",
                       inclusion_pattern = "// *no_slide",
                       exclusion_pattern = "// *slide_only",
+                      write_to_disk = write_to_disk,
                       output_name = paste0(basename(file_name), "_ex"))
     )
 }
 
-excerpt_slides <- function(file_name) {
+excerpt_slides <- function(file_name,
+                           write_to_disk = getOption("write_to_disk")
+                           ) {
     return(excerpt_to_file(file_name = file_name,
                       begin_pattern = "^// *end_no_slide",
                       end_pattern = "^// *begin_no_slide",
                       inclusion_pattern = "// *slide_only",
                       exclusion_pattern = "// *no_slide",
+                      write_to_disk = write_to_disk,
                       output_name = sub("(^.*)(\\.[rR]?asc.*)$",
                                         "\\1_slides\\2",
                                         basename(file_name)))
