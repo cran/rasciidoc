@@ -1,3 +1,7 @@
+# rasciidoc 2.1.1
+
+* Fixed crashing calls to `package_version()` for python release canditates.
+
 # rasciidoc 2.1.0
 
 * Converted vignette to Rasciidoc.

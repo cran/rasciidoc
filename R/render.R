@@ -110,16 +110,26 @@ get_asciidoc <- function() {
         python_version <- sub("Python ", "",
                               system2(python, "--version",
                                       stderr = TRUE, stdout = TRUE))
-        python_version <- as.character(package_version(python_version)[[c(1, 
+        # NOTE: I remove release candidate markers from the current python
+        # version. I do so because python 2.7.18rc1 is currently (2020-04-14 )
+        # installed on some CRAN maschines (r-devel-linux-x86_64-debian-clang).
+        # And package_version can't deal with release candidate markers.
+        # Since release candidates "can only have bugfixes applied that have
+        # been reviewed by other core developers"
+        # (https://devguide.python.org/devcycle/#release-candidate-rc).
+        # So it should be pretty save to do so. And I do not now any way to
+        # determine the last stable version before a rc (3.4.0rc1 gives what?).
+        python_version <- sub("rc.*$", "", python_version)
+        python_major <- as.character(package_version(python_version)[[c(1, 
                                                                           1)]])
-        if (python_version == "3" && is_installed("python2")) {
+        if (python_major == "3" && is_installed("python2")) {
             # asciidoc was origninally written in python2, so python2 wins.
             # TODO: if python2 is available, but the version is not sufficient,
             # should I fall back to python3?
             python <- Sys.which("python2")
-            python_version <- "2"
+            python_major <- "2"
         }
-        switch(python_version,
+        switch(python_major,
                "2" = repo <- git2r::clone(url = "https://github.com/asciidoc/asciidoc", 
                                           local_path = local_asciidoc_path),
                "3" = repo <- git2r::clone(url = "https://github.com/asciidoc/asciidoc-py3", 
@@ -134,14 +144,11 @@ get_asciidoc <- function() {
     dir(local_asciidoc_path)
 
     asciidoc_source <- file.path(local_asciidoc_path, "asciidoc.py") 
-    py_version <- sub("Python ", "",
-                      system2(python, "--version",
-                              stderr = TRUE, stdout = TRUE))
     required <- grep("^MIN_PYTHON_VERSION", readLines(asciidoc_source), 
                      value = TRUE)
     min_py_version <- sub("'.*", "", sub("^MIN_PYTHON_VERSION = '", "",
                                          required))
-    is_sufficient <- utils::compareVersion(py_version, min_py_version) >= 0
+    is_sufficient <- utils::compareVersion(python_version, min_py_version) >= 0
     if (!isTRUE(is_sufficient)) 
         throw(paste0("Could find not find python >= ", min_py_version, "."))
     res <- list("python_cmd" = python, 
