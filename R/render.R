@@ -71,21 +71,27 @@ rasciidoc <- function(file_name,
             adoc_file <- file.path(tempdir(), basename(file_name))
         }
     }
-    if (!is_installed("source-highlight"))
+    if (is_installed("source-highlight")) {
+        report_sys_errors <- TRUE
+    } else {
+        report_sys_errors <- FALSE
         warning("Can't find program `source-highlight`. ",
                 "Please install first",
-                " (http://www.gnu.org/software/src-highlite/).")
+                " (http://www.gnu.org/software/src-highlite/).\n", 
+                "Deactivating system calls errors!")
+    }
     if (is_installed("asciidoc")) {
-        status <- system2("asciidoc",
-                          args = unlist(c(options, adoc_file)))
+        status <- system2("asciidoc", args = unlist(c(options, adoc_file)), 
+                          stderr = report_sys_errors)
     } else {
         warning("Can't find program `asciidoc`. ",
                 "Please install first (www.asciidoc.org).")
         if (is_installed("python")) {
             ad <- get_asciidoc()
-            system2(ad[["python_cmd"]],
-                    args = unlist(c(ad[["asciidoc_source"]], 
-                                    options, adoc_file)))
+            status <- system2(ad[["python_cmd"]],
+                              args = unlist(c(ad[["asciidoc_source"]], 
+                                              options, adoc_file)),
+                              stderr = report_sys_errors)
         } else {
             throw(paste("Can't find `ptyhon`. ",
                         "Please install first (https://www.python.org/)."))

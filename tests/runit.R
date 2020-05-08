@@ -36,9 +36,13 @@ package_suite <- RUnit::defineTestSuite("rasciidoc_unit_test",
                                         dirs = unit_dir,
                                         testFileRegexp = "^.*\\.[rR]",
                                         testFuncRegexp = "^test_+")
+if (rasciidoc:::is_installed("source-highlight")) {
 test_result <- RUnit::runTestSuite(package_suite)
 RUnit::printTextProtocol(test_result, showDetails = TRUE, fileName = "")
 if (is_failure(test_result)) {
     RUnit::printTextProtocol(test_result, showDetails = TRUE)
     stop("RUnit failed.")
+}
+} else {
+    message("Skipping all tests due to missing program `source-highlight`.")
 }

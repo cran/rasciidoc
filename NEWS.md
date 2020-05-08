@@ -1,3 +1,8 @@
+# rasciidoc 2.1.2
+
+* Suppress error reporting if `source-highlight` is not installed to fix errors
+  reported by solaris running r-patched on CRAN.
+
 # rasciidoc 2.1.1
 
 * Fixed crashing calls to `package_version()` for python release canditates.
