@@ -1,4 +1,13 @@
-if (interactive()) devtools::load_all()
+if (interactive()) {
+    pkgload::load_all()
+    is_probably_my_machine <- function() {
+        me <- Sys.info()[["nodename"]] %in% c("h6") &&
+            .Platform[["OS.type"]] == "unix"
+        return(me)
+
+    }
+    if (is_probably_my_machine()) options("write_to_disk" = TRUE)
+}
 is_installed_asciidoc <- function() return(rasciidoc:::is_installed("asciidoc"))
 remove_dates <- function(x) {
     grep(".*CE[S]?T$", value = TRUE, invert = TRUE,
@@ -20,6 +29,7 @@ test_render_simple <- function() {
             result <- remove_dates(readLines(file.path(tempdir(), "files",
                                                        "simple.html")))
             if (FALSE) {
+                # in case you install a new version of asciidoc or the like...
                 file.copy(file.path(tempdir(), "files", "simple.html"),
                           file.path("inst", "runit_tests", "files", "expected"),
                           overwrite = TRUE
@@ -28,11 +38,7 @@ test_render_simple <- function() {
             expectation <- remove_dates(readLines(file.path(tempdir(), "files",
                                                             "expected",
                                                             "simple.html")))
-            if (is_probably_my_machine()) {
                 RUnit::checkIdentical(result, expectation)
-            } else {
-                RUnit::checkTrue(any(grepl("Dominik Cullmann", result)))
-            }
             #% render slides
             message("FIXME: need coverage for slides?")
 
@@ -50,15 +56,11 @@ test_render_simple <- function() {
             expectation <- remove_dates(readLines(file.path(tempdir(), "files",
                                                             "expected",
                                                             "fake.html")))
-            if (is_probably_my_machine()) {
-                RUnit::checkIdentical(result, expectation)
-            } else {
-                RUnit::checkTrue(any(grepl("Dominik Cullmann", result)))
-            }
+            RUnit::checkIdentical(result, expectation)
         }
     }
 }
-
+if (interactive()) test_render_simple()
 
 test_knit_spin <- function() {
     condition <- is_installed_asciidoc() && is_probably_my_machine() &&

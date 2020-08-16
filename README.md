@@ -14,14 +14,7 @@
 
 # rasciidoc
 ## Introduction
-Please read the
-[vignette](https://fvafrCU.gitlab.io/rasciidoc/doc/An_Introduction_to_rasciidoc.html).
-<!-- 
-[vignette](https://CRAN.R-project.org/package=rasciidoc/vignettes/An_Introduction_to_rasciidoc.html).
-
--->
-
-Or, after installation, the help page:
+After installation, please read, the help page:
 
 ```r
 help("rasciidoc-package", package = "rasciidoc")
@@ -35,6 +28,10 @@ help("rasciidoc-package", package = "rasciidoc")
 #>      Inspired by Karl Broman`s reader on using 'knitr' with 'asciidoc'
 #>      (<URL: http://kbroman.org/knitr_knutshell/pages/asciidoc.html>),
 #>      this is merely a wrapper to 'knitr' and 'asciidoc'.
+#> 
+#> Arguments:
+#> 
+#> write_to_disk: Write to disk? See *Warning*.
 #> 
 #> Details:
 #> 

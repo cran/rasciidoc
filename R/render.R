@@ -38,18 +38,20 @@ hint_writing <- function(path = "the input file") {
 #' @export
 #' @seealso \code{\link{render}}
 #' @examples
-#' wd <- file.path(tempdir(), "rasciidoc")
-#' dir.create(wd)
-#' file  <- system.file("files", "minimal", "knit.asciidoc",
-#'                      package = "rasciidoc")
-#' file.copy(file, wd)
-#' rasciidoc::rasciidoc(file.path(wd, basename(file)), "-b docbook")
-#' if (isTRUE(getOption("write_to_disk"))) {
-#'     dir(wd, full.names = TRUE)
-#' } else {
-#'     dir(tempdir(), full.names = TRUE)
+#' if (!is_windows()) { # CRAN windows complains about elapsed times
+#'     wd <- file.path(tempdir(), "rasciidoc")
+#'     dir.create(wd)
+#'     file  <- system.file("files", "minimal", "knit.asciidoc",
+#'                          package = "rasciidoc")
+#'     file.copy(file, wd)
+#'     rasciidoc::rasciidoc(file.path(wd, basename(file)), "-b html")
+#'     if (isTRUE(getOption("write_to_disk"))) {
+#'         dir(wd, full.names = TRUE)
+#'     } else {
+#'         dir(tempdir(), full.names = TRUE)
+#'     }
+#'     unlink(wd, recursive = TRUE)
 #' }
-#' unlink(wd, recursive = TRUE)
 rasciidoc <- function(file_name, 
                       write_to_disk = getOption("write_to_disk"),
                       ...) {
@@ -93,7 +95,7 @@ rasciidoc <- function(file_name,
                                               options, adoc_file)),
                               stderr = report_sys_errors)
         } else {
-            throw(paste("Can't find `ptyhon`. ",
+            throw(paste("Can't find `python`. ",
                         "Please install first (https://www.python.org/)."))
         }
     }
@@ -117,7 +119,7 @@ get_asciidoc <- function() {
                               system2(python, "--version",
                                       stderr = TRUE, stdout = TRUE))
         # NOTE: I remove release candidate markers from the current python
-        # version. I do so because python 2.7.18rc1 is currently (2020-04-14 )
+        # version. I do so because python 2.7.18rc1 is currently (2020-04-14)
         # installed on some CRAN maschines (r-devel-linux-x86_64-debian-clang).
         # And package_version can't deal with release candidate markers.
         # Since release candidates "can only have bugfixes applied that have
@@ -270,18 +272,20 @@ is_spin_file <- function(file_name) {
 #' @export
 #' @seealso \code{\link{rasciidoc}}
 #' @examples
-#' wd <- file.path(tempdir(), "rasciidoc")
-#' dir.create(wd)
-#' file  <- system.file("files", "minimal", "knit.Rasciidoc",
-#'                      package = "rasciidoc")
-#' file.copy(file, wd)
-#' rasciidoc::render(file.path(wd, basename(file)), asciidoc_args = "-b slidy")
-#' if (isTRUE(getOption("write_to_disk"))) {
-#'     dir(wd, full.names = TRUE)
-#' } else {
-#'     dir(tempdir(), full.names = TRUE)
+#' if (!is_windows()) { # CRAN windows complains about elapsed times
+#'     wd <- file.path(tempdir(), "rasciidoc")
+#'     dir.create(wd)
+#'     file  <- system.file("files", "minimal", "knit.Rasciidoc",
+#'                          package = "rasciidoc")
+#'     file.copy(file, wd)
+#'     rasciidoc::render(file.path(wd, basename(file)), asciidoc_args = "-b slidy")
+#'     if (isTRUE(getOption("write_to_disk"))) {
+#'         dir(wd, full.names = TRUE)
+#'     } else {
+#'         dir(tempdir(), full.names = TRUE)
+#'     }
+#'     unlink(wd, recursive = TRUE)
 #' }
-#' unlink(wd, recursive = TRUE)
 render <- function(file_name, knit = NA,
                    write_to_disk = getOption("write_to_disk"),
                    envir = parent.frame(),

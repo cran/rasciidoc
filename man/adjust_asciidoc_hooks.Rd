@@ -18,8 +18,8 @@ the \code{replacement}'s hooks.}
 }
 \value{
 The return value of
-\code{\link[knitr:knit_hooks]{knitr::knit_hooks$set}},
-\code{\link[base:invisible]{invisibly}} \code{\link{NULL}}, currently.
+\code{\link[knitr]{knit_hooks}$set},
+\code{\link[=invisible]{invisibly}} \code{\link{NULL}}, currently.
 }
 \description{
 By default, \pkg{knitr} renders messages, warnings and errors to
@@ -30,6 +30,6 @@ To restore \pkg{knitr}'s behaviour, set \code{hooks} or \code{replacement} to
 }
 \details{
 This is a modified version of
-\code{\link[knitr:render_asciidoc]{knitr::render_asciidoc}} of  \pkg{knitr}
+\code{render_asciidoc} of \pkg{knitr}
 version 1.18.7.
 }

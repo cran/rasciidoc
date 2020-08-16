@@ -70,18 +70,20 @@ to bypass this. You may want to include the above line into your ~/.Rprofile.
 }
 
 \examples{
-wd <- file.path(tempdir(), "rasciidoc")
-dir.create(wd)
-file  <- system.file("files", "minimal", "knit.Rasciidoc",
-                     package = "rasciidoc")
-file.copy(file, wd)
-rasciidoc::render(file.path(wd, basename(file)), asciidoc_args = "-b slidy")
-if (isTRUE(getOption("write_to_disk"))) {
-    dir(wd, full.names = TRUE)
-} else {
-    dir(tempdir(), full.names = TRUE)
+if (!is_windows()) { # CRAN windows complains about elapsed times
+    wd <- file.path(tempdir(), "rasciidoc")
+    dir.create(wd)
+    file  <- system.file("files", "minimal", "knit.Rasciidoc",
+                         package = "rasciidoc")
+    file.copy(file, wd)
+    rasciidoc::render(file.path(wd, basename(file)), asciidoc_args = "-b slidy")
+    if (isTRUE(getOption("write_to_disk"))) {
+        dir(wd, full.names = TRUE)
+    } else {
+        dir(tempdir(), full.names = TRUE)
+    }
+    unlink(wd, recursive = TRUE)
 }
-unlink(wd, recursive = TRUE)
 }
 \seealso{
 \code{\link{rasciidoc}}

@@ -1,3 +1,10 @@
+# rasciidoc 2.1.3
+
+* Removed vignette written in rasciidoc to avoid errors on
+  CRAN/solaris/R-patched.
+* Added function `is_windows()` to suppress running examples with elapsed times
+  on CRAN/windows.
+
 # rasciidoc 2.1.2
 
 * Suppress error reporting if `source-highlight` is not installed to fix errors
@@ -5,14 +12,14 @@
 
 # rasciidoc 2.1.1
 
-* Fixed crashing calls to `package_version()` for python release canditates.
+* Fixed crashing calls to `package_version()` for python release candidates.
 
 # rasciidoc 2.1.0
 
 * Converted vignette to Rasciidoc.
 * If asciidoc is not installed (like on CRAN), rasciidoc tries to run the
   asciidoc code using python.
-  This is needed for vigenttes on CRAN written in (r)asciidoc.
+  This is needed for vignettes on CRAN written in (r)asciidoc.
 * Added a vignette engine.
 
 # rasciidoc 2.0.1
@@ -37,7 +44,7 @@
   "//no_slide".
 * Now keeping intermediate files from render\_slides(), too.
 
-# rascidoc 0.9.0
+# rasciidoc 0.9.0
 
 * knitr's output hooks are now reset to their former values after knitting.
 * Added an argument 'clean' to render() to clean intermediate files.

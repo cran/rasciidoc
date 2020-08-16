@@ -45,7 +45,7 @@ hilight_source = function(x, format, options) {
 #' \code{\link{NULL}}.
 #'
 #' This is a modified version of
-#' \code{\link[knitr:render_asciidoc]{knitr::render_asciidoc}} of  \pkg{knitr}
+#' \code{render_asciidoc} of \pkg{knitr}
 #' version 1.18.7.
 #'
 #' @param hooks Character vector naming the output hooks to be replaced by
@@ -53,8 +53,8 @@ hilight_source = function(x, format, options) {
 #' @param replacement The hook with which to replace the hooks given by
 #' \code{hooks}.
 #' @return The return value of
-#' \code{\link[knitr:knit_hooks]{knitr::knit_hooks$set}},
-#' \code{\link[base:invisible]{invisibly}} \code{\link{NULL}}, currently.
+#' \code{\link[knitr]{knit_hooks}$set},
+#' \code{\link[=invisible]{invisibly}} \code{\link{NULL}}, currently.
 #' @export 
 adjust_asciidoc_hooks <- function(hooks = c("message", "error", "warning"),
                                   replacement = "source") {
