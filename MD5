@@ -1,13 +1,13 @@
-24ec7ec2218947f501752d7753b33f0b *DESCRIPTION
+e02f19aa5df9bf80da3782cf083ca1f5 *DESCRIPTION
 34f8f163bb6081514a0a9a2cfe31cbe1 *LICENSE
 6192adb34edbef17b995270dc480bc79 *NAMESPACE
-405ed1d7aff92b2fcfb065becfb3864a *NEWS.md
+f289ae4e69ec0e436a0b0136c7f19ef4 *NEWS.md
 985ee9826c96b816386d0a228bb025ac *R/highr_internals.R
 b5b78c86cd8d10918b861e95dea2faca *R/internals.R
 1113d9ade7993fb4fe2f896b5246d1e3 *R/knitr_internals.R
 f05301b50988a23acf6fc82d83e031c1 *R/knitr_internals_mod.R
 76838060a9aadef74996c8c50b30208c *R/rasciidoc-package.R
-c1aa0af1721c1c6c0c038def8c6522cb *R/render.R
+2f2fc5349e181a9962ae61c915e353e0 *R/render.R
 9d1448e9e083670a7d4a5047fc185fad *R/throw.R
 34979fc4074a101d8d3a211089deb3e8 *R/utils.R
 a2565c15845e3403dee3c5c6e0b9fecb *R/zzz.R

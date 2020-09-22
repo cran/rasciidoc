@@ -1,3 +1,8 @@
+# rasciidoc 2.2.0
+
+* Added internal `discover_python()` to deal with python installations that
+  will not be found using `Sys.which("python")`.
+
 # rasciidoc 2.1.3
 
 * Removed vignette written in rasciidoc to avoid errors on

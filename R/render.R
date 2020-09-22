@@ -1,3 +1,33 @@
+discover_python <- function(first_only = TRUE) {
+    candidates <- sapply(c("python", "python2", "python3"), 
+                         function(x) return(as.character(Sys.which(x))))
+    ## <<--- Adapted from reticulate(1.16)::py_discover_config()
+    # provide other common locations
+    if (is_windows()) {
+        candidates <- c(candidates, 
+                        reticulate::py_versions_windows()$executable_path)
+    } else {
+        candidates <- c(candidates,
+                             "/usr/bin/python3",
+                             "/usr/local/bin/python3",
+                             "/opt/python/bin/python3",
+                             "/opt/local/python/bin/python3",
+                             "/usr/bin/python",
+                             "/usr/local/bin/python",
+                             "/opt/python/bin/python",
+                             "/opt/local/python/bin/python",
+                             path.expand("~/anaconda3/bin/python"),
+                             path.expand("~/anaconda/bin/python")
+                             )
+    }
+    candidates <- unique(candidates)
+    # filter locations by existence
+    if (length(candidates) > 0)
+        python_versions <- candidates[file.exists(candidates)]
+    ## --->>
+    if (isTRUE(first_only)) python_versions <- python_versions[1]
+    return(python_versions)
+}
 .onAttach <- function(...) {
     if (!isTRUE(getOption("write_to_disk")))
         packageStartupMessage("\n", hint_writing())
@@ -88,7 +118,8 @@ rasciidoc <- function(file_name,
     } else {
         warning("Can't find program `asciidoc`. ",
                 "Please install first (www.asciidoc.org).")
-        if (is_installed("python")) {
+        python <- discover_python()
+        if (is_installed(python)) {
             ad <- get_asciidoc()
             status <- system2(ad[["python_cmd"]],
                               args = unlist(c(ad[["asciidoc_source"]], 
@@ -113,8 +144,8 @@ get_asciidoc <- function() {
     } else {
     unlink(local_asciidoc_path, recursive = TRUE)
     dir.create(local_asciidoc_path)
-    if (is_installed("python")) {
-        python <- Sys.which("python")
+    python <- discover_python()
+    if (is_installed(python)) {
         python_version <- sub("Python ", "",
                               system2(python, "--version",
                                       stderr = TRUE, stdout = TRUE))
@@ -125,8 +156,8 @@ get_asciidoc <- function() {
         # Since release candidates "can only have bugfixes applied that have
         # been reviewed by other core developers"
         # (https://devguide.python.org/devcycle/#release-candidate-rc).
-        # So it should be pretty save to do so. And I do not now any way to
-        # determine the last stable version before a rc (3.4.0rc1 gives what?).
+        # So it should be pretty save to do so. And I do not know any way to
+        # determine the last stable version before an rc (3.4.0rc1 gives what?).
         python_version <- sub("rc.*$", "", python_version)
         python_major <- as.character(package_version(python_version)[[c(1, 
                                                                           1)]])
