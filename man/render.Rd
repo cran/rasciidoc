@@ -23,9 +23,7 @@ render(
 \item{knit}{Knit the file first using \code{\link[knitr:knit]{knitr::knit}}?
 If set to \code{\link{NA}}, knitting is based on the file's contents or name.
 Set to \code{\link{TRUE}}
-to force knitting or to \code{\link{FALSE}} (anything apart from
-\code{\link{TRUE}} or \code{\link{NA}}, really), to
-disable knitting.}
+to force knitting or to \code{\link{FALSE}}, to disable knitting.}
 
 \item{write_to_disk}{Write to disk? See \bold{Warning}.}
 
@@ -76,7 +74,9 @@ if (!is_windows()) { # CRAN windows complains about elapsed times
     file  <- system.file("files", "minimal", "knit.Rasciidoc",
                          package = "rasciidoc")
     file.copy(file, wd)
-    rasciidoc::render(file.path(wd, basename(file)), asciidoc_args = "-b slidy")
+    rasciidoc::render(file.path(wd, basename(file)), 
+                      write_to_disk = getOption("write_to_disk"),
+                      asciidoc_args = "-b slidy")
     if (isTRUE(getOption("write_to_disk"))) {
         dir(wd, full.names = TRUE)
     } else {

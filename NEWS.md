@@ -1,3 +1,10 @@
+# rasciidoc 2.2.1
+
+* Added checkmate's argument checks to all exported functions (`rasciidoc()`,
+  `render()`, and `adjust_asciidoc_hooks()`).
+* Added the vignette.
+
+
 # rasciidoc 2.2.0
 
 * Added internal `discover_python()` to deal with python installations that

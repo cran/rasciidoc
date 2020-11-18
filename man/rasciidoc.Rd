@@ -43,7 +43,9 @@ if (!is_windows()) { # CRAN windows complains about elapsed times
     file  <- system.file("files", "minimal", "knit.asciidoc",
                          package = "rasciidoc")
     file.copy(file, wd)
-    rasciidoc::rasciidoc(file.path(wd, basename(file)), "-b html")
+    rasciidoc::rasciidoc(file.path(wd, basename(file)),
+                         write_to_disk = getOption("write_to_disk"),
+                         "-b html")
     if (isTRUE(getOption("write_to_disk"))) {
         dir(wd, full.names = TRUE)
     } else {

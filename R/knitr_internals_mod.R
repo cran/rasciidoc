@@ -58,7 +58,10 @@ hilight_source = function(x, format, options) {
 #' @export 
 adjust_asciidoc_hooks <- function(hooks = c("message", "error", "warning"),
                                   replacement = "source") {
-    # Verbatim copy of a part of knitr::render_asciidoc() version 1.18.7, 
+    checkmate::assert_character(hooks, null.ok = TRUE)
+    checkmate::assert_character(replacement, null.ok = TRUE)
+    # From here on a Verbatim copy of a part of 
+    # knitr::render_asciidoc() version 1.18.7, 
     # formatted to fit lines of length 80 and replace assignment by "=" with
     # assignment by "<-" to soothe lintr.
     hook.source <- function(x, options) {
