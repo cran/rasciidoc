@@ -4,12 +4,21 @@
 \alias{rasciidoc}
 \title{Render an \command{asciidoc} File}
 \usage{
-rasciidoc(file_name, write_to_disk = getOption("write_to_disk"), ...)
+rasciidoc(
+  file_name,
+  write_to_disk = getOption("write_to_disk"),
+  enforce_requirements = getOption("enforce_requirements"),
+  ...
+)
 }
 \arguments{
 \item{file_name}{The file to run \command{asciidoc} on.}
 
 \item{write_to_disk}{Write to disk? See \bold{Warning}.}
+
+\item{enforce_requirements}{Should system requirements be enforced (CRAN
+requires packages to pass checks if system requirements (external commands)
+are not met)? Set to \code{\link{TRUE}} to enforce.}
 
 \item{...}{arguments passed to \command{asciidoc} via \code{\link{system2}}.}
 }
@@ -43,7 +52,7 @@ if (!is_windows()) { # CRAN windows complains about elapsed times
     file  <- system.file("files", "minimal", "knit.asciidoc",
                          package = "rasciidoc")
     file.copy(file, wd)
-    rasciidoc::rasciidoc(file.path(wd, basename(file)),
+    rasciidoc::rasciidoc(file_name = file.path(wd, basename(file)),
                          write_to_disk = getOption("write_to_disk"),
                          "-b html")
     if (isTRUE(getOption("write_to_disk"))) {

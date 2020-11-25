@@ -81,7 +81,7 @@ withr::with_dir(tempdir(), {
 
 == Vignettes Using `rasciidoc`
 This vignette is built by `rasciidoc`'s vignette engine 
-(see https://gitlab.com/fvafrcu/rasciidoc/-/blob/master/vignettes/rasciidoc.Rasciidoc for its input file).
+(see https://gitlab.com/fvafrcu/rasciidoc/-/blob/master/vignettes/An_Introduction_to_rasciidoc.Rasciidoc for its input file).
 
 Just add a 
 ----

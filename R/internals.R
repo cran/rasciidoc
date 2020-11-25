@@ -1,4 +1,4 @@
-.onAttach <- function(...) {
+.onAttach <- function(...) { # Exclude Linting
     if (!isTRUE(getOption("write_to_disk")))
         packageStartupMessage("\n", hint_writing())
 }
@@ -17,12 +17,12 @@ hint_writing <- function(path = "the input file") {
 }
 
 discover_python <- function(first_only = TRUE) {
-    candidates <- sapply(c("python", "python2", "python3"), 
+    candidates <- sapply(c("python", "python2", "python3"),
                          function(x) return(as.character(Sys.which(x))))
     ## <<--- Adapted from reticulate(1.16)::py_discover_config()
     # provide other common locations
     if (is_windows()) {
-        candidates <- c(candidates, 
+        candidates <- c(candidates,
                         reticulate::py_versions_windows()$executable_path)
     } else {
         candidates <- c(candidates,
@@ -50,6 +50,7 @@ discover_python <- function(first_only = TRUE) {
 is_installed <- function(program) {
     is_installed <- nchar(Sys.which(program)) > 0
     is_installed <- unname(is_installed)
+    is_installed <- isTRUE(is_installed)
     return(is_installed)
 }
 
@@ -71,46 +72,46 @@ get_asciidoc <- function() {
                                   system2(python, "--version",
                                           stderr = TRUE, stdout = TRUE))
             # NOTE: I remove release candidate markers from the current python
-            # version. I do so because python 2.7.18rc1 is 
+            # version. I do so because python 2.7.18rc1 is
             # currently (2020-04-14)
-            # installed on some CRAN maschines 
+            # installed on some CRAN maschines
             #(r-devel-linux-x86_64-debian-clang).
             # And package_version can't deal with release candidate markers.
             # Since release candidates "can only have bugfixes applied that have
             # been reviewed by other core developers"
             # (https://devguide.python.org/devcycle/#release-candidate-rc).
             # So it should be pretty save to do so. And I do not know any way to
-            # determine the last stable version before an rc 
+            # determine the last stable version before an rc
             # (3.4.0rc1 gives what?).
             python_version <- sub("rc.*$", "", python_version)
             python_major <- package_version(python_version)[[c(1, 1)]]
             python_major <- as.character(python_major)
             if (python_major == "3" && is_installed("python2")) {
                 # asciidoc was origninally written in python2, so python2 wins.
-                # TODO: if python2 is available, but the version is not 
+                # TODO: if python2 is available, but the version is not
                 # sufficient,should I fall back to python3?
                 python <- Sys.which("python2")
                 python_major <- "2"
             }
             url <- switch(python_major,
-                           "2" = "https://github.com/asciidoc/asciidoc", 
-                           "3" = "https://github.com/asciidoc/asciidoc-py3", 
+                           "2" = "https://github.com/asciidoc/asciidoc",
+                           "3" = "https://github.com/asciidoc/asciidoc-py3",
                            throw(paste("Could not find python version 2",
                                        "nor python version 3."))
                            )
-            repo <- git2r::clone(url = url, local_path = local_asciidoc_path)
+            git2r::clone(url = url, local_path = local_asciidoc_path)
         } else {
             throw("Python is a system requirement.")
         }
-        asciidoc_source <- normalizePath(file.path(local_asciidoc_path, 
+        asciidoc_source <- normalizePath(file.path(local_asciidoc_path,
                                                    "asciidoc.py"))
         min_py_version <- query_min_py_version(file = asciidoc_source,
                                                python_version = python_major)
-        is_sufficient <- utils::compareVersion(python_version, 
+        is_sufficient <- utils::compareVersion(python_version,
                                                min_py_version) >= 0
-        if (!isTRUE(is_sufficient)) 
+        if (!isTRUE(is_sufficient))
             throw(paste0("Could find not find python >= ", min_py_version, "."))
-        res <- list("python_cmd" = python, 
+        res <- list("python_cmd" = python,
                     "asciidoc_source" = asciidoc_source
                     )
         dump("res", config_file)
@@ -119,15 +120,15 @@ get_asciidoc <- function() {
 }
 
 query_min_py_version <- function(file, python_version) {
-    required <- grep("^MIN_PYTHON_VERSION", readLines(file), 
+    required <- grep("^MIN_PYTHON_VERSION", readLines(file),
                      value = TRUE)
     min_py_version <- switch(python_version,
-                             "2" = sub("'.*", "", 
-                                       sub("^MIN_PYTHON_VERSION = '", 
+                             "2" = sub("'.*", "",
+                                       sub("^MIN_PYTHON_VERSION = '",
                                            "",
                                            required)),
                              "3" = sub(", ", ".", sub(".*\\((.*)\\).*",
-                                                      "\\1", 
+                                                      "\\1",
                                                       required)),
                              throw(paste("Could not find python version 2",
                                          "nor python version 3."))
@@ -190,13 +191,13 @@ run_knitr <- function(file_name, working_directory = dirname(file_name),
                                                       output_basename)
                             } else {
                                 message(hint_writing(file_name))
-                                out_file <- file.path(tempdir(), 
+                                out_file <- file.path(tempdir(),
                                                       output_basename)
                             }
                             writeLines(content, out_file)
                         } else {
                             out_file <- run_knit(file_name, knit = knit,
-                                                 envir = envir, 
+                                                 envir = envir,
                                                  write_to_disk = write_to_disk)
                         }
                         out_file <- normalizePath(out_file)
@@ -239,7 +240,7 @@ excerpt_to_file <- function(file_name,
     return(excerpt_file)
 }
 
-excerpt_no_slides <- function(file_name, 
+excerpt_no_slides <- function(file_name,
                               write_to_disk = getOption("write_to_disk")
                               ) {
     return(excerpt_to_file(file_name = file_name,

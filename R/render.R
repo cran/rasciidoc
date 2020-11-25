@@ -7,6 +7,9 @@
 #' \code{\link{render}} for a wrapper.
 #'
 #' @template cran
+#' @param enforce_requirements Should system requirements be enforced (CRAN
+#' requires packages to pass checks if system requirements (external commands)
+#' are not met)? Set to \code{\link{TRUE}} to enforce.
 #' @param file_name The file to run \command{asciidoc} on.
 #' @param ... arguments passed to \command{asciidoc} via \code{\link{system2}}.
 #' @return \code{\link[base:invisible]{Invisibly}} \command{asciidoc}'a return
@@ -20,7 +23,7 @@
 #'     file  <- system.file("files", "minimal", "knit.asciidoc",
 #'                          package = "rasciidoc")
 #'     file.copy(file, wd)
-#'     rasciidoc::rasciidoc(file.path(wd, basename(file)),
+#'     rasciidoc::rasciidoc(file_name = file.path(wd, basename(file)),
 #'                          write_to_disk = getOption("write_to_disk"),
 #'                          "-b html")
 #'     if (isTRUE(getOption("write_to_disk"))) {
@@ -30,8 +33,9 @@
 #'     }
 #'     unlink(wd, recursive = TRUE)
 #' }
-rasciidoc <- function(file_name, 
+rasciidoc <- function(file_name,
                       write_to_disk = getOption("write_to_disk"),
+                      enforce_requirements = getOption("enforce_requirements"),
                       ...) {
     status <- 1
     checkmate::assert_logical(write_to_disk, null.ok = TRUE)
@@ -53,31 +57,43 @@ rasciidoc <- function(file_name,
             adoc_file <- file.path(tempdir(), basename(file_name))
         }
     }
-    if (is_installed("source-highlight")) {
-        report_sys_errors <- TRUE
-    } else {
-        report_sys_errors <- FALSE
-        warning("Can't find program `source-highlight`. ",
+    if (!is_installed("source-highlight")) {
+        msg <- c("Can't find program `source-highlight`. ",
                 "Please install first",
-                " (http://www.gnu.org/software/src-highlite/).\n", 
-                "Deactivating system calls errors!")
+                " (http://www.gnu.org/software/src-highlite/).")
+        if (isTRUE(enforce_requirements)) {
+            warning(msg)
+        } else {
+            message(msg)
+        }
     }
     if (is_installed("asciidoc")) {
-        status <- system2("asciidoc", args = unlist(c(options, adoc_file)), 
-                          stderr = report_sys_errors)
+        status <- system2("asciidoc", args = unlist(c(options, adoc_file)))
     } else {
-        warning("Can't find program `asciidoc`. ",
+        msg <- c("Can't find program `asciidoc`. ",
                 "Please install first (www.asciidoc.org).")
+        if (isTRUE(enforce_requirements)) {
+            warning(msg)
+        } else {
+            message(msg)
+        }
         python <- discover_python()
         if (is_installed(python)) {
             ad <- get_asciidoc()
             status <- system2(ad[["python_cmd"]],
-                              args = unlist(c(ad[["asciidoc_source"]], 
-                                              options, adoc_file)),
-                              stderr = report_sys_errors)
+                              args = unlist(c(ad[["asciidoc_source"]],
+                                              options, adoc_file)))
         } else {
-            throw(paste("Can't find `python`. ",
-                        "Please install first (https://www.python.org/)."))
+            msg <- paste("Can't find `python`. ",
+                         "Please install first (https://www.python.org/).")
+            if (isTRUE(enforce_requirements)) {
+                throw(msg)
+            } else {
+                message(msg)
+                file.copy(from = system.file("files", "default.html", 
+                                             package = "rasciidoc"),
+                          to = sub("\\.asciidoc$", ".html", adoc_file))
+            }
         }
     }
     return(invisible(status))
@@ -99,7 +115,7 @@ rasciidoc <- function(file_name,
 #' @param clean Remove temporary file(s)?
 #' @param what What is to be rendered? \code{"all"} renders everything,
 #' \code{"no_slides"} renders parts that are not meant for slides,
-#' \code{"slides"} renders parts that are meant for slides. 
+#' \code{"slides"} renders parts that are meant for slides.
 #' The defaults looks
 #' for any in- or exclusion tagging and renders parts that are not meant for
 #' slides if found any, else it renders everything.
@@ -114,7 +130,7 @@ rasciidoc <- function(file_name,
 #'     file  <- system.file("files", "minimal", "knit.Rasciidoc",
 #'                          package = "rasciidoc")
 #'     file.copy(file, wd)
-#'     rasciidoc::render(file.path(wd, basename(file)), 
+#'     rasciidoc::render(file.path(wd, basename(file)),
 #'                       write_to_disk = getOption("write_to_disk"),
 #'                       asciidoc_args = "-b slidy")
 #'     if (isTRUE(getOption("write_to_disk"))) {
@@ -150,11 +166,11 @@ render <- function(file_name, knit = NA,
     }
 
     excerpt <- switch(what,
-                      "slides" = 
-                          excerpt_slides(file_name, 
+                      "slides" =
+                          excerpt_slides(file_name,
                                          write_to_disk = write_to_disk),
-                      "no_slides" = 
-                          excerpt_no_slides(file_name, 
+                      "no_slides" =
+                          excerpt_no_slides(file_name,
                                             write_to_disk = write_to_disk),
                       file_name)
 
@@ -167,7 +183,7 @@ render <- function(file_name, knit = NA,
              error = function(e) throw(e)
 
              )
-    status <- rasciidoc(file_name = adoc, 
+    status <- rasciidoc(file_name = adoc,
                         write_to_disk = write_to_disk, asciidoc_args)
     return(status)
 }

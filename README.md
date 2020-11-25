@@ -14,7 +14,14 @@
 
 # rasciidoc
 ## Introduction
-After installation, please read, the help page:
+Please read the
+[vignette](https://fvafrCU.gitlab.io/rasciidoc/doc/An_Introduction_to_rasciidoc.html).
+<!-- 
+[vignette](https://CRAN.R-project.org/package=rasciidoc/vignettes/An_Introduction_to_rasciidoc.html).
+
+-->
+
+Or, after installation, the help page:
 
 ```r
 help("rasciidoc-package", package = "rasciidoc")

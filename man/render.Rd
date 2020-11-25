@@ -40,7 +40,7 @@ the \code{replacement}'s hooks.}
 
 \item{what}{What is to be rendered? \code{"all"} renders everything,
 \code{"no_slides"} renders parts that are not meant for slides,
-\code{"slides"} renders parts that are meant for slides. 
+\code{"slides"} renders parts that are meant for slides.
 The defaults looks
 for any in- or exclusion tagging and renders parts that are not meant for
 slides if found any, else it renders everything.}
@@ -74,7 +74,7 @@ if (!is_windows()) { # CRAN windows complains about elapsed times
     file  <- system.file("files", "minimal", "knit.Rasciidoc",
                          package = "rasciidoc")
     file.copy(file, wd)
-    rasciidoc::render(file.path(wd, basename(file)), 
+    rasciidoc::render(file.path(wd, basename(file)),
                       write_to_disk = getOption("write_to_disk"),
                       asciidoc_args = "-b slidy")
     if (isTRUE(getOption("write_to_disk"))) {

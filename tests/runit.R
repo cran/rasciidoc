@@ -1,11 +1,5 @@
 #!/usr/bin/Rscript --vanilla
-is_probably_my_machine <- function() {
-    me <- Sys.info()[["nodename"]] %in% c("h6") &&
-        .Platform[["OS.type"]] == "unix"
-    return(me)
-
-}
-if (is_probably_my_machine()) options("write_to_disk" = TRUE)
+options("write_to_disk" = FALSE)
 is_failure <- function(result) {
     res <- RUnit::getErrors(result)
     names(res) <- tolower(names(res)) # soothe lintr
@@ -36,13 +30,9 @@ package_suite <- RUnit::defineTestSuite("rasciidoc_unit_test",
                                         dirs = unit_dir,
                                         testFileRegexp = "^.*\\.[rR]",
                                         testFuncRegexp = "^test_+")
-if (rasciidoc:::is_installed("source-highlight")) {
 test_result <- RUnit::runTestSuite(package_suite)
 RUnit::printTextProtocol(test_result, showDetails = TRUE, fileName = "")
 if (is_failure(test_result)) {
     RUnit::printTextProtocol(test_result, showDetails = TRUE)
     stop("RUnit failed.")
-}
-} else {
-    message("Skipping all tests due to missing program `source-highlight`.")
 }

@@ -1,4 +1,4 @@
-if (interactive()) devtools::load_all()
+if (interactive()) pkgload::load_all()
 test_try_parse <- function() {
     RUnit::checkTrue(rasciidoc:::try_parse("asdf"))
     RUnit::checkTrue(! rasciidoc:::try_parse("a(df"))

@@ -1,3 +1,13 @@
+# rasciidoc 2.2.2
+
+* `rasciidoc()` now does not give `warnings()` or throws errors for missing SystemRequirements,
+  adhering to "Writing R Extensions", version 4.0.3 (2020-10-10): 
+  "A package should pass its checks without warnings nor errors without the external command being present."
+  To restore the warnings and errors, pass argument `enforce_requirements = TRUE` to
+  `render()` (or `rasciidoc()`) or set `options("enforce_requirements" = TRUE)`
+  to restore the original behaviour.
+
+
 # rasciidoc 2.2.1
 
 * Added checkmate's argument checks to all exported functions (`rasciidoc()`,

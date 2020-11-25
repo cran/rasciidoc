@@ -12,7 +12,7 @@
 #' condition of class c("error", "rasciidoc", "condition").
 #' @keywords internal
 #' @examples
-#' tryCatch(rasciidoc:::throw("Hello error!"), 
+#' tryCatch(rasciidoc:::throw("Hello error!"),
 #'          rasciidoc = function(e) return(e))
 throw <- function(message_string, system_call = sys.call(-1), ...) {
     condition <- structure(class = c("error", "rasciidoc", "condition"),
