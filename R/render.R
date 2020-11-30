@@ -12,8 +12,8 @@
 #' are not met)? Set to \code{\link{TRUE}} to enforce.
 #' @param file_name The file to run \command{asciidoc} on.
 #' @param ... arguments passed to \command{asciidoc} via \code{\link{system2}}.
-#' @return \code{\link[base:invisible]{Invisibly}} \command{asciidoc}'a return
-#' value.
+#' @return \code{\link[base:invisible]{Invisibly}} \code{\link{TRUE}} or
+#' \code{\link{FALSE}}, depending on success.
 #' @export
 #' @seealso \code{\link{render}}
 #' @examples
@@ -34,13 +34,16 @@
 #'     unlink(wd, recursive = TRUE)
 #' }
 rasciidoc <- function(file_name,
+                      ...,
                       write_to_disk = getOption("write_to_disk"),
-                      enforce_requirements = getOption("enforce_requirements"),
-                      ...) {
-    status <- 1
+                      enforce_requirements = getOption("enforce_requirements")
+                      ) {
+    status <- FALSE
+    msg <- NULL
     checkmate::assert_logical(write_to_disk, null.ok = TRUE)
     checkmate::assert_file_exists(file_name)
     options <- list(...)
+    #% Deal with temporary or persistant files
     if (isTRUE(write_to_disk)) {
         adoc_file <- file_name
     } else {
@@ -57,43 +60,76 @@ rasciidoc <- function(file_name,
             adoc_file <- file.path(tempdir(), basename(file_name))
         }
     }
-    if (!is_installed("source-highlight")) {
-        msg <- c("Can't find program `source-highlight`. ",
-                "Please install first",
-                " (http://www.gnu.org/software/src-highlite/).")
-        if (isTRUE(enforce_requirements)) {
-            warning(msg)
-        } else {
-            message(msg)
-        }
-    }
+    #% render the input file
     if (is_installed("asciidoc")) {
-        status <- system2("asciidoc", args = unlist(c(options, adoc_file)))
+        status <- tryCatch(system2("asciidoc", 
+                                   args = unlist(c(options, adoc_file)),
+                                   stderr = TRUE, stdout = TRUE
+                                   ),
+                           error = identity, warning = identity)
+
     } else {
-        msg <- c("Can't find program `asciidoc`. ",
-                "Please install first (www.asciidoc.org).")
+        msg <- c(msg, paste0("Can't find program `asciidoc`. ",
+                             "Please install first ", 
+                             "(http://www.asciidoc.org)." ))
         if (isTRUE(enforce_requirements)) {
-            warning(msg)
+            warning(paste(msg, collapse = "\n"))
         } else {
-            message(msg)
+            message(paste(msg, collapse = "\n"))
         }
         python <- discover_python()
         if (is_installed(python)) {
             ad <- get_asciidoc()
-            status <- system2(ad[["python_cmd"]],
-                              args = unlist(c(ad[["asciidoc_source"]],
-                                              options, adoc_file)))
+            status <- tryCatch(system2(ad[["python_cmd"]],
+                                       args = unlist(c(ad[["asciidoc_source"]],
+                                                       options, adoc_file)),
+                                       stderr = TRUE, stdout = TRUE
+                                       ),
+                               error = identity, warning = identity)
         } else {
-            msg <- paste("Can't find `python`. ",
-                         "Please install first (https://www.python.org/).")
+            msg <- c(msg, paste0("Can't find `python`. ",
+                                 "Please install first ",
+                                 "(https://www.python.org/). "))
             if (isTRUE(enforce_requirements)) {
-                throw(msg)
+                throw(paste(msg, collapse = "\n"))
             } else {
-                message(msg)
-                file.copy(from = system.file("files", "default.html", 
-                                             package = "rasciidoc"),
-                          to = sub("\\.asciidoc$", ".html", adoc_file))
+                message(paste(msg, collapse = "\n"))
             }
+        }
+    }
+    #% Check for source-highlight
+    if (!is_installed("source-highlight")) {
+        msg <- c(msg, paste0("Can't find program `source-highlight`. ",
+                            "Please install first ",
+                            "(http://www.gnu.org/software/src-highlite/). "))
+        if (isTRUE(enforce_requirements)) {
+            warning(paste(msg, collapse = "\n"))
+        } else {
+            message(paste(msg, collapse = "\n"))
+        }
+    }
+    #% set return values, default was FALSE
+    # warnings and errors get a FALSE, default output is provided
+    condition <- inherits(status, "error") || inherits(status, "warning") ||
+        isFALSE(status) # ie: nothing was done at all!
+    if (isTRUE(condition)) {
+        lines <- readLines(system.file("files", "default.html",
+                                       package = "rasciidoc"))
+        lines <- sub("DEFAULT_TEXT", paste(msg, collapse = " "), lines)
+        writeLines(lines, con = sub("\\.[A-z]*$", ".html", adoc_file))
+        status <- FALSE
+    }
+    # with stderr = TRUE we get character(0) on success, don't know why, so we
+    # set it to TRUE:
+    if (is_character_zero(status)) status <- TRUE
+    # capture all other return values
+    if (!is.logical(status)) {
+        if (!is_installed("source-highlight")) {
+            # missing source-highlight gives no warning or error that could be
+            # caught but a string as return value
+            status <- TRUE
+        } else { 
+            status <- FALSE
         }
     }
     return(invisible(status))

@@ -1,3 +1,16 @@
+# rasciidoc 3.0.0
+
+* **`rasciidoc()`'s return value changed: it now gives `TRUE` on success and
+  `FALSE` otherwise.**
+* `rasciidoc()` now catches all system errors and warnings from `system2()`.
+   A missing installation of the recommended `source-highlight` does not throw a
+   condition, so albeit the rendered output is not what you might expect it to
+   be, the call to `asciidoc` is considered successful.
+* Skip tests using `asciidoc` as CRAN's Solaris 10 (r-patched-solaris-x86) fails
+  with "asciidoc: FAILED: configuration file asciidoc.conf missing": there seems
+  to be a buggy asciidoc installation I cannot bypass.
+
+
 # rasciidoc 2.2.2
 
 * `rasciidoc()` now does not give `warnings()` or throws errors for missing SystemRequirements,

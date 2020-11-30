@@ -6,25 +6,25 @@
 \usage{
 rasciidoc(
   file_name,
+  ...,
   write_to_disk = getOption("write_to_disk"),
-  enforce_requirements = getOption("enforce_requirements"),
-  ...
+  enforce_requirements = getOption("enforce_requirements")
 )
 }
 \arguments{
 \item{file_name}{The file to run \command{asciidoc} on.}
+
+\item{...}{arguments passed to \command{asciidoc} via \code{\link{system2}}.}
 
 \item{write_to_disk}{Write to disk? See \bold{Warning}.}
 
 \item{enforce_requirements}{Should system requirements be enforced (CRAN
 requires packages to pass checks if system requirements (external commands)
 are not met)? Set to \code{\link{TRUE}} to enforce.}
-
-\item{...}{arguments passed to \command{asciidoc} via \code{\link{system2}}.}
 }
 \value{
-\code{\link[base:invisible]{Invisibly}} \command{asciidoc}'a return
-value.
+\code{\link[base:invisible]{Invisibly}} \code{\link{TRUE}} or
+\code{\link{FALSE}}, depending on success.
 }
 \description{
 This is the basic interface to \command{asciidoc}. Not more than a call to

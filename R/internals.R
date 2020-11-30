@@ -1,3 +1,7 @@
+is_character_zero <- function(x) {
+    is <- identical(length(x), 0L) && is(x, "character")
+    return(is)
+}
 .onAttach <- function(...) { # Exclude Linting
     if (!isTRUE(getOption("write_to_disk")))
         packageStartupMessage("\n", hint_writing())
