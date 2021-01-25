@@ -1,3 +1,10 @@
+# rasciidoc 3.0.1
+
+* Switched from `git2r` to `gert`.
+* Added an example to properly create plots with `asciidoc` to the minimal
+  example in the vignette.
+* Now importing package `fritools`.
+
 # rasciidoc 3.0.0
 
 * **`rasciidoc()`'s return value changed: it now gives `TRUE` on success and

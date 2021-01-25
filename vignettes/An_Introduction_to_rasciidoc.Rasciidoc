@@ -15,7 +15,7 @@ wrapper to and a slight modification of knitr.
 === A Minimal Example
 Suppose, you have a file that reads
 //begin.rcode
-file_name <- system.file("files", "minimal", "knit.Rasciidoc",
+file_name <- system.file("files", "minimal", "plot.Rasciidoc",
                          package = "rasciidoc")
 cat(readLines(file_name), sep = "\n")
 //end.rcode
@@ -26,7 +26,7 @@ withr::with_dir(tempdir(), {
                     rasciidoc::render(basename(file_name))
 })
 //end.rcode
-you will create an HTML file that is identical to [this file](https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/minimal/knit.html) and that you could browse using 
+you will create an HTML file that is identical to [this file](https://fvafrcu.gitlab.io/rasciidoc/inst/files/minimal/plot.html) and that you could browse using 
 +browseURL(file.path(tempdir(), paste0(sub("\\..*$", "", basename(file_name)), ".html")))+
 from your current R session (vignettes like this are not allowed to start external programs
                              like browsers, so you'll have to do it yourself).
@@ -58,7 +58,7 @@ you could +render+ the file
 //begin.rcode
 rasciidoc::render(file.path(my_directory, basename(file_name)))
 //end.rcode
-and create an HTML file that is identical to [this file](https://gitlab.com/fvafrcu/rasciidoc/raw/master/inst/files/simple/knit.html) and that you could browse using 
+and create an HTML file that is identical to [this file](https://fvafrcu.gitlab.io/rasciidoc/inst/files/simple/knit.html) and that you could browse using 
 +browseURL(file.path(my_directory, paste0(sub("\\..*$", "", basename(file_name)), ".html")))+
 from your current R session .
 

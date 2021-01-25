@@ -103,7 +103,7 @@ get_asciidoc <- function() {
                            throw(paste("Could not find python version 2",
                                        "nor python version 3."))
                            )
-            git2r::clone(url = url, local_path = local_asciidoc_path)
+            gert::git_clone(url = url, path = local_asciidoc_path)
         } else {
             throw("Python is a system requirement.")
         }
@@ -111,9 +111,7 @@ get_asciidoc <- function() {
                                                    "asciidoc.py"))
         min_py_version <- query_min_py_version(file = asciidoc_source,
                                                python_version = python_major)
-        is_sufficient <- utils::compareVersion(python_version,
-                                               min_py_version) >= 0
-        if (!isTRUE(is_sufficient))
+        if (!is_version_sufficient(python_version, min_py_version))
             throw(paste0("Could find not find python >= ", min_py_version, "."))
         res <- list("python_cmd" = python,
                     "asciidoc_source" = asciidoc_source
@@ -122,6 +120,8 @@ get_asciidoc <- function() {
     }
     return(res)
 }
+
+
 
 query_min_py_version <- function(file, python_version) {
     required <- grep("^MIN_PYTHON_VERSION", readLines(file),

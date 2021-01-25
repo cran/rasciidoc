@@ -3,4 +3,4 @@
 #' @return \code{\link{TRUE}} if so, \code{\link{FALSE}} otherwise.
 #' @keywords internal
 #' @export
-is_windows <- function() return(.Platform[["OS.type"]] == "windows")
+is_windows <- fritools::is_windows

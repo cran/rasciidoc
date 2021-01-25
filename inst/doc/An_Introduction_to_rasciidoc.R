@@ -1,5 +1,5 @@
 ## -----------------------------------------------------------------------------
-file_name <- system.file("files", "minimal", "knit.Rasciidoc",
+file_name <- system.file("files", "minimal", "plot.Rasciidoc",
                          package = "rasciidoc")
 cat(readLines(file_name), sep = "\n")
 
