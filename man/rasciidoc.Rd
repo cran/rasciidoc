@@ -46,7 +46,8 @@ to bypass this. You may want to include the above line into your ~/.Rprofile.
 }
 
 \examples{
-if (!is_windows()) { # CRAN windows complains about elapsed times
+# CRAN complains about elapsed times
+if (fritools::is_running_on_fvafrcu_machines()) {
     wd <- file.path(tempdir(), "rasciidoc")
     dir.create(wd)
     file  <- system.file("files", "minimal", "knit.asciidoc",

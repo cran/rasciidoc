@@ -1,3 +1,7 @@
+# rasciidoc 3.0.2
+
+* Fix: catching strange `tempdir()`s on CRAN winbuilder on `x86_64-w64-mingw32`.
+
 # rasciidoc 3.0.1
 
 * Switched from `git2r` to `gert`.

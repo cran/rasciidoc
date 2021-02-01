@@ -4,8 +4,9 @@ remove_dates <- function(x) {
          grep(".*UTC$", value = TRUE, invert = TRUE, x)
          )
 }
-
-if (!checkmate::test_os("solaris")) { 
+condition <- !checkmate::test_os("solaris") && !checkmate::test_os("windows") ||
+    fritools::get_run_r_tests()
+if (condition) {
     # CRAN solaris has a buggy asciidoc installation, so we skip these test for
     # solaris.
     # What a pitty!
@@ -27,15 +28,15 @@ if (!checkmate::test_os("solaris")) {
                         )
         RUnit::checkTrue(!status)
 
-        withr::with_dir(tempdir(),
-                        status <- rasciidoc::rasciidoc(file.path(wdir,
-                                                                 basename(adoc)))
-                        )
+        withr::with_dir(tempdir(), {
+                        rara <- rasciidoc::rasciidoc
+                        status <- rara(file.path(wdir, basename(adoc)))
+                        })
         if (!rasciidoc:::is_installed(rasciidoc:::discover_python())) {
             RUnit::checkTrue(!status)
         } else {
             RUnit::checkTrue(status)
-            if (document::is_running_on_fvafrcu_machines() && 
+            if (fritools::is_running_on_fvafrcu_machines() &&
                 rasciidoc:::is_installed("rasciidoc")) {
                 # don't know which version of asciidoc will be used on remote
                 # machines
@@ -43,7 +44,7 @@ if (!checkmate::test_os("solaris")) {
                     infile <- file.path(folder, "expected", "simple.html")
                     expectation <- remove_dates(readLines(infile))
                 } else {
-                    infile <- file.path(folder, "expected", 
+                    infile <- file.path(folder, "expected",
                                         "no_source_highlight",
                                         "simple.html")
                     expectation <- remove_dates(readLines(infile))
@@ -84,8 +85,9 @@ if (!checkmate::test_os("solaris")) {
                                     "simple.html")
                 expectation <- remove_dates(readLines(infile))
             }
-            # don't know which version of asciidoc will be used on remote machines
-            if (document::is_running_on_fvafrcu_machines())
+            # don't know which version of asciidoc will be used on remote
+            # machines
+            if (fritools::is_running_on_fvafrcu_machines())
                 RUnit::checkIdentical(result, expectation)
         }
         #% render slides
@@ -109,8 +111,9 @@ if (!checkmate::test_os("solaris")) {
             expectation <- remove_dates(readLines(file.path(tempdir(), "files",
                                                             "expected",
                                                             "fake.html")))
-            # don't know which version of asciidoc will be used on remote machines
-            if (document::is_running_on_fvafrcu_machines())
+            # don't know which version of asciidoc will be used on remote
+            # machines
+            if (fritools::is_running_on_fvafrcu_machines())
                 RUnit::checkIdentical(result, expectation)
         }
     }
@@ -139,9 +142,9 @@ if (!checkmate::test_os("solaris")) {
                                 RUnit::checkTrue(status)
                                 spin <- remove_dates(readLines("spin.html"))
                                 ascii_md <- remove_dates(readLines("foo.html"))
-                                # don't know which version of asciidoc will be used
-                                # on remote machines
-                                if (document::is_running_on_fvafrcu_machines())
+                                # don't know which version of asciidoc will be
+                                # used on remote machines
+                                if (fritools::is_running_on_fvafrcu_machines())
                                     RUnit::checkIdentical(spin, ascii_md)
                             }
                             rasciidoc::render(file_name = "knit.Rasciidoc")
@@ -155,9 +158,9 @@ if (!checkmate::test_os("solaris")) {
                                 RUnit::checkTrue(status)
                                 knit <- remove_dates(readLines("knit.html"))
                                 ascii <- remove_dates(readLines("bar.html"))
-                                # don't know which version of asciidoc will be used
-                                # on remote machines
-                                if (document::is_running_on_fvafrcu_machines())
+                                # don't know which version of asciidoc will be
+                                # used on remote machines
+                                if (fritools::is_running_on_fvafrcu_machines())
                                     RUnit::checkIdentical(knit, ascii)
                             }
                           })
@@ -189,7 +192,8 @@ if (!checkmate::test_os("solaris")) {
             hook_source <- function(x, options) {
                 x <- paste(c(hilight_source(x, "asciidoc", options), ""),
                            collapse = "\n")
-                sprintf("\n[source,%s]\n----\n%s----\n", tolower(options$engine),
+                sprintf("\n[source,%s]\n----\n%s----\n",
+                        tolower(options$engine),
                         x)
             }
             hook_message <- function(x, options) {

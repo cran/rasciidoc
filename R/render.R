@@ -17,7 +17,8 @@
 #' @export
 #' @seealso \code{\link{render}}
 #' @examples
-#' if (!is_windows()) { # CRAN windows complains about elapsed times
+#' # CRAN complains about elapsed times
+#' if (fritools::is_running_on_fvafrcu_machines()) {
 #'     wd <- file.path(tempdir(), "rasciidoc")
 #'     dir.create(wd)
 #'     file  <- system.file("files", "minimal", "knit.asciidoc",
@@ -62,7 +63,7 @@ rasciidoc <- function(file_name,
     }
     #% render the input file
     if (is_installed("asciidoc")) {
-        status <- tryCatch(system2("asciidoc", 
+        status <- tryCatch(system2("asciidoc",
                                    args = unlist(c(options, adoc_file)),
                                    stderr = TRUE, stdout = TRUE
                                    ),
@@ -70,8 +71,8 @@ rasciidoc <- function(file_name,
 
     } else {
         msg <- c(msg, paste0("Can't find program `asciidoc`. ",
-                             "Please install first ", 
-                             "(http://www.asciidoc.org)." ))
+                             "Please install first ",
+                             "(http://www.asciidoc.org)."))
         if (isTRUE(enforce_requirements)) {
             warning(paste(msg, collapse = "\n"))
         } else {
@@ -79,7 +80,9 @@ rasciidoc <- function(file_name,
         }
         python <- discover_python()
         if (is_installed(python)) {
-            ad <- get_asciidoc()
+            # fails on CRAN winbuilder on `x86_64-w64-mingw32`, thus catching:
+            ad <- tryCatch(get_asciidoc(),
+                           error = identity, warning = identity)
             status <- tryCatch(system2(ad[["python_cmd"]],
                                        args = unlist(c(ad[["asciidoc_source"]],
                                                        options, adoc_file)),
@@ -128,7 +131,7 @@ rasciidoc <- function(file_name,
             # missing source-highlight gives no warning or error that could be
             # caught but a string as return value
             status <- TRUE
-        } else { 
+        } else {
             status <- FALSE
         }
     }
@@ -160,7 +163,8 @@ rasciidoc <- function(file_name,
 #' @export
 #' @seealso \code{\link{rasciidoc}}
 #' @examples
-#' if (!is_windows()) { # CRAN windows complains about elapsed times
+#' # CRAN complains about elapsed times
+#' if (fritools::is_running_on_fvafrcu_machines()) {
 #'     wd <- file.path(tempdir(), "rasciidoc")
 #'     dir.create(wd)
 #'     file  <- system.file("files", "minimal", "knit.Rasciidoc",
