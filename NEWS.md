@@ -1,3 +1,8 @@
+# rasciidoc 3.1.0
+
+* Adapted to new github url for asciidoc.
+* Use `tools` instead of `xfun`.
+
 # rasciidoc 3.0.2
 
 * Fix: catching strange `tempdir()`s on CRAN winbuilder on `x86_64-w64-mingw32`.

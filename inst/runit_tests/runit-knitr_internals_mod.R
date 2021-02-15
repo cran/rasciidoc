@@ -22,7 +22,7 @@ test_highlight_source <- function(expectation = ex) {
     ##   argument is of length zero
     # I don't have a clue why res = try(...) returns no error but length(res)
     # is zero...
-    if (document::is_running_on_fvafrcu_machines()) {
+    if (fritools::is_running_on_fvafrcu_machines()) {
         x <- c("print(3)", "if (FALSE) print(3) else print(4)")
         result <- rasciidoc:::hilight_source(x, "html",
                                              list(highlight = TRUE,

@@ -62,7 +62,7 @@ rasciidoc <- function(file_name,
         }
     }
     #% render the input file
-    if (is_installed("asciidoc")) {
+    if (fritools::is_installed("asciidoc")) {
         status <- tryCatch(system2("asciidoc",
                                    args = unlist(c(options, adoc_file)),
                                    stderr = TRUE, stdout = TRUE
@@ -79,7 +79,7 @@ rasciidoc <- function(file_name,
             message(paste(msg, collapse = "\n"))
         }
         python <- discover_python()
-        if (is_installed(python)) {
+        if (fritools::is_installed(python)) {
             # fails on CRAN winbuilder on `x86_64-w64-mingw32`, thus catching:
             ad <- tryCatch(get_asciidoc(),
                            error = identity, warning = identity)
@@ -101,7 +101,7 @@ rasciidoc <- function(file_name,
         }
     }
     #% Check for source-highlight
-    if (!is_installed("source-highlight")) {
+    if (!fritools::is_installed("source-highlight")) {
         msg <- c(msg, paste0("Can't find program `source-highlight`. ",
                             "Please install first ",
                             "(http://www.gnu.org/software/src-highlite/). "))
@@ -127,7 +127,7 @@ rasciidoc <- function(file_name,
     if (is_character_zero(status)) status <- TRUE
     # capture all other return values
     if (!is.logical(status)) {
-        if (!is_installed("source-highlight")) {
+        if (!fritools::is_installed("source-highlight")) {
             # missing source-highlight gives no warning or error that could be
             # caught but a string as return value
             status <- TRUE

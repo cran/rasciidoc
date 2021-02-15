@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 3.1.0}{
+\itemize{
+\item Adapted to new github url for asciidoc.
+\item Use \code{tools} instead of \code{xfun}.
+}
+}
+
 \section{Changes in version 3.0.2}{
 \itemize{
 \item Fix: catching strange \code{tempdir()}s on CRAN winbuilder on \code{x86_64-w64-mingw32}.

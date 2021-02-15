@@ -6,7 +6,7 @@ is_r_cmd_check <- function() {
 
 vtangle <- function(file, ..., encoding = "UTF-8", quiet = FALSE) {
     if (is_r_cmd_check()) {
-        file <- xfun::with_ext(file, "R")
+        file <- file.path(tools::file_path_sans_ext(file), "R")
         file.create(file)
         return(file)
     }

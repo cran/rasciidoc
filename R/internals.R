@@ -1,7 +1,3 @@
-is_character_zero <- function(x) {
-    is <- identical(length(x), 0L) && is(x, "character")
-    return(is)
-}
 .onAttach <- function(...) { # Exclude Linting
     if (!isTRUE(getOption("write_to_disk")))
         packageStartupMessage("\n", hint_writing())
@@ -51,12 +47,6 @@ discover_python <- function(first_only = TRUE) {
     return(python_versions)
 }
 
-is_installed <- function(program) {
-    is_installed <- nchar(Sys.which(program)) > 0
-    is_installed <- unname(is_installed)
-    is_installed <- isTRUE(is_installed)
-    return(is_installed)
-}
 
 get_asciidoc <- function() {
     local_asciidoc_path <- file.path(tempdir(), "asciidoc")
@@ -71,7 +61,7 @@ get_asciidoc <- function() {
         unlink(local_asciidoc_path, recursive = TRUE, force = TRUE)
         dir.create(local_asciidoc_path)
         python <- discover_python()
-        if (is_installed(python)) {
+        if (fritools::is_installed(python)) {
             python_version <- sub("Python ", "",
                                   system2(python, "--version",
                                           stderr = TRUE, stdout = TRUE))
@@ -90,7 +80,7 @@ get_asciidoc <- function() {
             python_version <- sub("rc.*$", "", python_version)
             python_major <- package_version(python_version)[[c(1, 1)]]
             python_major <- as.character(python_major)
-            if (python_major == "3" && is_installed("python2")) {
+            if (python_major == "3" && fritools::is_installed("python2")) {
                 # asciidoc was origninally written in python2, so python2 wins.
                 # TODO: if python2 is available, but the version is not
                 # sufficient,should I fall back to python3?
@@ -98,8 +88,8 @@ get_asciidoc <- function() {
                 python_major <- "2"
             }
             url <- switch(python_major,
-                           "2" = "https://github.com/asciidoc/asciidoc",
-                           "3" = "https://github.com/asciidoc/asciidoc-py3",
+                           "2" = "https://github.com/asciidoc-py/asciidoc-py2",
+                           "3" = "https://github.com/asciidoc-py/asciidoc-py",
                            throw(paste("Could not find python version 2",
                                        "nor python version 3."))
                            )
@@ -107,8 +97,10 @@ get_asciidoc <- function() {
         } else {
             throw("Python is a system requirement.")
         }
-        asciidoc_source <- normalizePath(file.path(local_asciidoc_path,
-                                                   "asciidoc.py"))
+        asciidoc_source <- normalizePath(list.files(local_asciidoc_path,
+                                                   pattern = "^asciidoc.py$",
+                                                   recursive = TRUE,
+                                                   full.names = TRUE))
         min_py_version <- query_min_py_version(file = asciidoc_source,
                                                python_version = python_major)
         if (!is_version_sufficient(python_version, min_py_version))

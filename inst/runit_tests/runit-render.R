@@ -4,12 +4,14 @@ remove_dates <- function(x) {
          grep(".*UTC$", value = TRUE, invert = TRUE, x)
          )
 }
-condition <- !checkmate::test_os("solaris") && !checkmate::test_os("windows") ||
-    fritools::get_run_r_tests()
-if (condition) {
-    # CRAN solaris has a buggy asciidoc installation, so we skip these test for
-    # solaris.
-    # What a pitty!
+remove_if_true <- function(x) {
+    ## covr::package_coverage inserts `if (TRUE) {` ...
+    return(gsub("if\\(TRUE\\)\\{", "", x))
+}
+skip <- (checkmate::test_os("solaris") || checkmate::test_os("windows")) &&
+    !(fritools::is_running_on_fvafrcu_machines() ||
+      fritools::is_running_on_gitlab_com())
+if (!skip) {
     test_rasciidoc_simple <- function() {
         folder  <- system.file("runit_tests", "files", package = "rasciidoc")
         adoc <- file.path(folder, "simple.asciidoc")
@@ -28,143 +30,144 @@ if (condition) {
                         )
         RUnit::checkTrue(!status)
 
-        withr::with_dir(tempdir(), {
-                        rara <- rasciidoc::rasciidoc
-                        status <- rara(file.path(wdir, basename(adoc)))
-                        })
-        if (!rasciidoc:::is_installed(rasciidoc:::discover_python())) {
-            RUnit::checkTrue(!status)
-        } else {
+        withr::with_dir(tempdir(),
+                        status <-
+                            rasciidoc::rasciidoc(file.path(wdir,
+                                                           basename(adoc)))
+                        )
+        if (fritools::is_installed(rasciidoc:::discover_python())) {
             RUnit::checkTrue(status)
-            if (fritools::is_running_on_fvafrcu_machines() &&
-                rasciidoc:::is_installed("rasciidoc")) {
-                # don't know which version of asciidoc will be used on remote
-                # machines
-                if (rasciidoc:::is_installed("source-highlight")) {
-                    infile <- file.path(folder, "expected", "simple.html")
-                    expectation <- remove_dates(readLines(infile))
-                } else {
-                    infile <- file.path(folder, "expected",
-                                        "no_source_highlight",
-                                        "simple.html")
-                    expectation <- remove_dates(readLines(infile))
-                }
-                result <- remove_dates(readLines(file.path(tempdir(),
-                                                           "simple.html")))
-                RUnit::checkIdentical(result, expectation)
-            }
-        }
-    }
-
-    no_test_render_simple <- function() {
-        folder  <- system.file("runit_tests", "files", package = "rasciidoc")
-        file.copy(folder, tempdir(), recursive = TRUE)
-        on.exit(unlink(file.path(tempdir(), "files"), recursive = TRUE))
-        #% render
-        withr::with_dir(file.path(tempdir(), "files"),
-                        status <- rasciidoc::render("simple.Rasciidoc"))
-        if (!rasciidoc:::is_installed(rasciidoc:::discover_python())) {
-            RUnit::checkTrue(!status)
-        } else {
-            RUnit::checkTrue(status)
-            result <- remove_dates(readLines(file.path(tempdir(),
-                                                       "simple.html")))
-            if (FALSE) {
-                # in case you install a new version of asciidoc or the like...
-                file.copy(file.path(tempdir(), "files", "simple.html"),
-                          file.path("inst", "runit_tests", "files", "expected"),
-                          overwrite = TRUE
-                          )
-            }
-            if (rasciidoc:::is_installed("source-highlight")) {
-                expectation <- remove_dates(readLines(file.path(folder,
-                                                                "expected",
-                                                                "simple.html")))
+            if (fritools::is_installed("source-highlight")) {
+                infile <- file.path(folder, "expected", "simple.html")
+                expectation <- remove_dates(readLines(infile))
             } else {
-                infile <- file.path(folder, "expected", "no_source_highlight",
+                infile <- file.path(folder, "expected",
+                                    "no_source_highlight",
                                     "simple.html")
                 expectation <- remove_dates(readLines(infile))
             }
-            # don't know which version of asciidoc will be used on remote
-            # machines
-            if (fritools::is_running_on_fvafrcu_machines())
-                RUnit::checkIdentical(result, expectation)
-        }
-        #% render slides
-        message("FIXME: need coverage for slides?")
-
-        # file contains no R code
-        withr::with_dir(file.path(tempdir(), "files"),
-                        status <- rasciidoc::render("fake.Radoc", knit = NA))
-        if (!rasciidoc:::is_installed(rasciidoc:::discover_python())) {
-            RUnit::checkTrue(!status)
-        } else {
-            RUnit::checkTrue(status)
             result <- remove_dates(readLines(file.path(tempdir(),
-                                                       "fake.html")))
-            if (FALSE) {
-                file.copy(file.path(tempdir(), "files", "fake.html"),
-                          file.path("inst", "runit_tests", "files", "expected"),
-                          overwrite = TRUE
-                          )
-            }
-            expectation <- remove_dates(readLines(file.path(tempdir(), "files",
-                                                            "expected",
-                                                            "fake.html")))
-            # don't know which version of asciidoc will be used on remote
-            # machines
-            if (fritools::is_running_on_fvafrcu_machines())
-                RUnit::checkIdentical(result, expectation)
+                                                       "simple.html")))
+            RUnit::checkIdentical(result, expectation)
+        } else {
+            RUnit::checkTrue(!status)
         }
     }
-    if (interactive()) test_render_simple()
 
-    no_test_knit_spin <- function() {
-        rdp <- rasciidoc:::discover_python ## for lintr
-        withr::with_dir(tempdir(), {
-                            dir <- system.file("files", "simple",
-                                               package = "rasciidoc")
-                            file.copy(list.files(dir, full.names = TRUE),
-                                      ".", recursive = TRUE)
-                            # lintr inevitably reads spin.R and crashes
-                            # (I tried all kindes of exlusions...).
-                            # I therefore moved spin.R to
-                            # spin.R_nolint to make lintr not read the file.
-                            # But I need it to end on R or r when deciding
-                            # whether to knit or spin. So I rename here:
-                            file.rename("spin.R_nolint", "spin.R")
-                            rasciidoc::render("spin.R")
-                            file.copy("spin.asciidoc", "foo.asciidoc")
-                            status <- rasciidoc::rasciidoc("foo.asciidoc")
-                            if (!rasciidoc:::is_installed(rdp())) {
-                                RUnit::checkTrue(!status)
-                            } else {
-                                RUnit::checkTrue(status)
-                                spin <- remove_dates(readLines("spin.html"))
-                                ascii_md <- remove_dates(readLines("foo.html"))
-                                # don't know which version of asciidoc will be
-                                # used on remote machines
-                                if (fritools::is_running_on_fvafrcu_machines())
-                                    RUnit::checkIdentical(spin, ascii_md)
-                            }
-                            rasciidoc::render(file_name = "knit.Rasciidoc")
-                            rasciidoc::render("knit.Rasciidoc", clean = FALSE,
-                                              what = "all")
-                            file.copy("knit.asciidoc", "bar.asciidoc")
-                            status <- rasciidoc::rasciidoc("bar.asciidoc")
-                            if (!rasciidoc:::is_installed(rdp())) {
-                                RUnit::checkTrue(!status)
-                            } else {
-                                RUnit::checkTrue(status)
-                                knit <- remove_dates(readLines("knit.html"))
-                                ascii <- remove_dates(readLines("bar.html"))
-                                # don't know which version of asciidoc will be
-                                # used on remote machines
-                                if (fritools::is_running_on_fvafrcu_machines())
-                                    RUnit::checkIdentical(knit, ascii)
-                            }
-                          })
+}
+no_test_render_simple <- function() {
+    folder  <- system.file("runit_tests", "files", package = "rasciidoc")
+    file.copy(folder, tempdir(), recursive = TRUE)
+    on.exit(unlink(file.path(tempdir(), "files"), recursive = TRUE))
+    #% render
+    withr::with_dir(file.path(tempdir(), "files"),
+                    status <- rasciidoc::render("simple.Rasciidoc"))
+    if (!fritools::is_installed(rasciidoc:::discover_python())) {
+        RUnit::checkTrue(!status)
+    } else {
+        RUnit::checkTrue(status)
+        result <- remove_dates(readLines(file.path(tempdir(),
+                                                   "simple.html")))
+        if (FALSE) {
+            # in case you install a new version of asciidoc or the like...
+            file.copy(file.path(tempdir(), "files", "simple.html"),
+                      file.path("inst", "runit_tests", "files", "expected"),
+                      overwrite = TRUE
+                      )
+        }
+        if (fritools::is_installed("source-highlight")) {
+            expectation <- remove_dates(readLines(file.path(folder,
+                                                            "expected",
+                                                            "simple.html")))
+        } else {
+            infile <- file.path(folder, "expected", "no_source_highlight",
+                                "simple.html")
+            expectation <- remove_dates(readLines(infile))
+        }
+        # don't know which version of asciidoc will be used on remote
+        # machines
+        if (fritools::is_running_on_fvafrcu_machines())
+            RUnit::checkIdentical(result, expectation)
     }
+    #% render slides
+    message("FIXME: need coverage for slides?")
+
+    # file contains no R code
+    withr::with_dir(file.path(tempdir(), "files"),
+                    status <- rasciidoc::render("fake.Radoc", knit = NA))
+    if (!fritools::is_installed(rasciidoc:::discover_python())) {
+        RUnit::checkTrue(!status)
+    } else {
+        RUnit::checkTrue(status)
+        result <- remove_dates(readLines(file.path(tempdir(),
+                                                   "fake.html")))
+        if (FALSE) {
+            file.copy(file.path(tempdir(), "files", "fake.html"),
+                      file.path("inst", "runit_tests", "files", "expected"),
+                      overwrite = TRUE
+                      )
+        }
+        expectation <- remove_dates(readLines(file.path(tempdir(), "files",
+                                                        "expected",
+                                                        "fake.html")))
+        # don't know which version of asciidoc will be used on remote
+        # machines
+        if (fritools::is_running_on_fvafrcu_machines())
+            RUnit::checkIdentical(result, expectation)
+    }
+}
+if (interactive()) test_render_simple()
+
+no_test_knit_spin <- function() {
+    rdp <- rasciidoc:::discover_python ## for lintr
+    withr::with_dir(tempdir(), {
+                        dir <- system.file("files", "simple",
+                                           package = "rasciidoc")
+                        file.copy(list.files(dir, full.names = TRUE),
+                                  ".", recursive = TRUE)
+                        # lintr inevitably reads spin.R and crashes
+                        # (I tried all kindes of exlusions...).
+                        # I therefore moved spin.R to
+                        # spin.R_nolint to make lintr not read the file.
+                        # But I need it to end on R or r when deciding
+                        # whether to knit or spin. So I rename here:
+                        file.rename("spin.R_nolint", "spin.R")
+                        rasciidoc::render("spin.R")
+                        file.copy("spin.asciidoc", "foo.asciidoc")
+                        status <- rasciidoc::rasciidoc("foo.asciidoc")
+                        if (!fritools::is_installed(rdp())) {
+                            RUnit::checkTrue(!status)
+                        } else {
+                            RUnit::checkTrue(status)
+                            spin <- remove_dates(readLines("spin.html"))
+                            ascii_md <- remove_dates(readLines("foo.html"))
+                            # don't know which version of asciidoc will be
+                            # used on remote machines
+                            if (fritools::is_running_on_fvafrcu_machines())
+                                RUnit::checkIdentical(spin, ascii_md)
+                        }
+                        rasciidoc::render(file_name = "knit.Rasciidoc")
+                        rasciidoc::render("knit.Rasciidoc", clean = FALSE,
+                                          what = "all")
+                        file.copy("knit.asciidoc", "bar.asciidoc")
+                        status <- rasciidoc::rasciidoc("bar.asciidoc")
+                        if (!fritools::is_installed(rdp())) {
+                            RUnit::checkTrue(!status)
+                        } else {
+                            RUnit::checkTrue(status)
+                            knit <- remove_dates(readLines("knit.html"))
+                            ascii <- remove_dates(readLines("bar.html"))
+                            # don't know which version of asciidoc will be
+                            # used on remote machines
+                            if (fritools::is_running_on_fvafrcu_machines())
+                                RUnit::checkIdentical(knit, ascii)
+                        }
+                      })
+}
+condition <- fritools::is_running_on_fvafrcu_machines() ||
+    fritools::get_run_r_tests()
+
+if (condition) {
 
     test_adjusting_hooks <- function() {
         if (grepl(paste0("^", dirname(tempdir()), ".*$"), getwd()) && FALSE) {
@@ -176,10 +179,6 @@ if (condition) {
             # /tmp/RtmpXXX/R_LIBSXXX/rasciidoc/rasciidoc-tests/runit.Rout.fail
             on.exit(knitr::knit_hooks$restore())
             # covr infects functions, so we deparse an grep them first
-            remove_if_true <- function(x) {
-                ## covr::package_coverage inserts `if (TRUE) {` ...
-                return(gsub("if\\(TRUE\\)\\{", "", x))
-            }
 
             clean <- function(x) {
                 r <- gsub(" ", "", paste0(grep("covr:::count|   \\{$|   \\}$",
