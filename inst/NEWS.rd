@@ -1,10 +1,27 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 3.1.1}{
+\itemize{
+\item Extended testing on spinning and slides.
+\item Fixed missing asciidoc installation:
+\itemize{
+\item Now resetting asciidoc's github repo to the last tagged release version.
+}
+\item Now using a system's installation of git, if available, to clone asciidoc if
+needed.
+\item Fixed comparison of paths by normalizing them. Formerly, long (e.g. temporary)
+paths (at least on windows) got abbreviated, thus failing to compare.
+}
+}
+
 \section{Changes in version 3.1.0}{
 \itemize{
-\item Adapted to new github url for asciidoc.
 \item Use \code{tools} instead of \code{xfun}.
+\item Fixed missing asciidoc installation:
+\itemize{
+\item Adapted to new github url for asciidoc.
+}
 }
 }
 

@@ -48,20 +48,20 @@ discover_python <- function(first_only = TRUE) {
 }
 
 
-get_asciidoc <- function() {
-    local_asciidoc_path <- file.path(tempdir(), "asciidoc")
-    local_asciidoc_path <- normalizePath(local_asciidoc_path, mustWork = FALSE)
-    config_file <- normalizePath(file.path(local_asciidoc_path,
-                                           "rasciidoc_config.R"),
-                                 mustWork = FALSE)
+get_asciidoc <- function(python = discover_python()) {
+    if (fritools::is_installed(python)) {
+        local_asciidoc_path <- file.path(tempdir(), "asciidoc")
+        local_asciidoc_path <- normalizePath(local_asciidoc_path,
+                                             mustWork = FALSE)
+        config_file <- normalizePath(file.path(local_asciidoc_path,
+                                               "rasciidoc_config.R"),
+                                     mustWork = FALSE)
 
-    if (file.exists(config_file)) {
-        source(config_file, local = TRUE)
-    } else {
-        unlink(local_asciidoc_path, recursive = TRUE, force = TRUE)
-        dir.create(local_asciidoc_path)
-        python <- discover_python()
-        if (fritools::is_installed(python)) {
+        if (file.exists(config_file)) {
+            source(config_file, local = TRUE)
+        } else {
+            unlink(local_asciidoc_path, recursive = TRUE, force = TRUE)
+            dir.create(local_asciidoc_path)
             python_version <- sub("Python ", "",
                                   system2(python, "--version",
                                           stderr = TRUE, stdout = TRUE))
@@ -88,29 +88,56 @@ get_asciidoc <- function() {
                 python_major <- "2"
             }
             url <- switch(python_major,
-                           "2" = "https://github.com/asciidoc-py/asciidoc-py2",
-                           "3" = "https://github.com/asciidoc-py/asciidoc-py",
-                           throw(paste("Could not find python version 2",
-                                       "nor python version 3."))
-                           )
-            gert::git_clone(url = url, path = local_asciidoc_path)
-        } else {
-            throw("Python is a system requirement.")
+                          "2" = "https://github.com/asciidoc-py/asciidoc-py2",
+                          "3" = "https://github.com/asciidoc-py/asciidoc-py",
+                          throw(paste("Could not find python version 2",
+                                      "nor python version 3."))
+                          )
+            if (fritools::is_installed("git")) {
+                # gert fails to clone on some machines, so try to use a system
+                # installation of git first.
+                if (fritools::is_running_on_fvafrcu_machines() &&
+                    fritools::is_windows()) {
+                    # FVAFR messes with its proxies...
+                    # this is a private local setting.
+                    # Don't bother.
+                    url <- sub("^(http)s", "\\1", url)
+                }
+                system(paste("git clone", url, local_asciidoc_path))
+
+            } else {
+                gert::git_clone(url = url, path = local_asciidoc_path)
+            }
+            # reset to the last tagged release: we don't want any unfunctional
+            # devel stuff in there.
+            tags <- gert::git_tag_list(repo = local_asciidoc_path)[["name"]]
+            if (any(grepl("[[:alpha:]]", tags))) {
+                tags <- tags[-grep("[[:alpha:]]", tags)]
+            }
+            last_tag <- sort(package_version(tags), decreasing = TRUE)[1]
+            gert::git_reset_hard(repo = local_asciidoc_path,
+                                 ref = as.character(last_tag))
+
+            asciidoc_source <- normalizePath(list.files(local_asciidoc_path,
+                                                        pattern =
+                                                            "^asciidoc.py$",
+                                                        recursive = TRUE,
+                                                        full.names = TRUE))
+            min_py_version <- query_min_py_version(file = asciidoc_source,
+                                                   python_version =
+                                                       python_major)
+            if (!is_version_sufficient(python_version, min_py_version))
+                throw(paste0("Could find not find python >= ", min_py_version,
+                             "."))
+            res <- list("python_cmd" = python,
+                        "asciidoc_source" = asciidoc_source
+                        )
+            dump("res", config_file)
         }
-        asciidoc_source <- normalizePath(list.files(local_asciidoc_path,
-                                                   pattern = "^asciidoc.py$",
-                                                   recursive = TRUE,
-                                                   full.names = TRUE))
-        min_py_version <- query_min_py_version(file = asciidoc_source,
-                                               python_version = python_major)
-        if (!is_version_sufficient(python_version, min_py_version))
-            throw(paste0("Could find not find python >= ", min_py_version, "."))
-        res <- list("python_cmd" = python,
-                    "asciidoc_source" = asciidoc_source
-                    )
-        dump("res", config_file)
+        return(res)
+    } else {
+        throw("Python is a system requirement.")
     }
-    return(res)
 }
 
 

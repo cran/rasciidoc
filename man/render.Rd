@@ -11,7 +11,7 @@ render(
   envir = parent.frame(),
   hooks = c("message", "error", "warning"),
   replacement = "source",
-  asciidoc_args = NULL,
+  asciidoc_args = "-b html",
   what = c("auto", "all", "no_slides", "slides"),
   clean = FALSE,
   ...

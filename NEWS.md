@@ -1,7 +1,18 @@
+# rasciidoc 3.1.1
+
+* Extended testing on spinning and slides.
+* Fixed missing asciidoc installation:
+  - Now resetting asciidoc's github repo to the last tagged release version.
+* Now using a system's installation of git, if available, to clone asciidoc if
+  needed.
+* Fixed comparison of paths by normalizing them. Formerly, long (e.g. temporary)
+  paths (at least on windows) got abbreviated, thus failing to compare.
+
 # rasciidoc 3.1.0
 
-* Adapted to new github url for asciidoc.
 * Use `tools` instead of `xfun`.
+* Fixed missing asciidoc installation:
+  - Adapted to new github url for asciidoc.
 
 # rasciidoc 3.0.2
 

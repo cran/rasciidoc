@@ -48,10 +48,16 @@ rasciidoc <- function(file_name,
     if (isTRUE(write_to_disk)) {
         adoc_file <- file_name
     } else {
+        # This is forced by CRAN. Nobody wants this.
+
         # Do  _not_ mess with setting --out-file for asciidoc, as you would have
         # to parse all options to find possible settings for the backend or
         # such. Just get a temporary copy of the input file.
-        if (identical(file.path(tempdir(), basename(file_name)),
+
+        # windows potentially long and abbreviated paths, so we need to
+        # normalize them, else they will produce an empty file.
+        # As occurred on CRAN windows (winbuilder).
+        if (identical(normalizePath(file.path(tempdir(), basename(file_name))),
                       normalizePath(file_name))) {
             # WARN: do not copy a file over itself, target would be empty
             adoc_file <- normalizePath(file_name)
@@ -103,8 +109,8 @@ rasciidoc <- function(file_name,
     #% Check for source-highlight
     if (!fritools::is_installed("source-highlight")) {
         msg <- c(msg, paste0("Can't find program `source-highlight`. ",
-                            "Please install first ",
-                            "(http://www.gnu.org/software/src-highlite/). "))
+                             "Please install first ",
+                             "(http://www.gnu.org/software/src-highlite/). "))
         if (isTRUE(enforce_requirements)) {
             warning(paste(msg, collapse = "\n"))
         } else {
@@ -124,7 +130,7 @@ rasciidoc <- function(file_name,
     }
     # with stderr = TRUE we get character(0) on success, don't know why, so we
     # set it to TRUE:
-    if (is_character_zero(status)) status <- TRUE
+    if (fritools::is_of_length_zero(status, class = "character")) status <- TRUE
     # capture all other return values
     if (!is.logical(status)) {
         if (!fritools::is_installed("source-highlight")) {
@@ -184,7 +190,7 @@ render <- function(file_name, knit = NA,
                    write_to_disk = getOption("write_to_disk"),
                    envir = parent.frame(),
                    hooks = c("message", "error", "warning"),
-                   replacement = "source", asciidoc_args = NULL,
+                   replacement = "source", asciidoc_args = "-b html",
                    what = c("auto", "all", "no_slides", "slides"),
                    clean = FALSE, ...) {
     status <- 1

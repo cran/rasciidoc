@@ -4,5 +4,5 @@
                           weave = vweave,
                           tangle = vtangle
                           )
-    #fritools::force_tests_for_known_hosts()
+    fritools::run_r_tests_for_known_hosts()
 }
