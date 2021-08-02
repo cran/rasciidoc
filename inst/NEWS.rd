@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 3.1.2}{
+\itemize{
+\item Removed LazyData from file DESCRIPTION.
+}
+}
+
 \section{Changes in version 3.1.1}{
 \itemize{
 \item Extended testing on spinning and slides.

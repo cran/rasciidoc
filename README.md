@@ -1,5 +1,5 @@
-[![pipeline status](https://gitlab.com/fvafrCU/rasciidoc/badges/master/pipeline.svg)](https://gitlab.com/fvafrCU/rasciidoc/commits/master)    
-[![coverage report](https://gitlab.com/fvafrCU/rasciidoc/badges/master/coverage.svg)](https://gitlab.com/fvafrCU/rasciidoc/commits/master)
+[![pipeline status](https://gitlab.com/fvafrCU/rasciidoc/badges/master/pipeline.svg)](https://gitlab.com/fvafrCU/rasciidoc/-/commits/master)    
+[![coverage report](https://gitlab.com/fvafrCU/rasciidoc/badges/master/coverage.svg)](https://gitlab.com/fvafrCU/rasciidoc/-/commits/master)
 <!-- 
     [![Build Status](https://travis-ci.org/fvafrCU/rasciidoc.svg?branch=master)](https://travis-ci.org/fvafrCU/rasciidoc)
     [![Coverage Status](https://codecov.io/github/fvafrCU/rasciidoc/coverage.svg?branch=master)](https://codecov.io/github/fvafrCU/rasciidoc?branch=master)
@@ -33,7 +33,7 @@ help("rasciidoc-package", package = "rasciidoc")
 #> Description:
 #> 
 #>      Inspired by Karl Broman`s reader on using 'knitr' with 'asciidoc'
-#>      (<URL: http://kbroman.org/knitr_knutshell/pages/asciidoc.html>),
+#>      (<URL: https://kbroman.org/knitr_knutshell/pages/asciidoc.html>),
 #>      this is merely a wrapper to 'knitr' and 'asciidoc'.
 #> 
 #> Arguments:

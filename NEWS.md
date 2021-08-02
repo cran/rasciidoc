@@ -1,3 +1,7 @@
+# rasciidoc 3.1.2
+
+* Removed LazyData from file DESCRIPTION.
+
 # rasciidoc 3.1.1
 
 * Extended testing on spinning and slides.

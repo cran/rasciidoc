@@ -8,7 +8,7 @@ Andreas Dominik Cullmann
 ////
 Inspired by Karl Broman`s reader on using knitr
 with asciidoc
-(http://kbroman.org/knitr_knutshell/pages/asciidoc.html), this is a
+(https://kbroman.org/knitr_knutshell/pages/asciidoc.html), this is a
 wrapper to and a slight modification of knitr.
 
 == Knitting
