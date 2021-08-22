@@ -11,12 +11,15 @@ remove_if_true <- function(x) {
     ## covr::package_coverage inserts `if (TRUE) {` ...
     return(gsub("if\\(TRUE\\)\\{", "", x))
 }
-skip <- checkmate::test_os("solaris") &&
-    !(fritools::is_running_on_fvafrcu_machines() ||
-      fritools::is_running_on_gitlab_com()
-  )
 
-if (!skip) {
+skip <- function() {
+    skip <- (fritools::is_windows() || checkmate::test_os("solaris")) &&
+        !(fritools::is_running_on_fvafrcu_machines() ||
+          fritools::is_running_on_gitlab_com())
+    return(skip)
+}
+
+if (!skip()) {
         test_rasciidoc_simple <- function() {
             folder  <- system.file("runit_tests", "files",
                                    package = "rasciidoc")

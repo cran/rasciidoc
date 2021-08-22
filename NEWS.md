@@ -1,3 +1,7 @@
+# rasciidoc 3.1.3
+
+* Skip tests on unkown windows machines to avoid errors for CRAN's `r-devel-windows-x86_64-gcc10-UCRT`.
+
 # rasciidoc 3.1.2
 
 * Removed LazyData from file DESCRIPTION.
