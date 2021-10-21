@@ -13,9 +13,8 @@ remove_if_true <- function(x) {
 }
 
 skip <- function() {
-    skip <- (fritools::is_windows() || checkmate::test_os("solaris")) &&
-        !(fritools::is_running_on_fvafrcu_machines() ||
-          fritools::is_running_on_gitlab_com())
+    skip <- !(fritools::is_running_on_fvafrcu_machines() ||
+              fritools::is_running_on_gitlab_com())
     return(skip)
 }
 

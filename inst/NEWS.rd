@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 3.1.4}{
+\itemize{
+\item Skip tests on unkown machines
+}
+}
+
 \section{Changes in version 3.1.3}{
 \itemize{
 \item Skip tests on unkown windows machines to avoid errors for CRAN's \code{r-devel-windows-x86_64-gcc10-UCRT}.

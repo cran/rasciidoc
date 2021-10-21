@@ -1,7 +1,7 @@
-ffb7fddefec8c72dc69c3e5832b93534 *DESCRIPTION
+b18d7b2686054617a5d2590f6b6eebc8 *DESCRIPTION
 7eea4dc35233e4ae4a33c933b5380ba9 *LICENSE
 da8d292762ffef6ea04cacdbaef84e27 *NAMESPACE
-2c26c896a81d8221d26fe67367408f7d *NEWS.md
+a8270ff20139d07f88c6890cdfb28aec *NEWS.md
 b4d68ba111658faff402519571cf0546 *R/highr_internals.R
 7d62b9a909644119bc8977d498e9a861 *R/internals.R
 e934cddc4eda3dd71f8918f744759ff1 *R/is_version_sufficient.R
@@ -15,10 +15,10 @@ ca36ed8cc78ccd4ede94c58161d07fa3 *R/vignette_engine.R
 06b65c9573530288a93b87534e1cdc41 *R/zzz.R
 3a480ede82dfadc3a046635643db6be4 *README.md
 dde8ca9958af53fddcf297e063d8c7fa *build/vignette.rds
-a57ed1deac194f7993f42d72d94410bd *inst/NEWS.rd
+0a05f6fc7b0c150aa8146cdee2d34db3 *inst/NEWS.rd
 56d0640dc36d141422a8baee984e221f *inst/doc/An_Introduction_to_rasciidoc.R
 260a9ca5f37a32744faa55fb585a71fc *inst/doc/An_Introduction_to_rasciidoc.Rasciidoc
-f86494f7878b5d54adee0477a8024b37 *inst/doc/An_Introduction_to_rasciidoc.html
+80721c59adc119c18cc1d5593688e671 *inst/doc/An_Introduction_to_rasciidoc.html
 7a15e6f06d02751d09821ebeda4aa70d *inst/files/default.asciidoc
 bd2d1e2d2d88c32b7e9d92e892791e95 *inst/files/default.html
 382715743695c1a94c5e983a9095af33 *inst/files/minimal/knit.Rasciidoc
@@ -66,7 +66,7 @@ d688f38f5a8e8e6ac9dca63fb891f5c2 *inst/runit_tests/files/slides.asciidoc
 c96bf73c7d8b45e0b5fd9ae08f3f58df *inst/runit_tests/runit-extraction.R
 1543636ccb203b2c626db80be98f2ead *inst/runit_tests/runit-highr_internals.R
 8445dbf2f01575420d2e11c8675bbee4 *inst/runit_tests/runit-knitr_internals_mod.R
-ea814aa20e6cfde4abd5256e591151dd *inst/runit_tests/runit-render.R
+747f0240fdc54eb538d65990d330f8c9 *inst/runit_tests/runit-render.R
 5397bf6b8ecbdb80fafca3d82c181c19 *inst/runit_tests/runit-throw.R
 061b53a10e6dbaffef9dead3a2923602 *inst/vignettes_code/An_Introduction_to_rasciidoc.R
 a2eccde6f8aa455dbba71925fe299425 *man/adjust_asciidoc_hooks.Rd
