@@ -791,7 +791,13 @@ wrapper to and a slight modification of knitr.</p></div>
 <h3 id="_a_minimal_example">A Minimal Example</h3>
 <div class="paragraph"><p>Suppose, you have a file that reads</p></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>file_name &lt;- system.file(<span style="color: #FF0000">"files"</span>, <span style="color: #FF0000">"minimal"</span>, <span style="color: #FF0000">"plot.Rasciidoc"</span>,
+                         package = <span style="color: #FF0000">"rasciidoc"</span>)
+cat(readLines(file_name), sep = <span style="color: #FF0000">"</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">"</span>)</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## = Some Title
@@ -827,13 +833,41 @@ wrapper to and a slight modification of knitr.</p></div>
 </div></div>
 <div class="paragraph"><p>If you run <code>render</code> on this file (we use a temporary directory here)</p></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>withr::with_dir(tempdir(), {
+                    file.copy(file_name, <span style="color: #FF0000">"."</span>)
+                    rasciidoc::render(basename(file_name))
+})</tt></pre></div></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Warning in run_knit(file_name, knit = knit, envir = envir, write_to_disk =</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## write_to_disk): Setting option knit to TRUE based on the file contents!</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmprQFKHY/plot.Rasciidoc.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmprQFKHY. Set the option "write_to_disk" to TRUE (using</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/RtmprQFKHY/plot.Rasciidoc</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## 
@@ -861,11 +895,12 @@ wrapper to and a slight modification of knitr.</p></div>
 ##  $ fig.cap: chr "A Plot"</code></pre>
 </div></div>
 <div class="listingblock">
-<div class="content"></div></div>
-<div class="listingblock">
-<div class="content"></div></div>
-<div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/RtmprQFKHY/plot.asciidoc</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## [1] TRUE</code></pre>
@@ -879,7 +914,13 @@ from your current R session (vignettes like this are not allowed to start extern
 <h3 id="_a_simple_example">A Simple Example</h3>
 <div class="paragraph"><p>Suppose you changed your file to be less minimalistic:</p></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>file_name &lt;- system.file(<span style="color: #FF0000">"files"</span>, <span style="color: #FF0000">"simple"</span>, <span style="color: #FF0000">"knit.Rasciidoc"</span>,
+                         package = <span style="color: #FF0000">"rasciidoc"</span>)
+cat(readLines(file_name), sep = <span style="color: #FF0000">"</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">"</span>)</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## = Some Title
@@ -924,28 +965,67 @@ from your current R session (vignettes like this are not allowed to start extern
 <div class="paragraph"><p>This file obviously reads code from files in a subdirectory called "src/",
 so if you had that subdirectory and its files, too:</p></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>my_directory &lt;- file.path(tempdir(), <span style="color: #FF0000">"simple"</span>)
+dir.create(my_directory)
+withr::with_dir(my_directory, {
+                    file.copy(file_name, <span style="color: #FF0000">"."</span>)
+                    file.copy(file.path(dirname(file_name), <span style="color: #FF0000">"src"</span>), <span style="color: #FF0000">"."</span>,
+                              recursive = TRUE)
+})</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## [1] TRUE</code></pre>
 </div></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>dir(my_directory, recursive = TRUE, full.names = TRUE)</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>## [1] "/tmp/RtmplyBX0c/simple/knit.Rasciidoc"
-## [2] "/tmp/RtmplyBX0c/simple/src/my_sum.R"
-## [3] "/tmp/RtmplyBX0c/simple/src/sum.R"</code></pre>
+<pre><code>## [1] "/tmp/RtmprQFKHY/simple/knit.Rasciidoc"
+## [2] "/tmp/RtmprQFKHY/simple/src/my_sum.R"
+## [3] "/tmp/RtmprQFKHY/simple/src/sum.R"</code></pre>
 </div></div>
 <div class="paragraph"><p>you could <code>render</code> the file</p></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>rasciidoc::render(file.path(my_directory, basename(file_name)))</tt></pre></div></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Warning in run_knit(file_name, knit = knit, envir = envir, write_to_disk =</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## write_to_disk): Setting option knit to TRUE based on the file contents!</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmprQFKHY/simple/knit.Rasciidoc.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmprQFKHY. Set the option "write_to_disk" to TRUE (using</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/RtmprQFKHY/simple/knit.Rasciidoc</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## 
@@ -998,11 +1078,12 @@ so if you had that subdirectory and its files, too:</p></div>
 ##    inline R code fragments</code></pre>
 </div></div>
 <div class="listingblock">
-<div class="content"></div></div>
-<div class="listingblock">
-<div class="content"></div></div>
-<div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/RtmprQFKHY/knit.asciidoc</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## [1] TRUE</code></pre>
@@ -1018,7 +1099,13 @@ from your current R session .</p></div>
 <div class="sectionbody">
 <div class="paragraph"><p>You can also use a spinnig file for input:</p></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>file_name &lt;- system.file(<span style="color: #FF0000">"files"</span>, <span style="color: #FF0000">"simple"</span>, <span style="color: #FF0000">"spin.R_nolint"</span>,
+                         package = <span style="color: #FF0000">"rasciidoc"</span>)
+cat(readLines(file_name), sep = <span style="color: #FF0000">"</span><span style="color: #CC33CC">\n</span><span style="color: #FF0000">"</span>)</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## #' = Some Title
@@ -1072,7 +1159,16 @@ from your current R session .</p></div>
 </div></div>
 <div class="paragraph"><p>You run <code>render</code> on it:</p></div>
 <div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt>withr::with_dir(tempdir(), {
+                    file.copy(file_name, <span style="color: #FF0000">"."</span>, overwrite = TRUE)
+                    file.copy(file.path(dirname(file_name), <span style="color: #FF0000">"src"</span>), <span style="color: #FF0000">"."</span>,
+                              recursive = TRUE)
+                    rasciidoc::render(basename(file_name))
+})</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## 
@@ -1083,11 +1179,15 @@ from your current R session .</p></div>
 ##    inline R code fragments</code></pre>
 </div></div>
 <div class="listingblock">
-<div class="content"></div></div>
-<div class="listingblock">
-<div class="content"></div></div>
-<div class="listingblock">
-<div class="content"></div></div>
+<div class="content"><!-- Generator: GNU source-highlight
+by Lorenzo Bettini
+http://www.lorenzobettini.it
+http://www.gnu.org/software/src-highlite -->
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmprQFKHY/spin.R_nolint.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmprQFKHY. Set the option "write_to_disk" to TRUE (using</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
+</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
 <pre><code>## [1] TRUE</code></pre>
@@ -1117,7 +1217,7 @@ your package&#8217;s <em>DESCRIPTION</em> file.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-10-21 19:51:33 CEST
+ 2021-11-04 13:33:37 CET
 </div>
 </div>
 </body>

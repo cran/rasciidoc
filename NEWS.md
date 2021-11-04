@@ -1,10 +1,23 @@
+# rasciidoc 3.2.0
+
+* In case only python3 is installed and asciidoc is missing, rasciidoc downloads
+  [asciidoc from github](https://github.com/asciidoc-py/asciidoc-py).
+  The current versions of asciidoc fail when called via 
+  `python3 /path/to/repo/asccidoc.py /path/to/input.asciidoc`, so we **hard code
+  checking out version 9.1.0, which is from 2020/02/11.**
+* Extended throwing and catching conditions: rasciidoc now catches and throws
+  all errors due to python not being installed. It should thus pass tests even
+  if python (which is a system requirement) is not installed.
+* Added tests using package testthat running basic tests on all machines.
+
 # rasciidoc 3.1.4
 
-* Skip tests on unkown machines
+* Skip tests on unknown machines.
 
 # rasciidoc 3.1.3
 
-* Skip tests on unkown windows machines to avoid errors for CRAN's `r-devel-windows-x86_64-gcc10-UCRT`.
+* Skip tests on unknown windows machines to avoid errors for CRAN's
+  `r-devel-windows-x86_64-gcc10-UCRT`.
 
 # rasciidoc 3.1.2
 

@@ -1,15 +1,30 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 3.2.0}{
+\itemize{
+\item In case only python3 is installed and asciidoc is missing, rasciidoc downloads
+\href{https://github.com/asciidoc-py/asciidoc-py}{asciidoc from github}.
+The current versions of asciidoc fail when called via
+\code{python3 /path/to/repo/asccidoc.py /path/to/input.asciidoc}, so we \strong{hard code
+checking out version 9.1.0, which is from 2020/02/11.}
+\item Extended throwing and catching conditions: rasciidoc now catches and throws
+all errors due to python not being installed. It should thus pass tests even
+if python (which is a system requirement) is not installed.
+\item Added tests using package testthat running basic tests on all machines.
+}
+}
+
 \section{Changes in version 3.1.4}{
 \itemize{
-\item Skip tests on unkown machines
+\item Skip tests on unknown machines.
 }
 }
 
 \section{Changes in version 3.1.3}{
 \itemize{
-\item Skip tests on unkown windows machines to avoid errors for CRAN's \code{r-devel-windows-x86_64-gcc10-UCRT}.
+\item Skip tests on unknown windows machines to avoid errors for CRAN's
+\code{r-devel-windows-x86_64-gcc10-UCRT}.
 }
 }
 

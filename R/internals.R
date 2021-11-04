@@ -3,6 +3,15 @@
         packageStartupMessage("\n", hint_writing())
 }
 
+write_default_output <- function(msg, adoc_file) {
+        lines <- readLines(system.file("files", "default.html",
+                                       package = "rasciidoc"))
+        lines <- sub("DEFAULT_TEXT", paste(msg, collapse = "<br>"), lines)
+        writeLines(lines, con = sub("\\.[A-z]*$", ".html", adoc_file))
+        status <- FALSE
+        return(status)
+}
+
 hint_writing <- function(path = "the input file") {
     t <- paste0("Due to the CRAN policy of not writing \"anywhere else on the",
                 " file system apart from the R session's temporary directory\"",
@@ -16,7 +25,7 @@ hint_writing <- function(path = "the input file") {
     return(t)
 }
 
-discover_python <- function(first_only = TRUE) {
+discover_python <- function(first_only = TRUE, stop_on_error = TRUE) {
     candidates <- sapply(c("python", "python2", "python3"),
                          function(x) return(as.character(Sys.which(x))))
     ## <<--- Adapted from reticulate(1.16)::py_discover_config()
@@ -44,12 +53,15 @@ discover_python <- function(first_only = TRUE) {
         python_versions <- candidates[file.exists(candidates)]
     ## --->>
     if (isTRUE(first_only)) python_versions <- python_versions[1]
+    if (is.na(python_versions) && isTRUE(stop_on_error))
+        throw("Found no python installation!")
     return(python_versions)
 }
 
 
-get_asciidoc <- function(python = discover_python()) {
-    if (fritools::is_installed(python)) {
+get_asciidoc <- function(python = NA) {
+    if (is.na(python)) python <- tryCatch(discover_python(), error = identity)
+    if (!inherits(python, "error")) {
         local_asciidoc_path <- file.path(tempdir(), "asciidoc")
         local_asciidoc_path <- normalizePath(local_asciidoc_path,
                                              mustWork = FALSE)
@@ -114,7 +126,13 @@ get_asciidoc <- function(python = discover_python()) {
             if (any(grepl("[[:alpha:]]", tags))) {
                 tags <- tags[-grep("[[:alpha:]]", tags)]
             }
-            last_tag <- sort(package_version(tags), decreasing = TRUE)[1]
+            if (identical(python_major, "2")) {
+                last_tag <- sort(package_version(tags), decreasing = TRUE)[1]
+            } else {
+                # NOTE: Matthew Peveler messes with the current asciidoc
+                # python3-implementation, so we use a historic working version.
+                last_tag <- "9.1.0"
+            }
             gert::git_reset_hard(repo = local_asciidoc_path,
                                  ref = as.character(last_tag))
 

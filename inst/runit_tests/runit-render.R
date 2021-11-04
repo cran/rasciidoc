@@ -14,10 +14,9 @@ remove_if_true <- function(x) {
 
 skip <- function() {
     skip <- !(fritools::is_running_on_fvafrcu_machines() ||
-              fritools::is_running_on_gitlab_com())
+-              fritools::is_running_on_gitlab_com())
     return(skip)
 }
-
 if (!skip()) {
         test_rasciidoc_simple <- function() {
             folder  <- system.file("runit_tests", "files",
