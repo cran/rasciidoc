@@ -8,7 +8,8 @@
 \item{write_to_disk}{Write to disk? See \bold{Warning}.}
 }
 \description{
-Inspired by Karl Broman`s reader on using \pkg{knitr} with \command{asciidoc}
+Inspired by \cite{Karl Broman}`s reader on using \pkg{knitr} with
+\command{asciidoc}
 (\url{https://kbroman.org/knitr_knutshell/pages/asciidoc.html}), this is
 merely a wrapper to \pkg{knitr} and \command{asciidoc}.
 }
@@ -25,7 +26,8 @@ Thus all internal sourcing and internal links will be
 broken and any output is written to \code{tempdir()}.
 Set the option "write_to_disk" to TRUE (using \cr
 \code{options(write_to_disk = TRUE)}\cr
-to bypass this. You may want to include the above line into your ~/.Rprofile.
+to bypass this. You may want to include the above line into your
+\file{~/.Rprofile}.
 }
 
 \keyword{package}

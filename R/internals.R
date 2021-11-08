@@ -58,107 +58,143 @@ discover_python <- function(first_only = TRUE, stop_on_error = TRUE) {
     return(python_versions)
 }
 
-
-get_asciidoc <- function(python = NA) {
-    if (is.na(python)) python <- tryCatch(discover_python(), error = identity)
-    if (!inherits(python, "error")) {
-        local_asciidoc_path <- file.path(tempdir(), "asciidoc")
-        local_asciidoc_path <- normalizePath(local_asciidoc_path,
-                                             mustWork = FALSE)
-        config_file <- normalizePath(file.path(local_asciidoc_path,
-                                               "rasciidoc_config.R"),
-                                     mustWork = FALSE)
-
-        if (file.exists(config_file)) {
-            source(config_file, local = TRUE)
-        } else {
-            unlink(local_asciidoc_path, recursive = TRUE, force = TRUE)
-            dir.create(local_asciidoc_path)
-            python_version <- sub("Python ", "",
-                                  system2(python, "--version",
-                                          stderr = TRUE, stdout = TRUE))
-            # NOTE: I remove release candidate markers from the current python
-            # version. I do so because python 2.7.18rc1 is
-            # currently (2020-04-14)
-            # installed on some CRAN maschines
-            #(r-devel-linux-x86_64-debian-clang).
-            # And package_version can't deal with release candidate markers.
-            # Since release candidates "can only have bugfixes applied that have
-            # been reviewed by other core developers"
-            # (https://devguide.python.org/devcycle/#release-candidate-rc).
-            # So it should be pretty save to do so. And I do not know any way to
-            # determine the last stable version before an rc
-            # (3.4.0rc1 gives what?).
-            python_version <- sub("rc.*$", "", python_version)
-            python_major <- package_version(python_version)[[c(1, 1)]]
-            python_major <- as.character(python_major)
-            if (python_major == "3" && fritools::is_installed("python2")) {
-                # asciidoc was origninally written in python2, so python2 wins.
-                # TODO: if python2 is available, but the version is not
-                # sufficient,should I fall back to python3?
-                python <- Sys.which("python2")
-                python_major <- "2"
-            }
-            url <- switch(python_major,
-                          "2" = "https://github.com/asciidoc-py/asciidoc-py2",
-                          "3" = "https://github.com/asciidoc-py/asciidoc-py",
-                          throw(paste("Could not find python version 2",
-                                      "nor python version 3."))
-                          )
-            if (fritools::is_installed("git")) {
-                # gert fails to clone on some machines, so try to use a system
-                # installation of git first.
-                if (fritools::is_running_on_fvafrcu_machines() &&
-                    fritools::is_windows()) {
-                    # FVAFR messes with its proxies...
-                    # this is a private local setting.
-                    # Don't bother.
-                    url <- sub("^(http)s", "\\1", url)
-                }
-                system(paste("git clone", url, local_asciidoc_path))
-
-            } else {
-                gert::git_clone(url = url, path = local_asciidoc_path)
-            }
-            # reset to the last tagged release: we don't want any unfunctional
-            # devel stuff in there.
-            tags <- gert::git_tag_list(repo = local_asciidoc_path)[["name"]]
-            if (any(grepl("[[:alpha:]]", tags))) {
-                tags <- tags[-grep("[[:alpha:]]", tags)]
-            }
-            if (identical(python_major, "2")) {
-                last_tag <- sort(package_version(tags), decreasing = TRUE)[1]
-            } else {
-                # NOTE: Matthew Peveler messes with the current asciidoc
-                # python3-implementation, so we use a historic working version.
-                last_tag <- "9.1.0"
-            }
-            gert::git_reset_hard(repo = local_asciidoc_path,
-                                 ref = as.character(last_tag))
-
-            asciidoc_source <- normalizePath(list.files(local_asciidoc_path,
-                                                        pattern =
-                                                            "^asciidoc.py$",
-                                                        recursive = TRUE,
-                                                        full.names = TRUE))
-            min_py_version <- query_min_py_version(file = asciidoc_source,
-                                                   python_version =
-                                                       python_major)
-            if (!is_version_sufficient(python_version, min_py_version))
-                throw(paste0("Could find not find python >= ", min_py_version,
-                             "."))
-            res <- list("python_cmd" = python,
-                        "asciidoc_source" = asciidoc_source
-                        )
-            dump("res", config_file)
-        }
-        return(res)
-    } else {
-        throw("Python is a system requirement.")
-    }
+get_python_version <- function(python) {
+    python_version <- sub("Python ", "",
+                          system2(python, "--version",
+                                  stderr = TRUE, stdout = TRUE))
+    # NOTE: I remove release candidate markers from the current python
+    # version. I do so because python 2.7.18rc1 is
+    # currently (2020-04-14)
+    # installed on some CRAN maschines
+    #(r-devel-linux-x86_64-debian-clang).
+    # And package_version can't deal with release candidate markers.
+    # Since release candidates "can only have bugfixes applied that have
+    # been reviewed by other core developers"
+    # (https://devguide.python.org/devcycle/#release-candidate-rc).
+    # So it should be pretty save to do so. And I do not know any way to
+    # determine the last stable version before an rc
+    # (3.4.0rc1 gives what?).
+    python_version <- sub("rc.*$", "", python_version)
+    return(python_version)
 }
 
+get_python_major <- function(python_version, use2 = FALSE) {
+    python_major <- package_version(python_version)[[c(1, 1)]]
+    python_major <- as.character(python_major)
+    if (isTRUE(use2) && python_major == "3" &&
+        fritools::is_installed("python2")) {
+        # asciidoc was origninally written in python2, so python2 wins.
+        # TODO: if python2 is available, but the version is not
+        # sufficient,should I fall back to python3?
+        python_major <- "2"
+    }
+    return(python_major)
+}
 
+# NOTE: Matthew Peveler messes with the current asciidoc
+# python3-implementation, so we use a historic working version.
+# pass NULL to use the current one.
+get_asciidoc <- function(version = NA,
+                         tag = NA,
+                         clean = FALSE # only for testing!
+                         ) {
+   if (is.na(version)) {
+       python <- discover_python(stop_on_error = FALSE)
+       if (is.na(python)) {
+           version <- "2"
+       } else {
+           version <- get_python_major(get_python_version(python))
+       }
+   } else {
+       python <- Sys.which(paste0("python", version))
+   }
+
+   local_asciidoc_path <- file.path(tempdir(), "asciidoc")
+   local_asciidoc_path <- normalizePath(local_asciidoc_path,
+                                        mustWork = FALSE)
+   config_file <- normalizePath(file.path(local_asciidoc_path,
+                                          "rasciidoc_config.R"),
+                                mustWork = FALSE)
+
+   if (file.exists(config_file)) {
+       source(config_file, local = TRUE)
+   } else {
+       unlink(local_asciidoc_path, recursive = TRUE, force = TRUE)
+       if (isTRUE(clean)) on.exit(unlink(local_asciidoc_path, recursive = TRUE,
+                                         force = TRUE))
+       dir.create(local_asciidoc_path)
+       url <- switch(version,
+                     "2" = "https://github.com/asciidoc-py/asciidoc-py2",
+                     "3" = "https://github.com/asciidoc-py/asciidoc-py",
+                     throw(paste("Could not find python version 2",
+                                 "nor python version 3."))
+                     )
+       if (fritools::is_installed("git")) {
+           # gert fails to clone on some machines, so try to use a system
+           # installation of git first.
+           if (fritools::is_running_on_fvafrcu_machines() &&
+               fritools::is_windows()) {
+               # FVAFR messes with its proxies...
+               # this is a private local setting.
+               # Don't bother.
+               url <- sub("^(http)s", "\\1", url)
+           }
+           system(paste("git clone", url, local_asciidoc_path))
+
+       } else {
+           gert::git_clone(url = url, path = local_asciidoc_path)
+       }
+       # reset to the a tagged release: we don't want any unfunctional
+       # devel stuff in there.
+
+       if (is.null(tag)) {
+           the_tag <- get_current_tag(local_asciidoc_path)
+       } else {
+           if (is.na(tag)) {
+               if (identical(version, "3")) {
+                   the_tag <- "9.1.0"
+               } else {
+                   the_tag <- get_current_tag(local_asciidoc_path)
+               }
+           } else {
+               the_tag <- tag
+           }
+       }
+
+       gert::git_reset_hard(repo = local_asciidoc_path,
+                            ref = as.character(the_tag))
+
+       asciidoc_source <- normalizePath(list.files(local_asciidoc_path,
+                                                   pattern =
+                                                       "^asciidoc.py$",
+                                                   recursive = TRUE,
+                                                   full.names = TRUE))
+       python_version <- get_python_version(python)
+       min_py_version <- query_min_py_version(file = asciidoc_source,
+                                              python_version =
+                                                  version)
+       if (!is_version_sufficient(python_version, min_py_version))
+           throw(paste0("Could find not find python >= ", min_py_version,
+                        "."))
+       res <- list("python_cmd" = python,
+                   "python_version" = python_version,
+                   "asciidoc_source" = asciidoc_source,
+                   "url" = url,
+                   "tag" = the_tag
+                   )
+       dump("res", config_file)
+   }
+   return(res)
+}
+
+get_current_tag <- function(local_asciidoc_path) {
+    tags <- gert::git_tag_list(repo = local_asciidoc_path)[["name"]]
+    if (any(grepl("[[:alpha:]]", tags))) {
+        tags <- tags[-grep("[[:alpha:]]", tags)]
+    }
+    current_tag <- sort(package_version(tags), decreasing = TRUE)[1]
+    return(current_tag)
+}
 
 query_min_py_version <- function(file, python_version) {
     required <- grep("^MIN_PYTHON_VERSION", readLines(file),

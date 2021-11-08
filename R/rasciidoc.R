@@ -11,6 +11,19 @@
 #' requires packages to pass checks if system requirements (external commands)
 #' are not met)? Set to \code{\link{TRUE}} to enforce.
 #' @param file_name The file to run \command{asciidoc} on.
+#' @param git_checkout_asciidoc_tag If \command{asciidoc} is not installed, it
+#' is loaded from \url{https://github.com/}.
+#' Depending on your python version (python2 or python3), \command{asciidoc} for
+#' python2 or python3 is loaded. You may specify a tag to use with the
+#' repository.
+#' Either pass
+#' \enumerate{
+#'   \item a tag number as a string ("9.1.0", for example),
+#'   \item \code{\link{NULL}} to force the latest tagged version, or
+#'   \item \code{\link{NA}}
+#' }
+#' Don't mind, just stick with the default. You would have to know which python
+#' version will be used.
 #' @param ... arguments passed to \command{asciidoc} via \code{\link{system2}}.
 #' @return \code{\link[base:invisible]{Invisibly}} \code{\link{TRUE}} or
 #' \code{\link{FALSE}}, depending on success.
@@ -24,9 +37,10 @@
 #'     file  <- system.file("files", "minimal", "knit.asciidoc",
 #'                          package = "rasciidoc")
 #'     file.copy(file, wd)
-#'     rasciidoc::rasciidoc(file_name = file.path(wd, basename(file)),
-#'                          write_to_disk = getOption("write_to_disk"),
-#'                          "-b html")
+#'     r <- rasciidoc::rasciidoc(file_name = file.path(wd, basename(file)),
+#'                               write_to_disk = getOption("write_to_disk"),
+#'                               "-b html")
+#'     if (interactive()) browseURL(attr(r, "info")[["output"]])
 #'     if (isTRUE(getOption("write_to_disk"))) {
 #'         dir(wd, full.names = TRUE)
 #'     } else {
@@ -37,7 +51,8 @@
 rasciidoc <- function(file_name,
                       ...,
                       write_to_disk = getOption("write_to_disk"),
-                      enforce_requirements = getOption("enforce_requirements")
+                      enforce_requirements = getOption("enforce_requirements"),
+                      git_checkout_asciidoc_tag = NA
                       ) {
     status <- FALSE
     msg <- NULL
@@ -98,7 +113,8 @@ rasciidoc <- function(file_name,
             } else {
                 message(paste(msg, collapse = "\n"))
             }
-            ad <- get_asciidoc()
+            ad <- get_asciidoc(tag = git_checkout_asciidoc_tag)
+
             status <- tryCatch(system2(ad[["python_cmd"]],
                                        args = unlist(c(ad[["asciidoc_source"]],
                                                        options, adoc_file)),
@@ -139,6 +155,18 @@ rasciidoc <- function(file_name,
             status <- write_default_output(msg, adoc_file)
 
         }
+        python <- FALSE
     }
+    candidates <- list.files(dirname(adoc_file),
+                             pattern = sub("\\..*", "", basename(adoc_file)),
+                             full.names = TRUE)
+    candidates <- candidates[candidates != adoc_file]
+    res <- list(python = discover_python(stop_on_error = FALSE),
+                input = file_name,
+                output = candidates,
+                asciidoc = Sys.which("asciidoc"),
+                "source-highlight" = fritools::is_installed("source-highlight"),
+                "git-asciidoc" = mget("ad", ifnotfound = NA)[[1]])
+    attr(status, "info") <- res
     return(invisible(status))
 }

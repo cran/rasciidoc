@@ -1,6 +1,6 @@
 Package: rasciidoc
 Title: Create Reports Using R and 'asciidoc'
-Version: 3.2.0
+Version: 4.0.0
 Authors@R: 
     person(given = "Andreas Dominik",
            family = "Cullmann",
@@ -26,8 +26,8 @@ SystemRequirements: python >= 2.6, by default rasciidoc uses a system
         recommended.
 VignetteBuilder: rasciidoc
 NeedsCompilation: no
-Packaged: 2021-11-04 12:33:38 UTC; qwer
+Packaged: 2021-11-08 20:39:34 UTC; qwer
 Author: Andreas Dominik Cullmann [aut, cre]
 Maintainer: Andreas Dominik Cullmann <fvafrcu@mailbox.org>
 Repository: CRAN
-Date/Publication: 2021-11-04 12:50:08 UTC
+Date/Publication: 2021-11-08 22:40:06 UTC

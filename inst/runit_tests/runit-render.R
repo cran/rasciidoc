@@ -14,7 +14,7 @@ remove_if_true <- function(x) {
 
 skip <- function() {
     skip <- !(fritools::is_running_on_fvafrcu_machines() ||
--              fritools::is_running_on_gitlab_com())
+              fritools::is_running_on_gitlab_com())
     return(skip)
 }
 if (!skip()) {
@@ -35,7 +35,7 @@ if (!skip()) {
                                           enforce_requirements = FALSE,
                                           "-b does_not_exists")
                             )
-            RUnit::checkTrue(!status)
+            RUnit::checkTrue(isTRUE(!status))
 
             withr::with_dir(tempdir(),
                             status <-
@@ -43,7 +43,7 @@ if (!skip()) {
                                                     basename(adoc)))
                             )
             if (fritools::is_installed(rasciidoc:::discover_python())) {
-                RUnit::checkTrue(status)
+                RUnit::checkTrue(isTRUE(status))
                 result <- readLines(file.path(tempdir(), "simple.html"))
                 pattern <- "(^([-:[]|$)|\\t)"
                 if (!fritools::is_installed("source-highlight")) {
@@ -57,7 +57,7 @@ if (!skip()) {
                               function(x) any(grepl(x, result, fixed = TRUE)))
                 RUnit::checkTrue(all(hit))
             } else {
-                RUnit::checkTrue(!status)
+                RUnit::checkTrue(isTRUE(!status))
             }
         }
 
@@ -71,7 +71,7 @@ if (!skip()) {
                         status <- render("simple.Rasciidoc"))
         infile <- file.path(tempdir(), "files", "simple.Rasciidoc")
         if (fritools::is_installed(rasciidoc:::discover_python())) {
-            RUnit::checkTrue(status)
+            RUnit::checkTrue(isTRUE(status))
             result <- readLines(file.path(tempdir(), "simple.html"))
             pattern <- "(^([:/]|$)|\\t)"
             if (!fritools::is_installed("source-highlight")) {
@@ -87,7 +87,7 @@ if (!skip()) {
                           function(x) any(grepl(x, result, fixed = TRUE)))
             RUnit::checkTrue(all(hit))
         } else {
-            RUnit::checkTrue(!status)
+            RUnit::checkTrue(isTRUE(!status))
         }
 
     }
@@ -103,9 +103,9 @@ if (!skip()) {
         withr::with_dir(file.path(tempdir(), "files"),
                         status <- render("fake.Radoc", knit = NA))
         if (!fritools::is_installed(rasciidoc:::discover_python())) {
-            RUnit::checkTrue(!status)
+            RUnit::checkTrue(isTRUE(!status))
         } else {
-            RUnit::checkTrue(status)
+            RUnit::checkTrue(isTRUE(status))
             result <- remove_dates(readLines(file.path(tempdir(),
                                                        "fake.html")))
             if (FALSE) {
@@ -141,9 +141,9 @@ if (!skip()) {
         file.copy("spin.asciidoc", "foo.asciidoc")
         status <- rasciidoc("foo.asciidoc")
         if (!fritools::is_installed(rasciidoc:::discover_python())) {
-            RUnit::checkTrue(!status)
+            RUnit::checkTrue(isTRUE(!status))
         } else {
-            RUnit::checkTrue(status)
+            RUnit::checkTrue(isTRUE(status))
             spin <- remove_dates(readLines("spin.html"))
             ascii_md <- remove_dates(readLines("foo.html"))
             # don't know which version of asciidoc will be
@@ -157,9 +157,9 @@ if (!skip()) {
         file.copy("knit.asciidoc", "bar.asciidoc")
         status <- rasciidoc("bar.asciidoc")
         if (!fritools::is_installed(rasciidoc:::discover_python())) {
-            RUnit::checkTrue(!status)
+            RUnit::checkTrue(isTRUE(!status))
         } else {
-            RUnit::checkTrue(status)
+            RUnit::checkTrue(isTRUE(status))
             knit <- remove_dates(readLines("knit.html"))
             ascii <- remove_dates(readLines("bar.html"))
             # don't know which version of asciidoc will be

@@ -13,6 +13,7 @@ render(
   replacement = "source",
   asciidoc_args = "-b html",
   what = c("auto", "all", "no_slides", "slides"),
+  git_checkout_asciidoc_tag = NA,
   clean = FALSE,
   ...
 )
@@ -45,6 +46,20 @@ The defaults looks
 for any in- or exclusion tagging and renders parts that are not meant for
 slides if found any, else it renders everything.}
 
+\item{git_checkout_asciidoc_tag}{If \command{asciidoc} is not installed, it
+is loaded from \url{https://github.com/}.
+Depending on your python version (python2 or python3), \command{asciidoc} for
+python2 or python3 is loaded. You may specify a tag to use with the
+repository.
+Either pass
+\enumerate{
+  \item a tag number as a string ("9.1.0", for example),
+  \item \code{\link{NULL}} to force the latest tagged version, or
+  \item \code{\link{NA}}
+}
+Don't mind, just stick with the default. You would have to know which python
+version will be used.}
+
 \item{clean}{Remove temporary file(s)?}
 
 \item{...}{Only there to register as vignette engine. Do not use!}
@@ -64,7 +79,8 @@ Thus all internal sourcing and internal links will be
 broken and any output is written to \code{tempdir()}.
 Set the option "write_to_disk" to TRUE (using \cr
 \code{options(write_to_disk = TRUE)}\cr
-to bypass this. You may want to include the above line into your ~/.Rprofile.
+to bypass this. You may want to include the above line into your
+\file{~/.Rprofile}.
 }
 
 \examples{
@@ -75,9 +91,9 @@ if (fritools::is_running_on_fvafrcu_machines()) {
     file  <- system.file("files", "minimal", "knit.Rasciidoc",
                          package = "rasciidoc")
     file.copy(file, wd)
-    rasciidoc::render(file.path(wd, basename(file)),
-                      write_to_disk = getOption("write_to_disk"),
-                      asciidoc_args = "-b slidy")
+    r <- rasciidoc::render(file.path(wd, basename(file)),
+                           write_to_disk = getOption("write_to_disk"),
+                           asciidoc_args = "-b slidy")
     if (isTRUE(getOption("write_to_disk"))) {
         dir(wd, full.names = TRUE)
     } else {

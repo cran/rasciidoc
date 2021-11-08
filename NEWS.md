@@ -1,3 +1,9 @@
+# rasciidoc 4.0.0
+
+* **`rasciidoc()`'s return value changed: it now has an attribute `info`.**
+  If you need to test whether it is `TRUE` or not, use `isTRUE().`
+* Fixed testing for failing calls to python:asciidoc.
+
 # rasciidoc 3.2.0
 
 * In case only python3 is installed and asciidoc is missing, rasciidoc downloads

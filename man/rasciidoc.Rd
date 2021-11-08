@@ -8,7 +8,8 @@ rasciidoc(
   file_name,
   ...,
   write_to_disk = getOption("write_to_disk"),
-  enforce_requirements = getOption("enforce_requirements")
+  enforce_requirements = getOption("enforce_requirements"),
+  git_checkout_asciidoc_tag = NA
 )
 }
 \arguments{
@@ -21,6 +22,20 @@ rasciidoc(
 \item{enforce_requirements}{Should system requirements be enforced (CRAN
 requires packages to pass checks if system requirements (external commands)
 are not met)? Set to \code{\link{TRUE}} to enforce.}
+
+\item{git_checkout_asciidoc_tag}{If \command{asciidoc} is not installed, it
+is loaded from \url{https://github.com/}.
+Depending on your python version (python2 or python3), \command{asciidoc} for
+python2 or python3 is loaded. You may specify a tag to use with the
+repository.
+Either pass
+\enumerate{
+  \item a tag number as a string ("9.1.0", for example),
+  \item \code{\link{NULL}} to force the latest tagged version, or
+  \item \code{\link{NA}}
+}
+Don't mind, just stick with the default. You would have to know which python
+version will be used.}
 }
 \value{
 \code{\link[base:invisible]{Invisibly}} \code{\link{TRUE}} or
@@ -42,7 +57,8 @@ Thus all internal sourcing and internal links will be
 broken and any output is written to \code{tempdir()}.
 Set the option "write_to_disk" to TRUE (using \cr
 \code{options(write_to_disk = TRUE)}\cr
-to bypass this. You may want to include the above line into your ~/.Rprofile.
+to bypass this. You may want to include the above line into your
+\file{~/.Rprofile}.
 }
 
 \examples{
@@ -53,9 +69,10 @@ if (fritools::is_running_on_fvafrcu_machines()) {
     file  <- system.file("files", "minimal", "knit.asciidoc",
                          package = "rasciidoc")
     file.copy(file, wd)
-    rasciidoc::rasciidoc(file_name = file.path(wd, basename(file)),
-                         write_to_disk = getOption("write_to_disk"),
-                         "-b html")
+    r <- rasciidoc::rasciidoc(file_name = file.path(wd, basename(file)),
+                              write_to_disk = getOption("write_to_disk"),
+                              "-b html")
+    if (interactive()) browseURL(attr(r, "info")[["output"]])
     if (isTRUE(getOption("write_to_disk"))) {
         dir(wd, full.names = TRUE)
     } else {

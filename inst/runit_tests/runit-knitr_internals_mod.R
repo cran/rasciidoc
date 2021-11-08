@@ -47,7 +47,6 @@ test_highlight_source <- function(expectation = ex) {
 test_knitr_internals <- function() {
     RUnit::checkIdentical(rasciidoc:::comment_length(NULL), 1L)
     RUnit::checkIdentical(rasciidoc:::comment_length(1), 2L)
-    RUnit::checkIdentical(rasciidoc:::isFALSE(FALSE), TRUE)
 }
 
 test_merge_lists <- function() {

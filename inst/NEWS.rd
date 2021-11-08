@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 4.0.0}{
+\itemize{
+\item \strong{\code{rasciidoc()}'s return value changed: it now has an attribute \code{info}.}
+If you need to test whether it is \code{TRUE} or not, use \verb{isTRUE().}
+\item Fixed testing for failing calls to python:asciidoc.
+}
+}
+
 \section{Changes in version 3.2.0}{
 \itemize{
 \item In case only python3 is installed and asciidoc is missing, rasciidoc downloads

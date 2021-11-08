@@ -3,6 +3,7 @@
 #' Spin or Knit (if required) and render an `Rasciidoc` file.
 #' @template cran
 #' @inheritParams adjust_asciidoc_hooks
+#' @inheritParams rasciidoc
 #' @param file_name The file to render.
 #' @param knit Knit the file first using \code{\link[knitr:knit]{knitr::knit}}?
 #' If set to \code{\link{NA}}, knitting is based on the file's contents or name.
@@ -30,9 +31,9 @@
 #'     file  <- system.file("files", "minimal", "knit.Rasciidoc",
 #'                          package = "rasciidoc")
 #'     file.copy(file, wd)
-#'     rasciidoc::render(file.path(wd, basename(file)),
-#'                       write_to_disk = getOption("write_to_disk"),
-#'                       asciidoc_args = "-b slidy")
+#'     r <- rasciidoc::render(file.path(wd, basename(file)),
+#'                            write_to_disk = getOption("write_to_disk"),
+#'                            asciidoc_args = "-b slidy")
 #'     if (isTRUE(getOption("write_to_disk"))) {
 #'         dir(wd, full.names = TRUE)
 #'     } else {
@@ -46,6 +47,7 @@ render <- function(file_name, knit = NA,
                    hooks = c("message", "error", "warning"),
                    replacement = "source", asciidoc_args = "-b html",
                    what = c("auto", "all", "no_slides", "slides"),
+                   git_checkout_asciidoc_tag = NA,
                    clean = FALSE, ...) {
     status <- 1
     checkmate::assert_file_exists(file_name)
@@ -84,6 +86,7 @@ render <- function(file_name, knit = NA,
 
              )
     status <- rasciidoc(file_name = adoc,
-                        write_to_disk = write_to_disk, asciidoc_args)
+                        write_to_disk = write_to_disk, asciidoc_args,
+                        git_checkout_asciidoc_tag = git_checkout_asciidoc_tag)
     return(status)
 }

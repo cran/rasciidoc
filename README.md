@@ -54,7 +54,7 @@ help("rasciidoc-package", package = "rasciidoc")
 #>      'tempdir()'. Set the option "write_to_disk" to TRUE (using
 #>      'options(write_to_disk = TRUE)'
 #>      to bypass this. You may want to include the above line into your
-#>      ~/.Rprofile.
+#>      '~/.Rprofile'.
 ```
 
 ## Installation

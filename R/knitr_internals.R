@@ -12,8 +12,6 @@ line_prompt <- function(x, prompt = getOption("prompt"),
   paste0(prompt, gsub("(?<=\n)(?=.|\n)", continue, x, perl = TRUE))
 }
 
-isFALSE <- function(x) identical(x, FALSE) # Exclude Linting
-
 comment_length <- function(x) {
   (if (is.null(x) || !nzchar(x) || is.na(x)) 0L else nchar(x)) + 1L
 }

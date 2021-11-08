@@ -1,6 +1,7 @@
 #' Create Reports Using R and \command{asciidoc}
 #'
-#' Inspired by Karl Broman`s reader on using \pkg{knitr} with \command{asciidoc}
+#' Inspired by \cite{Karl Broman}`s reader on using \pkg{knitr} with
+#' \command{asciidoc}
 #' (\url{https://kbroman.org/knitr_knutshell/pages/asciidoc.html}), this is
 #' merely a wrapper to \pkg{knitr} and \command{asciidoc}.
 #'
