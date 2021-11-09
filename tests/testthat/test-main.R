@@ -67,8 +67,7 @@ testthat::test_that("run asciidoc", {
                                                         fixed = TRUE)))
                     testthat::expect_true(all(hit))
                 } else {
-                    print(sessionInfo())
-                    message(paste(names(unlist(res)), unlist(res),
+                    message(paste(names(unlist(result)), unlist(result),
                                   collapse = "; ", sep = ": "))
                 }
             } else {
@@ -102,8 +101,7 @@ testthat::test_that("render", {
                               function(x) any(grepl(x, result, fixed = TRUE)))
                 testthat::expect_true(all(hit))
             } else {
-                print(sessionInfo())
-                message(paste(names(unlist(res)), unlist(res),
+                message(paste(names(unlist(result)), unlist(result),
                               collapse = "; ", sep = ": "))
             }
         } else {

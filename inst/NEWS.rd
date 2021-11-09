@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 4.0.1}{
+\itemize{
+\item Fixed typo in unit testing.
+}
+}
+
 \section{Changes in version 4.0.0}{
 \itemize{
 \item \strong{\code{rasciidoc()}'s return value changed: it now has an attribute \code{info}.}

@@ -1,3 +1,7 @@
+# rasciidoc 4.0.1
+
+* Fixed typo in unit testing.
+
 # rasciidoc 4.0.0
 
 * **`rasciidoc()`'s return value changed: it now has an attribute `info`.**
