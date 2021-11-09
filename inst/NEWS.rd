@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 4.0.2}{
+\itemize{
+\item Fixed test for failing asciidoc command that occurs on CRAN's
+\code{r-patched-solaris-x86}.
+}
+}
+
 \section{Changes in version 4.0.1}{
 \itemize{
 \item Fixed typo in unit testing.

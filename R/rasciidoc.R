@@ -161,10 +161,10 @@ rasciidoc <- function(file_name,
                              pattern = sub("\\..*", "", basename(adoc_file)),
                              full.names = TRUE)
     candidates <- candidates[candidates != adoc_file]
-    res <- list(python = discover_python(stop_on_error = FALSE),
-                input = file_name,
-                output = candidates,
-                asciidoc = Sys.which("asciidoc"),
+    res <- list("python" = discover_python(stop_on_error = FALSE),
+                "input" = file_name,
+                "output" = candidates,
+                "asciidoc" = as.character(Sys.which("asciidoc")),
                 "source-highlight" = fritools::is_installed("source-highlight"),
                 "git-asciidoc" = mget("ad", ifnotfound = NA)[[1]])
     attr(status, "info") <- res

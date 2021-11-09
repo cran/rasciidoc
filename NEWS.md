@@ -1,3 +1,8 @@
+# rasciidoc 4.0.2
+
+* Fixed test for failing asciidoc command that occurs on CRAN's 
+  `r-patched-solaris-x86`.
+
 # rasciidoc 4.0.1
 
 * Fixed typo in unit testing.
