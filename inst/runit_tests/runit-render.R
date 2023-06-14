@@ -109,7 +109,7 @@ if (!skip()) {
             result <- remove_dates(readLines(file.path(tempdir(),
                                                        "fake.html")))
             if (FALSE) {
-                file.copy(file.path(tempdir(), "files", "fake.html"),
+                file.copy(file.path(tempdir(), "fake.html"),
                           file.path("inst", "runit_tests", "files", "expected"),
                           overwrite = TRUE
                           )

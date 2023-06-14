@@ -1,3 +1,8 @@
+# rasciidoc 4.1.0
+
+* Removed `rasciidoc` from field `Suggests` in DESCRIPTION.
+* Bumped version due to package `fritools` back on CRAN.
+
 # rasciidoc 4.0.2
 
 * Fixed test for failing asciidoc command that occurs on CRAN's 

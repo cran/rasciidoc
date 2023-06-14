@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.10" />
+<meta name="generator" content="AsciiDoc 9.0.0rc2" />
 <title>What the hell is <strong>rasciidoc</strong>?</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -436,7 +436,7 @@ thead, p.table.header {
 p.table {
   margin-top: 0;
 }
-/* Because the table frame attribute is overriden by CSS in most browsers. */
+/* Because the table frame attribute is overridden by CSS in most browsers. */
 div.tableblock > table[frame="void"] {
   border-style: none;
 }
@@ -854,8 +854,8 @@ http://www.gnu.org/software/src-highlite -->
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/Rtmpx7eGg5/plot.Rasciidoc.</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/Rtmpx7eGg5. Set the option "write_to_disk" to TRUE (using</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmpXNwnCy/plot.Rasciidoc.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpXNwnCy. Set the option "write_to_disk" to TRUE (using</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
 </tt></pre></div></div>
@@ -866,40 +866,21 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-style: italic"><span style="color: #9A1900">##</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">##</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/Rtmpx7eGg5/plot.Rasciidoc</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/RtmpXNwnCy/plot.Rasciidoc</span></span>
 </tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>## 
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |..................                                                    |  25%
-##   ordinary text without R code
-##
-## 
-  |                                                                            
-  |...................................                                   |  50%
-## label: unnamed-chunk-8
-## 
-  |                                                                            
-  |....................................................                  |  75%
-##   ordinary text without R code
-##
-## 
-  |                                                                            
-  |......................................................................| 100%
-## label: a_plot (with options)
-## List of 2
-##  $ dev    : chr "png"
-##  $ fig.cap: chr "A Plot"</code></pre>
+<pre><code>## 1/4
+## 2/4 [unnamed-chunk-8]
+## 3/4
+## 4/4 [a_plot]</code></pre>
 </div></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/Rtmpx7eGg5/plot.asciidoc</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/RtmpXNwnCy/plot.asciidoc</span></span>
 </tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
@@ -909,10 +890,10 @@ http://www.gnu.org/software/src-highlite -->
 ## [1] "/usr/bin/python"
 ##
 ## attr(,"info")$input
-## [1] "/tmp/Rtmpx7eGg5/plot.asciidoc"
+## [1] "/tmp/RtmpXNwnCy/plot.asciidoc"
 ##
 ## attr(,"info")$output
-## [1] "/tmp/Rtmpx7eGg5/plot.Rasciidoc" "/tmp/Rtmpx7eGg5/plot.html"
+## [1] "/tmp/RtmpXNwnCy/plot.Rasciidoc" "/tmp/RtmpXNwnCy/plot.html"
 ##
 ## attr(,"info")$asciidoc
 ## [1] "/usr/bin/asciidoc"
@@ -1006,9 +987,9 @@ http://www.gnu.org/software/src-highlite -->
 <pre><tt>dir(my_directory, recursive = TRUE, full.names = TRUE)</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>## [1] "/tmp/Rtmpx7eGg5/simple/knit.Rasciidoc"
-## [2] "/tmp/Rtmpx7eGg5/simple/src/my_sum.R"
-## [3] "/tmp/Rtmpx7eGg5/simple/src/sum.R"</code></pre>
+<pre><code>## [1] "/tmp/RtmpXNwnCy/simple/knit.Rasciidoc"
+## [2] "/tmp/RtmpXNwnCy/simple/src/my_sum.R"
+## [3] "/tmp/RtmpXNwnCy/simple/src/sum.R"</code></pre>
 </div></div>
 <div class="paragraph"><p>you could <code>render</code> the file</p></div>
 <div class="listingblock">
@@ -1030,8 +1011,8 @@ http://www.gnu.org/software/src-highlite -->
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/Rtmpx7eGg5/simple/knit.Rasciidoc.</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/Rtmpx7eGg5. Set the option "write_to_disk" to TRUE (using</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmpXNwnCy/simple/knit.Rasciidoc.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpXNwnCy. Set the option "write_to_disk" to TRUE (using</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
 </tt></pre></div></div>
@@ -1042,65 +1023,26 @@ http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
 <pre><tt><span style="font-style: italic"><span style="color: #9A1900">##</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">##</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/Rtmpx7eGg5/simple/knit.Rasciidoc</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## processing file: /tmp/RtmpXNwnCy/simple/knit.Rasciidoc</span></span>
 </tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>## 
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |........                                                              |  11%
-##   ordinary text without R code
-##
-## 
-  |                                                                            
-  |................                                                      |  22%
-## label: sum (with options)
-## List of 1
-##  $ code: chr [1:6] "a  &lt;- c(2, 3, 4, 10) # <b>&lt;1&gt;</b>" "value &lt;- 0 # <b>&lt;2&gt;</b>" "for (a_i in a) { # <b>&lt;3&gt;</b>" "    value &lt;- value + a_i  # <b>&lt;4&gt;</b>" ...
-##
-## 
-  |                                                                            
-  |.......................                                               |  33%
-##   ordinary text without R code
-##
-## 
-  |                                                                            
-  |...............................                                       |  44%
-## label: my_sum (with options)
-## List of 1
-##  $ code: chr [1:7] "my_sum &lt;- function(x) {" "    value &lt;- 0" "    for (x_i in x) {" "        value &lt;- value + x_i" ...
-##
-## 
-  |                                                                            
-  |.......................................                               |  56%
-##   ordinary text without R code
-##
-## 
-  |                                                                            
-  |...............................................                       |  67%
-## label: value
-## 
-  |                                                                            
-  |......................................................                |  78%
-##   ordinary text without R code
-##
-## 
-  |                                                                            
-  |..............................................................        |  89%
-## label: run my_sum
-## 
-  |                                                                            
-  |......................................................................| 100%
-##    inline R code fragments</code></pre>
+<pre><code>## 1/9
+## 2/9 [sum]
+## 3/9
+## 4/9 [my_sum]
+## 5/9
+## 6/9 [value]
+## 7/9
+## 8/9 [run my_sum]
+## 9/9</code></pre>
 </div></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/Rtmpx7eGg5/knit.asciidoc</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## output file: /tmp/RtmpXNwnCy/knit.asciidoc</span></span>
 </tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
@@ -1110,10 +1052,10 @@ http://www.gnu.org/software/src-highlite -->
 ## [1] "/usr/bin/python"
 ##
 ## attr(,"info")$input
-## [1] "/tmp/Rtmpx7eGg5/knit.asciidoc"
+## [1] "/tmp/RtmpXNwnCy/knit.asciidoc"
 ##
 ## attr(,"info")$output
-## [1] "/tmp/Rtmpx7eGg5/knit.html"
+## [1] "/tmp/RtmpXNwnCy/knit.html"
 ##
 ## attr(,"info")$asciidoc
 ## [1] "/usr/bin/asciidoc"
@@ -1207,20 +1149,15 @@ http://www.gnu.org/software/src-highlite -->
 })</tt></pre></div></div>
 <div class="listingblock">
 <div class="content">
-<pre><code>## 
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |......................................................................| 100%
-##    inline R code fragments</code></pre>
+<pre><code>## 1/1</code></pre>
 </div></div>
 <div class="listingblock">
 <div class="content"><!-- Generator: GNU source-highlight
 by Lorenzo Bettini
 http://www.lorenzobettini.it
 http://www.gnu.org/software/src-highlite -->
-<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/Rtmpx7eGg5/spin.R_nolint.</span></span>
-<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/Rtmpx7eGg5. Set the option "write_to_disk" to TRUE (using</span></span>
+<pre><tt><span style="font-style: italic"><span style="color: #9A1900">## Due to the CRAN policy of not writing "anywhere else on the file system apart from the R session's temporary directory" we work on a temporary copy of /tmp/RtmpXNwnCy/spin.R_nolint.</span></span>
+<span style="font-style: italic"><span style="color: #9A1900">## Thus all internal sourcing and internal links will be broken and any output is written to /tmp/RtmpXNwnCy. Set the option "write_to_disk" to TRUE (using</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">##      options("write_to_disk" = TRUE)</span></span>
 <span style="font-style: italic"><span style="color: #9A1900">## ) to bypass this. You may want to include the above line into your ~/.Rprofile.</span></span>
 </tt></pre></div></div>
@@ -1232,10 +1169,10 @@ http://www.gnu.org/software/src-highlite -->
 ## [1] "/usr/bin/python"
 ##
 ## attr(,"info")$input
-## [1] "/tmp/Rtmpx7eGg5/spin.asciidoc_nolint"
+## [1] "/tmp/RtmpXNwnCy/spin.asciidoc_nolint"
 ##
 ## attr(,"info")$output
-## [1] "/tmp/Rtmpx7eGg5/spin.R_nolint" "/tmp/Rtmpx7eGg5/spin.html"
+## [1] "/tmp/RtmpXNwnCy/spin.R_nolint" "/tmp/RtmpXNwnCy/spin.html"
 ##
 ## attr(,"info")$asciidoc
 ## [1] "/usr/bin/asciidoc"
@@ -1271,7 +1208,7 @@ your package&#8217;s <em>DESCRIPTION</em> file.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-11-09 22:05:14 CET
+ 2023-06-13 21:53:36 CEST
 </div>
 </div>
 </body>

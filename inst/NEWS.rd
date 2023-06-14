@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 4.1.0}{
+\itemize{
+\item Removed \code{rasciidoc} from field \code{Suggests} in DESCRIPTION.
+\item Bumped version due to package \code{fritools} back on CRAN.
+}
+}
+
 \section{Changes in version 4.0.2}{
 \itemize{
 \item Fixed test for failing asciidoc command that occurs on CRAN's

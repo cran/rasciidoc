@@ -3,7 +3,7 @@ Andreas Dominik Cullmann
 :toc2:
 
 ////
-    %\VignetteIndexEntry{An Introduction with rasciidoc}
+    %\VignetteIndexEntry{Knitting Asciidoc with R}
     %\VignetteEngine{rasciidoc::rasciidoc}
 ////
 Inspired by Karl Broman`s reader on using knitr

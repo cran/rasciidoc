@@ -37,9 +37,8 @@
 #'     file  <- system.file("files", "minimal", "knit.asciidoc",
 #'                          package = "rasciidoc")
 #'     file.copy(file, wd)
-#'     r <- rasciidoc::rasciidoc(file_name = file.path(wd, basename(file)),
-#'                               write_to_disk = getOption("write_to_disk"),
-#'                               "-b html")
+#'     r <- rasciidoc(file_name = file.path(wd, basename(file)),
+#'                    write_to_disk = getOption("write_to_disk"), "-b html")
 #'     if (interactive()) browseURL(attr(r, "info")[["output"]])
 #'     if (isTRUE(getOption("write_to_disk"))) {
 #'         dir(wd, full.names = TRUE)

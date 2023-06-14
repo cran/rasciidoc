@@ -11,9 +11,6 @@
 #' @return The function does never return anything, it stops with a
 #' condition of class c("error", "rasciidoc", "condition").
 #' @keywords internal
-#' @examples
-#' tryCatch(rasciidoc:::throw("Hello error!"),
-#'          rasciidoc = function(e) return(e))
 throw <- function(message_string, system_call = sys.call(-1), ...) {
     condition <- structure(class = c("error", "rasciidoc", "condition"),
                            list(message = message_string, call = system_call),

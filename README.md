@@ -1,8 +1,8 @@
-[![pipeline status](https://gitlab.com/fvafrCU/rasciidoc/badges/master/pipeline.svg)](https://gitlab.com/fvafrCU/rasciidoc/-/commits/master)    
-[![coverage report](https://gitlab.com/fvafrCU/rasciidoc/badges/master/coverage.svg)](https://gitlab.com/fvafrCU/rasciidoc/-/commits/master)
+[![pipeline status](https://gitlab.com/fvafrcu/rasciidoc/badges/master/pipeline.svg)](https://gitlab.com/fvafrcu/rasciidoc/-/commits/master)    
+[![coverage report](https://gitlab.com/fvafrcu/rasciidoc/badges/master/coverage.svg)](https://gitlab.com/fvafrcu/rasciidoc/-/commits/master)
 <!-- 
-    [![Build Status](https://travis-ci.org/fvafrCU/rasciidoc.svg?branch=master)](https://travis-ci.org/fvafrCU/rasciidoc)
-    [![Coverage Status](https://codecov.io/github/fvafrCU/rasciidoc/coverage.svg?branch=master)](https://codecov.io/github/fvafrCU/rasciidoc?branch=master)
+    [![Build Status](https://travis-ci.org/fvafrcu/rasciidoc.svg?branch=master)](https://travis-ci.org/fvafrcu/rasciidoc)
+    [![Coverage Status](https://codecov.io/github/fvafrcu/rasciidoc/coverage.svg?branch=master)](https://codecov.io/github/fvafrcu/rasciidoc?branch=master)
 -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/rasciidoc)](https://cran.r-project.org/package=rasciidoc)
 [![RStudio_downloads_monthly](https://cranlogs.r-pkg.org/badges/rasciidoc)](https://cran.r-project.org/package=rasciidoc)
@@ -15,7 +15,7 @@
 # rasciidoc
 ## Introduction
 Please read the
-[vignette](https://fvafrCU.gitlab.io/rasciidoc/doc/An_Introduction_to_rasciidoc.html).
+[vignette](https://fvafrcu.gitlab.io/rasciidoc/doc/An_Introduction_to_rasciidoc.html).
 <!-- 
 [vignette](https://CRAN.R-project.org/package=rasciidoc/vignettes/An_Introduction_to_rasciidoc.html).
 
@@ -33,8 +33,8 @@ help("rasciidoc-package", package = "rasciidoc")
 #> Description:
 #> 
 #>      Inspired by Karl Broman`s reader on using 'knitr' with 'asciidoc'
-#>      (<URL: https://kbroman.org/knitr_knutshell/pages/asciidoc.html>),
-#>      this is merely a wrapper to 'knitr' and 'asciidoc'.
+#>      (<https://kbroman.org/knitr_knutshell/pages/asciidoc.html>), this
+#>      is merely a wrapper to 'knitr' and 'asciidoc'.
 #> 
 #> Arguments:
 #> 
@@ -64,7 +64,7 @@ You can install rasciidoc from gitlab via:
 
 ```r
 if (! require("remotes")) install.packages("remotes")
-remotes::install_gitlab("fvafrCU/rasciidoc")
+remotes::install_gitlab("fvafrcu/rasciidoc")
 ```
 
 

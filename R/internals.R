@@ -304,7 +304,7 @@ excerpt_to_file <- function(file_name,
         message(hint_writing(file_name))
         output_directory <- tempdir()
     }
-    glbt <- document::get_lines_between_tags
+    glbt <- fritools::get_lines_between_tags
     excerpt <- glbt(file_name = file_name, keep_tagged_lines = FALSE,
                     begin_pattern = begin_pattern,
                     end_pattern = end_pattern,

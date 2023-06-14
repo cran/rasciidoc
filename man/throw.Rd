@@ -24,8 +24,4 @@ Throws a condition of class c("error", "rasciidoc", "condition").
 \details{
 We use this condition as an error dedicated to \pkg{ rasciidoc.}
 }
-\examples{
-tryCatch(rasciidoc:::throw("Hello error!"),
-         rasciidoc = function(e) return(e))
-}
 \keyword{internal}
