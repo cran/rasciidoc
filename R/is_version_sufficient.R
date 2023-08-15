@@ -2,7 +2,7 @@
 #'
 #' Just a wrapper to \code{\link{compareVersion}}, I regularly forget how to use
 #' it.
-#' @param available The version available.
+#' @param installed The version installed.
 #' @param required The version required.
 #' @return  \code{\link{TRUE}}, if so,  \code{\link{FALSE}} otherwise.
 #' @export

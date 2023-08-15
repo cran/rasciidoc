@@ -1,3 +1,7 @@
+# rasciidoc 4.1.1
+
+* Fixed CRAN notes on Escaped LaTeX specials.
+
 # rasciidoc 4.1.0
 
 * Removed `rasciidoc` from field `Suggests` in DESCRIPTION.

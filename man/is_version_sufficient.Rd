@@ -7,9 +7,9 @@
 is_version_sufficient(installed, required)
 }
 \arguments{
-\item{required}{The version required.}
+\item{installed}{The version installed.}
 
-\item{available}{The version available.}
+\item{required}{The version required.}
 }
 \value{
 \code{\link{TRUE}}, if so,  \code{\link{FALSE}} otherwise.

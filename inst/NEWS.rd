@@ -1,6 +1,12 @@
 \name{NEWS}
 \title{NEWS}
 
+\section{Changes in version 4.1.1}{
+\itemize{
+\item Fixed CRAN notes on Escaped LaTeX specials.
+}
+}
+
 \section{Changes in version 4.1.0}{
 \itemize{
 \item Removed \code{rasciidoc} from field \code{Suggests} in DESCRIPTION.
@@ -185,7 +191,7 @@ This is needed for vignettes on CRAN written in (r)asciidoc.
 \item Fixed quotation in DESCRIPTION.
 \item Fixed excerption for input files mixing slidy and standard asciidoc.
 \item Refactored render().
-\item Got rid of render\_slides().
+\item Got rid of render_slides().
 \item Remove tagged lines from input docs.
 \item Now by default using tempdir(), which breaks internal links and source().
 }
@@ -197,7 +203,7 @@ This is needed for vignettes on CRAN written in (r)asciidoc.
 \item Checked for spelling, lints and cleanr.
 \item Allow for skipping single lines in slidy output by tagging them with
 "//no_slide".
-\item Now keeping intermediate files from render\_slides(), too.
+\item Now keeping intermediate files from render_slides(), too.
 }
 }
 
@@ -236,7 +242,7 @@ parsed trough knitr::spin().
 
 \section{Changes in version 0.4.0}{
 \itemize{
-\item Add \verb{//[begin|end]\\_only\\_slide}-blocks and \verb{//slide\\_only}-comments to allow
+\item Add \verb{//[begin|end]_only_slide}-blocks and \verb{//slide_only}-comments to allow
 for content for slidy only.
 \item Fix broken code inclusions for slidy.
 }
